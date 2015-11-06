@@ -1,0 +1,266 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\newcommand{\pProduct}{A}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Ben-Porath Notes
+\end_layout
+
+\begin_layout Section
+Description
+\end_layout
+
+\begin_layout Standard
+Class solves a deterministic Ben-Porath model of the form
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $h'=\left(1-\delta\right)h+A\left(hl\right)^{\alpha}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Closed form solution
+\end_layout
+
+\begin_layout Standard
+HVY 2006.
+ Neutral model, generalized to time varying skill prices.
+ Set productivity parameter (their 
+\begin_inset Formula $a$
+\end_inset
+
+) to 1 as in detrended model, so that
+\begin_inset Formula 
+\begin{equation}
+h_{t+1}=(1-\delta)h_{t}+A(h_{t}l_{t})^{\alpha}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Details in hand-written notes (July 18).
+ Basically done by backward induction which leads to the guess
+\begin_inset Formula 
+\begin{equation}
+(l_{t}h_{t})^{1-\alpha}=\frac{A\alpha}{Rw_{t}}\left\{ w_{t+1}\ell_{t+1}+w_{t+2}\ell_{t+2}\frac{1-\delta}{R}+w_{t+3}\ell_{t+3}\left(\frac{1-\delta}{R}\right)^{2}+...\right\} 
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From this we know investment for all dates.
+ Remarkable: This is independent of 
+\begin_inset Formula $h_{1}$
+\end_inset
+
+!
+\end_layout
+
+\begin_layout Itemize
+with high 
+\begin_inset Formula $\alpha$
+\end_inset
+
+ the model implies enormous responses of training w.r.to wage growth.
+\end_layout
+
+\begin_layout Standard
+If we multiply 
+\begin_inset Formula $h$
+\end_inset
+
+ by 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and 
+\begin_inset Formula $A$
+\end_inset
+
+ by 
+\begin_inset Formula $\lambda^{1-\alpha}$
+\end_inset
+
+, the entire wage profile is multiplied by 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+If wages are detrended: 
+\begin_inset Formula 
+\begin{equation}
+(l_{t}h_{t})^{1-\alpha}=\frac{\pProduct\alpha g_{w}}{Rw_{t}}\left\{ w_{t+1}\ell_{t+1}+w_{t+2}\ell_{t+2}g_{w}\frac{1-\delta}{R}+w_{t+3}\ell_{t+3}\left(g_{w}\frac{1-\delta}{R}\right)^{2}+...\right\} 
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we can forward iterate on the law of motion.
+ Along the way, ensure that 
+\begin_inset Formula $l_{t}$
+\end_inset
+
+ does not get too large.
+\end_layout
+
+\begin_layout Subsection
+Another way of writing this
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+(l_{t}h_{t})^{1-\alpha_{s}}=\pProduct d_{t}\label{eq:optInvest}
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+d_{t}=\frac{\alpha_{s}}{Rw_{t}}\sum_{j=1}^{T-t}w_{t+j}\ell_{t+j}\left(\frac{1-\delta_{s}}{R}\right)^{j-1}
+\end{equation}
+
+\end_inset
+
+with 
+\begin_inset Formula $d_{T}=0$
+\end_inset
+
+.
+ Then
+\begin_inset Formula 
+\begin{eqnarray}
+\pProduct(l_{t}h_{t})^{\alpha} & = & \pProduct(\pProduct d_{t})^{\alpha/(1-\alpha)}\\
+ & = & \pProduct^{1/(1-\alpha)}d_{t}^{\alpha/(1-\alpha)}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+so that human capital is given by
+\begin_inset Formula 
+\begin{equation}
+h_{t}=h_{1}(1-\delta_{s})^{t-1}+\pProduct^{1/(1-\alpha)}x_{t}
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+x_{t}=\sum_{j=1}^{t-1}d_{j}^{\alpha/(1-\alpha)}(1-\delta_{s})^{t-1-j}
+\end{equation}
+
+\end_inset
+
+with 
+\begin_inset Formula $x_{1}=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The fact that 
+\begin_inset Formula $x_{t}$
+\end_inset
+
+ is common to all agents dramatically simplifies the numerical solution
+ of the model.
+\end_layout
+
+\begin_layout Section
+eof
+\end_layout
+
+\end_body
+\end_document

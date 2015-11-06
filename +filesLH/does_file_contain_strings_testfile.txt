@@ -1,0 +1,4 @@
+Test file for does_file_contain_strings
+Contains test1 once.
+Does not contain testX for higher X.
+Done.

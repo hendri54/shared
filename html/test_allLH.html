@@ -1,0 +1,218 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>test_allLH</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-11-06"><meta name="DC.source" content="test_allLH.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">Runs all tests</a></li><li><a href="#3">Cell arrays</a></li><li><a href="#4">Economics</a></li><li><a href="#5">Files</a></li><li><a href="#6">Matrix</a></li><li><a href="#7">String</a></li><li><a href="#8">Vector</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> test_allLH
+</pre><h2>Runs all tests<a name="2"></a></h2><p>Also serves as a brief overview of the code</p><h2>Cell arrays<a name="3"></a></h2><p>Make a cell array of numbers into a vector</p><pre class="codeinput">cellLH.cell2vector_test;
+</pre><h2>Economics<a name="4"></a></h2><p>Ben-Porath model</p><p><img src="test_allLH_eq16041068844629325375.png" alt="$$h(t+1)=(1-\delta)h(t) + A (h(t) l(t))^\alpha$$"></p><pre class="codeinput">BenPorathLHtest;
+<span class="comment">%</span>
+<span class="comment">% Nested CES production function</span>
+CesNestedLHtest;
+<span class="comment">%</span>
+<span class="comment">% CRRA utility and permanent income model</span>
+UtilCrraLHtest;
+<span class="comment">%</span>
+<span class="comment">% CES production function</span>
+ces_lh_test;
+<span class="comment">%</span>
+<span class="comment">% Table of symbols. Generates a latex preamble with newcommands, so that model notation does not</span>
+<span class="comment">% have to be hard coded</span>
+SymbolTableLHtest;
+<span class="comment">%</span>
+<span class="comment">% Geometric sums</span>
+econLH.geo_sum_test;
+<span class="comment">%</span>
+<span class="comment">% Copy a set of figures / tables to a common directory (to be included in a paper)</span>
+econLH.PaperFiguresTest;
+<span class="comment">%</span>
+<span class="comment">% Perpetual inventory method</span>
+econLH.perpetual_inventory_test;
+<span class="comment">%</span>
+<span class="comment">% Maintain a list of unique names (e.g. file names for model results)</span>
+econLH.VariableListLHtest;
+<span class="comment">%</span>
+<span class="comment">% Regress log wages on time and age dummies</span>
+econLH.WageRegressionLHtest;
+</pre><h2>Files<a name="5"></a></h2><pre class="codeinput"><span class="comment">% RDIR is taken from the Matlab file exchange and used in some of my file routines</span>
+<span class="comment">% rdir cannot be in a subdir that's not on the path</span>
+rdir_test
+
+<span class="comment">% Test whether a file contains a set of strings</span>
+filesLH.does_file_contain_strings_test
+
+<span class="comment">% Find all files that contain at least one of a set of strings</span>
+filesLH.find_files_containing_strings_test
+
+<span class="comment">% Find files by name</span>
+filesLH.find_files_by_name_test
+
+<span class="comment">% Multi file search and replace</span>
+filesLH.replace_text_in_file_test;
+</pre><h2>Matrix<a name="6"></a></h2><pre class="codeinput"><span class="comment">% Apply a scalar function to one dimension of an array of arbitrary size</span>
+matrixLH.apply_scalar_function_test;
+
+<span class="comment">% Given a matrix, find rows with valid observations for all columns</span>
+matrixLH.find_valid_test;
+</pre><h2>String<a name="7"></a></h2><pre class="codeinput"><span class="comment">% Does a string contain any of a set of other string?</span>
+stringLH.contains_test;
+</pre><h2>Vector<a name="8"></a></h2><pre class="codeinput"><span class="comment">% For each element in x, find their position in y</span>
+vectorLH.find_matches_test;
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function test_allLH
+%% Runs all tests
+% Also serves as a brief overview of the code
+%
+
+
+%% Cell arrays
+%
+% Make a cell array of numbers into a vector
+cellLH.cell2vector_test;
+
+
+%% Economics
+%
+% Ben-Porath model
+%
+% $$h(t+1)=(1-\delta)h(t) + A (h(t) l(t))^\alpha$$
+%
+BenPorathLHtest;
+%
+% Nested CES production function
+CesNestedLHtest;
+%
+% CRRA utility and permanent income model
+UtilCrraLHtest;
+%
+% CES production function
+ces_lh_test;
+%
+% Table of symbols. Generates a latex preamble with newcommands, so that model notation does not
+% have to be hard coded
+SymbolTableLHtest;
+%
+% Geometric sums
+econLH.geo_sum_test;
+%
+% Copy a set of figures / tables to a common directory (to be included in a paper)
+econLH.PaperFiguresTest;
+%
+% Perpetual inventory method
+econLH.perpetual_inventory_test;
+%
+% Maintain a list of unique names (e.g. file names for model results)
+econLH.VariableListLHtest;
+%
+% Regress log wages on time and age dummies
+econLH.WageRegressionLHtest;
+
+
+%% Files
+
+% RDIR is taken from the Matlab file exchange and used in some of my file routines
+% rdir cannot be in a subdir that's not on the path
+rdir_test
+
+% Test whether a file contains a set of strings
+filesLH.does_file_contain_strings_test
+
+% Find all files that contain at least one of a set of strings
+filesLH.find_files_containing_strings_test
+
+% Find files by name
+filesLH.find_files_by_name_test
+
+% Multi file search and replace
+filesLH.replace_text_in_file_test;
+
+
+%% Matrix
+
+% Apply a scalar function to one dimension of an array of arbitrary size
+matrixLH.apply_scalar_function_test;
+
+% Given a matrix, find rows with valid observations for all columns
+matrixLH.find_valid_test;
+
+
+%% String
+
+% Does a string contain any of a set of other string?
+stringLH.contains_test;
+
+
+%% Vector
+
+% For each element in x, find their position in y
+vectorLH.find_matches_test;
+
+
+end
+##### SOURCE END #####
+--></body></html>
