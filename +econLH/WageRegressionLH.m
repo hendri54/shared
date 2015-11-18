@@ -2,12 +2,16 @@
 %{
 Regress log wages on some combination of
 - age dummies
-- age polynomial
-- cohort dummies
 - year dummies
+- cohort dummies
+- other regressors
 
 Conventions:
 Indexing order: age, school, year  [a,s,t]
+
+Change:
+   test wtih cohort effects +++++
+   when constructing coefficients: may get NaN when a cohort has no dummies (or an age)
 %}
 classdef WageRegressionLH < handle
    
@@ -15,29 +19,42 @@ properties
    % Weighted regression?
    useWeights
    % Use cohort effects (with 0 trend)?
-   % useCohortEffects
+   useCohortEffects
    % Age range to use for each school group
    ageRange_asM
    % Year range
    yearV
-   % Data
+   % Data by [age, school, year]
+   %  years in yearV
+   %  physical ages
    logWage_astM
+   % Other regressors by [age, school, year, variable]
+   % can be []
+   x_astvM
+   % Regression weights
    wt_astM
    % Fitted models
    modelV
 end
 
 
+properties (Dependent)
+   % Names of "other" regressors (if any)
+   xNameV
+end
+
+
 
 methods
    %% Constructor
-   function wrS = WageRegressionLH(logWage_astM, wt_astM, ageRange_asM, yearV, useWeights)
+   function wrS = WageRegressionLH(logWage_astM, x_astvM, wt_astM, ageRange_asM, yearV, useWeights, useCohortEffects)
       wrS.logWage_astM = logWage_astM;
+      wrS.x_astvM = x_astvM;
       wrS.wt_astM = wt_astM;
       wrS.ageRange_asM = ageRange_asM;
       wrS.yearV = yearV(:);
       wrS.useWeights = useWeights;
-      %wrS.useCohortEffects = useCohortEffects;
+      wrS.useCohortEffects = useCohortEffects;
       
       wrS.validate;
    end
@@ -56,6 +73,16 @@ methods
    end
    
    
+   function xNameV = get.xNameV(wrS)
+      if isempty(wrS.x_astvM)
+         xNameV = [];
+      else
+         nVar = size(wrS.x_astvM, 4);
+         xNameV = string_lh.vector_to_string_array(1 : nVar, 'x%i');
+      end
+   end
+   
+   
    %% Run regression
    %{
    One school group
@@ -70,6 +97,8 @@ methods
          logWage_atM = squeeze(wrS.logWage_astM(ageV, iSchool, :));
          if wrS.useWeights
             wt_atM = squeeze(wrS.wt_astM(ageV, iSchool, :));
+         else
+            wt_atM = ones(nAge, ny);
          end
 
          age_atM = ageV(:) * ones([1, ny]);
@@ -82,66 +111,70 @@ methods
             error('Invalid');
          end
          
-%          % Birth years
-%          if wrS.useCohortEffects
-%             bYear_atM = year_atM - age_atM + 1;
-%             % Impose 0 trend by setting first and last birth years to same values
-%             byMin = min(bYear_atM(:));
-%             byMax = max(bYear_atM(:));
-%             bYear_atM(bYear_atM == byMax) = byMin;
-%          end
+         tbM = table(logWage_atM(:), nominal(age_atM(:)), nominal(year_atM(:)), ...
+            'VariableNames', {'logWage', 'age', 'year'});
+         modelStr = 'logWage~1+age+year';
          
-         % Valid observations
-         valid_atM = ~isnan(logWage_atM);
-         if wrS.useWeights
-            valid_atM(isnan(wt_atM)) = false;
+         % Birth years
+         if wrS.useCohortEffects
+            bYear_atM = year_atM - age_atM + 1;
+            % Impose 0 trend by setting first and last birth years to same values
+            byMin = min(bYear_atM(:));
+            byMax = max(bYear_atM(:));
+            bYear_atM(bYear_atM == byMax) = byMin;
+            tbM.bYear = nominal(bYear_atM(:));
+            modelStr = [modelStr, '+bYear'];
+            clear bYear_atM;
          end
-
-         vIdxV = find(valid_atM == 1);
-         if length(vIdxV) < 50
-            error('Too few obs');
+         clear logWage_atM age_atM year_atM;
+         
+         % Other regressors
+         if ~isempty(wrS.x_astvM)
+            nVar = size(wrS.x_astvM, 4);
+            xNameV = wrS.xNameV;
+            for iVar = 1 : nVar
+               %xNameV{iVar} = sprintf('x%i', iVar);
+               xNewM = squeeze(wrS.x_astvM(ageV,iSchool,:,iVar));
+               tbM.(xNameV{iVar}) = xNewM(:);
+               modelStr = [modelStr, '+', xNameV{iVar}];
+            end
+            %xOther_atvM = reshape(wrS.x_astvM(ageV,iSchool,:,:), [length(ageV), ny, nVar]);
+         else
+            %xOther_atvM = [];
+            nVar = 0;
          end
-
+         
+        
          % **** Linear model
          
-         xM = [age_atM(vIdxV), year_atM(vIdxV)];
+         wrS.modelV{iSchool} = fitlm(tbM, modelStr, 'Weights', wt_atM(:));
          
-%          if wrS.useCohortEffects
-%             xM = [xM, bYear_atM(vIdxV)];
-%          end
-         
-         if wrS.useWeights
-            mdl = fitlm(xM, logWage_atM(vIdxV), ...
-               'CategoricalVars', [1 2], 'Weights', wt_atM(vIdxV));
-         else
-            mdl = fitlm(xM, logWage_atM(vIdxV), ...
-               'CategoricalVars', [1 2]);
-         end
-         wrS.modelV{iSchool} = mdl;
       end
    end
    
       
    %% Extract age and year effects
    %  Meaningless scales
-   function profileV = age_year_effects(wrS)
-      nSchool = size(wrS.logWage_astM, 2);
-      % Evaluate for this year (must be in range of dummies
-      ny = length(wrS.yearV);
-      refYear = wrS.yearV(round(ny / 2));
-      
+   function profileV = age_year_effects(wrS, dbg)
+      nSchool = size(wrS.logWage_astM, 2);     
       profileV = cell([nSchool, 1]);
+      
       for iSchool = 1 : nSchool
          clear regrS;
          regrS.ageValueV = wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool);
-         nAge = length(regrS.ageValueV);
-         regrS.ageDummyV = feval(wrS.modelV{iSchool}, [regrS.ageValueV(:), refYear .* ones([nAge,1])]);
-
-         regrS.yearValueV = wrS.yearV(:);
-         ny = length(regrS.yearValueV);
-         refAge = regrS.ageValueV(round(nAge / 2));
-         regrS.yearDummyV = feval(wrS.modelV{iSchool}, [refAge .* ones([ny,1]), regrS.yearValueV]);
          
+         [~, regrS.ageDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'age', regrS.ageValueV, dbg);
+         
+         regrS.yearValueV = wrS.yearV(:);
+         [~, regrS.yearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'year', regrS.yearValueV, dbg);
+         
+         if wrS.useCohortEffects
+            bYearMin = wrS.yearV(1) - regrS.ageValueV(end) + 1;
+            bYearMax = wrS.yearV(end) - regrS.ageValueV(1) + 1;
+            regrS.bYearValueV = (bYearMin : bYearMax)';
+            [~, regrS.bYearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'bYear', regrS.bYearValueV, dbg);
+         end
+                  
          profileV{iSchool} = regrS;
       end
    end
@@ -158,10 +191,17 @@ methods
       for iSchool = 1 : nSchool
          ageV = wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool);
          nAge = length(ageV);
-         age_atM = repmat(ageV(:), [1, ny]);
-         year_atM = repmat(wrS.yearV(:)', [length(ageV), 1]);
+%          age_atM = repmat(ageV(:), [1, ny]);
+%          year_atM = repmat(wrS.yearV(:)', [length(ageV), 1]);
+
+         predV = wrS.modelV{iSchool}.Fitted;
+%          if wrS.useCohortEffects
+%             bYear_atM = year_atM - age_atM + 1;
+%             predV = wrS.modelV{iSchool}.feval(age_atM(:),  year_atM(:));
+%          else
+%             predV = wrS.modelV{iSchool}.feval(age_atM(:),  year_atM(:),  bYear_atM(:));
+%          end
          
-         predV = wrS.modelV{iSchool}.feval(age_atM(:),  year_atM(:));
          pred_astM(ageV,iSchool,:) = reshape(predV,  [nAge, ny]);
       end
    end

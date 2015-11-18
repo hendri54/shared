@@ -75,6 +75,11 @@ matrixLH.apply_scalar_function_test;
 matrixLH.find_valid_test;
 
 
+%% Regressions
+
+regressLH.test_all;
+
+
 %% String
 
 % Does a string contain any of a set of other string?
@@ -85,6 +90,9 @@ stringLH.contains_test;
 
 % For each element in x, find their position in y
 vectorLH.find_matches_test;
+% Given a set of (x,y) vectors, make an x vector that spans all the x values
+% Make a y matrix with all the y values
+vectorLH.xy_to_common_base_test;
 
 
 end
