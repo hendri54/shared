@@ -11,3 +11,5 @@ In posting this code, I hope to make a small contribution towards reducing the a
 For a table of contents with brief descriptions, see the [test routine](test_allLH.m).
 
 Comments are welcome.
+
+PS: The file finding routines depend on `rdir.m` which is included with the repo for convenience (even though I am not the author).
