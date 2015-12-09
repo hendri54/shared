@@ -33,6 +33,9 @@ end
 
 %% Output check
 if dbg > 10
+   xV = xV(:);
+   yV = yV(:);
+   
    if ~any(isnan(idxV))
       assert(isequal(xV, yV(idxV)));
    end

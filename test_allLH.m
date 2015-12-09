@@ -3,6 +3,8 @@ function test_allLH
 % Also serves as a brief overview of the code
 %
 
+dbg = 111;
+
 
 %% Cell arrays
 %
@@ -80,10 +82,22 @@ matrixLH.find_valid_test;
 regressLH.test_all;
 
 
+%% Statistics
+
+rng(323);
+yV = linspace(-1, 1, 100);
+yHatV = yV + randn(size(yV));
+wtV = 1 + rand(size(yV));
+statsLH.rsquared(yV, yHatV, wtV, dbg);
+
+
 %% String
 
 % Does a string contain any of a set of other string?
 stringLH.contains_test;
+
+% Format one number in the same way as another (provided as a formatted string)
+stringLH.format_similar_test;
 
 
 %% Vector

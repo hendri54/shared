@@ -1,16 +1,19 @@
 % Code for wage regressions
 %{
 Regress log wages on some combination of
-- age dummies
+- age dummies or polynomial in experience
 - year dummies
 - cohort dummies
 - other regressors
+
+How to recover fitted values and their confidence bands?
+- need regressor matrix to get both
+- simply return them as outputs when running `regress`
 
 Conventions:
 Indexing order: age, school, year  [a,s,t]
 
 Change:
-   test wtih cohort effects +++++
    when constructing coefficients: may get NaN when a cohort has no dummies (or an age)
 %}
 classdef WageRegressionLH < handle
@@ -20,6 +23,9 @@ properties
    useWeights
    % Use cohort effects (with 0 trend)?
    useCohortEffects
+   % How to deal with age / experience?
+   % possible values: 'ageDummies', 'polyX' (X order polynomial)
+   ageTreatment
    % Age range to use for each school group
    ageRange_asM
    % Year range
@@ -33,7 +39,7 @@ properties
    x_astvM
    % Regression weights
    wt_astM
-   % Fitted models
+   % Fitted models. Vector of LinearModel
    modelV
 end
 
@@ -41,13 +47,18 @@ end
 properties (Dependent)
    % Names of "other" regressors (if any)
    xNameV
+   % Use age dummies?
+   useAgeDummies
+   % Highest exper power in exper polynomial (if any)
+   highestExperPower
 end
 
 
 
 methods
    %% Constructor
-   function wrS = WageRegressionLH(logWage_astM, x_astvM, wt_astM, ageRange_asM, yearV, useWeights, useCohortEffects)
+   function wrS = WageRegressionLH(logWage_astM, x_astvM, wt_astM, ageRange_asM, yearV, useWeights, ...
+         useCohortEffects, ageTreatment)
       wrS.logWage_astM = logWage_astM;
       wrS.x_astvM = x_astvM;
       wrS.wt_astM = wt_astM;
@@ -55,6 +66,7 @@ methods
       wrS.yearV = yearV(:);
       wrS.useWeights = useWeights;
       wrS.useCohortEffects = useCohortEffects;
+      wrS.ageTreatment = ageTreatment;
       
       wrS.validate;
    end
@@ -70,6 +82,13 @@ methods
       end
       validateattributes(wrS.ageRange_asM, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', ...
          '>', 10, '<', 110,  'size', [2, nSchool]})
+      % Age treatment
+      if ~strcmpi(wrS.ageTreatment, 'ageDummies')
+         if (length(wrS.ageTreatment) ~= 5)  ||  ~strcmpi(wrS.ageTreatment(1:4), 'poly')
+            error('Invalid ageTreatment');
+         end
+      end
+      assert(wrS.highestExperPower >= 0);
    end
    
    
@@ -82,13 +101,32 @@ methods
       end
    end
    
+   function out1 = get.useAgeDummies(wrS)
+      out1 = strcmp(wrS.ageTreatment, 'ageDummies');
+   end
+   
+   function out1 = get.highestExperPower(wrS)
+      if strcmp(wrS.ageTreatment(1:4), 'poly')
+         out1 = str2double(wrS.ageTreatment(5));
+      else
+         out1 = 0;
+      end
+   end
+   
    
    %% Run regression
    %{
-   One school group
+   OUT
+      fitted_astM(age, school, year)
+         fitted values
+      confIter_ast2M(age, school, year, low/high)
+         confidence bands
    %}
-   function regress(wrS)
-      [~, nSchool, ny] = size(wrS.logWage_astM);
+   function [fitted_astM, confInt_ast2M] = regress(wrS)
+      [ageMax, nSchool, ny] = size(wrS.logWage_astM);
+      % Fitted values and confidence bands
+      fitted_astM = nan([ageMax, nSchool, ny]);
+      confInt_ast2M = nan([ageMax, nSchool, ny, 2]);
 
       for iSchool = 1 : nSchool
          ageV = wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool);
@@ -111,9 +149,23 @@ methods
             error('Invalid');
          end
          
-         tbM = table(logWage_atM(:), nominal(age_atM(:)), nominal(year_atM(:)), ...
-            'VariableNames', {'logWage', 'age', 'year'});
-         modelStr = 'logWage~1+age+year';
+         % Dummy treatment of age, year is automatic b/c they are nominal variables
+         tbM = table(logWage_atM(:), nominal(year_atM(:)), ...
+            'VariableNames', {'logWage', 'year'});
+         modelStr = 'logWage~1+year';
+         
+         % Age dummies
+         if wrS.useAgeDummies
+            modelStr = [modelStr, '+age'];
+            tbM.age = nominal(age_atM(:));
+         end
+         
+         % Experience polynomial
+         if wrS.highestExperPower >= 1
+            exper_atM = age_atM - wrS.ageRange_asM(1, iSchool);
+            modelStr = [modelStr, '+exper^', sprintf('%i', wrS.highestExperPower)];
+            tbM.exper = exper_atM(:);
+         end
          
          % Birth years
          if wrS.useCohortEffects
@@ -129,6 +181,7 @@ methods
          clear logWage_atM age_atM year_atM;
          
          % Other regressors
+         %  Added as xNameV{iVar} to the data table tbM
          if ~isempty(wrS.x_astvM)
             nVar = size(wrS.x_astvM, 4);
             xNameV = wrS.xNameV;
@@ -139,9 +192,9 @@ methods
                modelStr = [modelStr, '+', xNameV{iVar}];
             end
             %xOther_atvM = reshape(wrS.x_astvM(ageV,iSchool,:,:), [length(ageV), ny, nVar]);
-         else
+         %else
             %xOther_atvM = [];
-            nVar = 0;
+            %nVar = 0;
          end
          
         
@@ -149,21 +202,54 @@ methods
          
          wrS.modelV{iSchool} = fitlm(tbM, modelStr, 'Weights', wt_atM(:));
          
+         % **** Get fitted values and their confidence bands
+         [fittedV, ciM] = wrS.modelV{iSchool}.predict(tbM);
+         % Reshape into [a,s,t] format
+         fitted_astM(ageV, iSchool, :) = reshape(fittedV,  [nAge, ny]);
+         for i2 = 1 : 2
+            confInt_ast2M(ageV,iSchool,:,i2) = reshape(ciM(:,i2), [nAge, ny]);
+         end
       end
    end
    
       
    %% Extract age and year effects
-   %  Meaningless scales
+   %{
+   If experience polynomial, use it to compute age effects
+   Also cohort effects (if any)
+   Meaningless scales
+   %}
    function profileV = age_year_effects(wrS, dbg)
       nSchool = size(wrS.logWage_astM, 2);     
       profileV = cell([nSchool, 1]);
       
       for iSchool = 1 : nSchool
          clear regrS;
-         regrS.ageValueV = wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool);
+         regrS.ageValueV = (wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool))';
          
-         [~, regrS.ageDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'age', regrS.ageValueV, dbg);
+         if wrS.useAgeDummies
+            [~, regrS.ageDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'age', regrS.ageValueV, dbg);
+         elseif wrS.highestExperPower >= 1
+            % Recover from polynomial
+            experValueV = regrS.ageValueV - wrS.ageRange_asM(1, iSchool);
+            nx = wrS.highestExperPower;
+            regrS.ageDummyV = zeros(size(regrS.ageValueV));
+            for ix = 1 : nx
+               if ix == 1
+                  rStr = 'exper';
+               else
+                  rStr = ['exper^', sprintf('%i', ix)];
+               end
+               [~, experBeta] = regressLH.find_regressors(wrS.modelV{iSchool}, rStr, dbg);
+               validateattributes(experBeta, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
+               regrS.ageDummyV = regrS.ageDummyV + (experValueV .^ ix) .* experBeta;
+            end
+         else
+            regrS.ageDummyV = [];
+         end
+         if ~isempty(regrS.ageDummyV)
+            validateattributes(regrS.ageDummyV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
+         end
          
          regrS.yearValueV = wrS.yearV(:);
          [~, regrS.yearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'year', regrS.yearValueV, dbg);
@@ -173,6 +259,8 @@ methods
             bYearMax = wrS.yearV(end) - regrS.ageValueV(1) + 1;
             regrS.bYearValueV = (bYearMin : bYearMax)';
             [~, regrS.bYearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'bYear', regrS.bYearValueV, dbg);
+         else
+            regrS.bYearDummyV = [];
          end
                   
          profileV{iSchool} = regrS;
@@ -182,6 +270,12 @@ methods
    
    
    %% Make predicted log wages by [age, school, year]
+   %{
+   OUT
+      pred_astM(age, school, year)
+         predicted values
+         age dim covers only up to max wrS.ageRange_asM
+   %}
    function pred_astM = predict_ast(wrS)
       ageMax = max(wrS.ageRange_asM(:));
       ny = length(wrS.yearV);
@@ -191,16 +285,8 @@ methods
       for iSchool = 1 : nSchool
          ageV = wrS.ageRange_asM(1, iSchool) : wrS.ageRange_asM(2, iSchool);
          nAge = length(ageV);
-%          age_atM = repmat(ageV(:), [1, ny]);
-%          year_atM = repmat(wrS.yearV(:)', [length(ageV), 1]);
 
          predV = wrS.modelV{iSchool}.Fitted;
-%          if wrS.useCohortEffects
-%             bYear_atM = year_atM - age_atM + 1;
-%             predV = wrS.modelV{iSchool}.feval(age_atM(:),  year_atM(:));
-%          else
-%             predV = wrS.modelV{iSchool}.feval(age_atM(:),  year_atM(:),  bYear_atM(:));
-%          end
          
          pred_astM(ageV,iSchool,:) = reshape(predV,  [nAge, ny]);
       end

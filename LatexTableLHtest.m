@@ -23,7 +23,8 @@ tS.fill_row(ir, 1 : nc, '%i');
 tS.fill_col(ic, 1 : nr, '%i');
 
 tS.write_table;
-tS.show;
+tS.cell_table;
+tS.write_text_table;
 
 
 end

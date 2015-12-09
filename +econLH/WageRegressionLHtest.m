@@ -9,7 +9,9 @@ disp('Testing WageRegressionLH');
 
 for useWeights = [false, true]
    for useCohortEffects = [false, true]
-      check_one(useWeights, useCohortEffects);
+      for ageTreatment = {'ageDummies', 'poly4'}
+         check_one(useWeights, useCohortEffects, ageTreatment{1});
+      end
    end
 end
 
@@ -17,7 +19,7 @@ end
 
 
 %% Check one case
-function check_one(useWeights, useCohortEffects)
+function check_one(useWeights, useCohortEffects, ageTreatment)
    dbg = 111;
    rng(231);
    ageMax = 65;
@@ -43,13 +45,22 @@ function check_one(useWeights, useCohortEffects)
    end
 
    x_astvM = [];
-   wrS = econLH.WageRegressionLH(logWage_astM, x_astvM, wt_astM, ageRange_asM, yearV, useWeights, useCohortEffects);
+   wrS = econLH.WageRegressionLH(logWage_astM, x_astvM, wt_astM, ageRange_asM, yearV, useWeights, ...
+      useCohortEffects, ageTreatment);
 
-   wrS.regress;
+   fitted_astM = wrS.regress;
+   
+   assert(isa(wrS.useAgeDummies, 'logical'));
+   assert(wrS.highestExperPower >= 0);
 
    profileV = wrS.age_year_effects(dbg);
 
+   % Two ways of recovering predicted / fitted values
    pred_astM = wrS.predict_ast;
+   pred2_astM = fitted_astM(1 : max(ageRange_asM(:)), :, :);
+   assert(isequal(size(pred_astM),  size(pred2_astM)));
+   idxV = find(~isnan(pred2_astM));
+   checkLH.approx_equal(pred2_astM(idxV),  pred_astM(idxV), 1e-5, []);
 
 
    %% Check that age and year coefficients are recovered
@@ -59,14 +70,24 @@ function check_one(useWeights, useCohortEffects)
       profS = profileV{iSchool};
       regrS = regrV{iSchool};
 
-      if useCohortEffects
-         m2 = fitlm(regrS.ageCoeffV(:),  profS.ageDummyV(:));
-         assert(max(abs(m2.Residuals.Raw)) < 0.05);
-      else
+      % Age dummies
+      if wrS.useAgeDummies
+         if useCohortEffects
+            m2 = fitlm(regrS.ageCoeffV(:),  profS.ageDummyV(:));
+            assert(max(abs(m2.Residuals.Raw)) < 0.05);
+         else
+            diffAgeV = (profS.ageDummyV(:) - mean(profS.ageDummyV)) - (regrS.ageCoeffV(:) - mean(regrS.ageCoeffV));
+            assert(max(abs(diffAgeV)) < 0.05);
+         end
+      end
+      
+      % Experience coefficients
+      if wrS.highestExperPower >= 1
          diffAgeV = (profS.ageDummyV(:) - mean(profS.ageDummyV)) - (regrS.ageCoeffV(:) - mean(regrS.ageCoeffV));
          assert(max(abs(diffAgeV)) < 0.05);
       end
       
+      % Year dummies
       if useCohortEffects
          m2 = fitlm(regrS.yearCoeffV(:),  profS.yearDummyV(:));
          assert(max(abs(m2.Residuals.Raw)) < 0.05);

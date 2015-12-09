@@ -1,4 +1,9 @@
 classdef LatexTableLH < handle
+%{
+Other methods:
+   write_table
+      write to latex file
+%}
    
 properties
    filePath
@@ -33,6 +38,11 @@ end
 
 methods
    %% Constructor
+   %{
+   Must provide table dimensions (nr, nc) (not counting headers)
+   Other options are optional, as (name, value) pairs.
+   If omitted, they are set to `default_values`
+   %}
    function tS = LatexTableLH(nr, nc, varargin)
       tS.nr = nr;
       tS.nc = nc;
@@ -48,7 +58,8 @@ methods
       ir = 0;
       
       ir = ir + 1;
-      alignDefaultV = repmat({'r'},  [1, tS.nc]);
+      % Assume package siunitx is installed for alignment
+      alignDefaultV = repmat({'S'},  [1, tS.nc]);
       defaultM(ir,:) = {'alignV',  alignDefaultV};
       ir = ir + 1;
       defaultM(ir, :) = {'alignHeader', 'r'};
@@ -97,6 +108,7 @@ methods
    
    
    %% Fill the table body
+   % One can also set `tbM` in one go
    
    % Fill a single cell by position
    % ir, ic are row / variable numbers
@@ -151,7 +163,32 @@ methods
    end
 
    
-   %% Make complete table with 
+   %% Make complete table with headers (as cell array)
+   function dataM = cell_table(tS)
+      dataM = cell(tS.nr + 1, tS.nc + 1);
+      dataM(2:end, 2:end) = tS.tbM;
+      dataM(2:end, 1) = tS.rowHeaderV;
+      % May have to wrap these in `{}` for `siunitx` package
+      dataM(1, 2:end) = tS.colHeaderV;
+   end
+   
+   
+   %% Write text table that can be read "by hand"
+   % Does not write contents of lineStrV
+   function write_text_table(tS)
+      dbg = 111;
+      [fDir, fName, fExt] = fileparts(tS.filePath);
+      textPath = fullfile(fDir, [fName, '.txt']);
+      fp = fopen(textPath, 'w');
+      
+      cellLH.text_table(tS.cell_table, [1; tS.rowUnderlineV(:)], fp, dbg);
+      
+      fclose(fp);
+      
+      % Also show on screen
+      cellLH.text_table(tS.cell_table, [1; tS.rowUnderlineV(:)], 1, dbg);
+
+   end
    
 end
       

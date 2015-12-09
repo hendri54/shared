@@ -2,6 +2,9 @@ function test_all
 
 disp('Testing all regression code');
 
+regressLH.format_regr_output_test;
+regressLH.regr_table_test;
+
 
 %% Make a regression model for test purposes
 
@@ -58,6 +61,14 @@ assert(isequal(length(xIdxV), nx));
 for ix = 1 : nx
    assert(strcmp(mdl.CoefficientNames{xIdxV(ix)},  xNameV{ix}))
 end
+
+% More general function to find regressors by name
+rNameV = {'x_1', 'x_2'};
+rIdxV = regressLH.find_regressors(mdl, rNameV, dbg);
+for ix = 1 : length(rNameV)
+   assert(strcmp(mdl.CoefficientNames{rIdxV(ix)},  rNameV{ix}))
+end
+clear rIdxV
 
 
 end

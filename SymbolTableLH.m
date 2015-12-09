@@ -33,6 +33,7 @@ classdef SymbolTableLH < handle
          if tS.n > 0
             for i1 = 1 : tS.n
                tS.sym_validate(tS.symbolV{i1});
+               tS.name_validate(tS.nameV{i1});
             end
          end
       end
@@ -41,6 +42,15 @@ classdef SymbolTableLH < handle
       %% Validate symbol
       function sym_validate(tS, symbolStr)
          validateattributes(symbolStr, {'char'}, {'nonempty'})
+      end
+      
+      %% Validate name
+      function name_validate(tS, nameStr)
+         validateattributes(nameStr, {'char'}, {'nonempty'})
+         if any(nameStr(1) == '1234567890_\')
+            error('Symbol names cannot start with special characters');
+         end
+         
       end
       
       
