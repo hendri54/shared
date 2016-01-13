@@ -5,7 +5,7 @@ IN:
  xM
     Data by [ind, date]
  discRate
-    Discount rate
+    Discount rate, e.g. 0.04
  discDate
     Date to discount to
 

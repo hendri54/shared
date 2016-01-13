@@ -12,6 +12,18 @@ dbg = 111;
 cellLH.cell2vector_test;
 
 
+%% Distributions
+
+% Weighted cdf
+distribLH.cdf_weighted_test;
+
+% Quantiles, weighted data
+distribLH.pcnt_weighted_test;
+
+% Bivariate normal
+distribLH.NormalBivariateTest;
+
+
 %% Economics
 %
 % Ben-Porath model
@@ -22,6 +34,13 @@ BenPorathLHtest;
 %
 % Nested CES production function
 CesNestedLHtest;
+
+% Discrete choice problem with type 1 extreme value shocks
+% Solve and calibrate its parameters
+econLH.extreme_value_decision_test;
+econLH.extreme_value_calibrate_test(false)
+
+
 %
 % CRRA utility and permanent income model
 UtilCrraLHtest;
@@ -68,6 +87,11 @@ filesLH.find_files_by_name_test
 filesLH.replace_text_in_file_test;
 
 
+%% Markov chains
+
+markovLH.markov_sim_test;
+
+
 %% Matrix
 
 % Apply a scalar function to one dimension of an array of arbitrary size
@@ -77,6 +101,11 @@ matrixLH.apply_scalar_function_test;
 matrixLH.find_valid_test;
 
 
+%% Random numbers
+
+randomLH.rand_discrete_test;
+
+
 %% Regressions
 
 regressLH.test_all;
@@ -84,11 +113,16 @@ regressLH.test_all;
 
 %% Statistics
 
+% R^2 for weighted data
 rng(323);
 yV = linspace(-1, 1, 100);
 yHatV = yV + randn(size(yV));
 wtV = 1 + rand(size(yV));
 statsLH.rsquared(yV, yHatV, wtV, dbg);
+
+% Weighted data: mean and std deviation
+statsLH.std_w_test;
+
 
 
 %% String
@@ -102,6 +136,8 @@ stringLH.format_similar_test;
 
 %% Vector
 
+% Extend a vector into the past and future using constant linear trends
+vectorLH.extend_linear_trend_test;
 % For each element in x, find their position in y
 vectorLH.find_matches_test;
 % Given a set of (x,y) vectors, make an x vector that spans all the x values
