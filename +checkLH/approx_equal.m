@@ -1,6 +1,10 @@
 function result = approx_equal(x1M, x2M, absToler, relToler)
 % Check whether 2 matrices are approximately equal
 
+if nargin < 4
+   relToler = [];
+end
+
 % If any NaN: error
 validateattributes(x1M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(x2M)})
 validateattributes(x2M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})

@@ -31,6 +31,9 @@ distribLH.NormalBivariateTest;
 % $$h(t+1)=(1-\delta)h(t) + A (h(t) l(t))^\alpha$$
 %
 BenPorathLHtest;
+
+BenPorathContTimeTestLH;
+
 %
 % Nested CES production function
 CesNestedLHtest;
@@ -60,6 +63,9 @@ econLH.PaperFiguresTest;
 %
 % Perpetual inventory method
 econLH.perpetual_inventory_test;
+
+% Test by regression whether true and simulated outcomes are consistent
+econLH.regression_test_test(false);
 %
 % Maintain a list of unique names (e.g. file names for model results)
 econLH.VariableListLHtest;
@@ -103,6 +109,7 @@ matrixLH.find_valid_test;
 
 %% Random numbers
 
+randomLH.MultiVarNormalTest;
 randomLH.rand_discrete_test;
 
 
@@ -119,6 +126,9 @@ yV = linspace(-1, 1, 100);
 yHatV = yV + randn(size(yV));
 wtV = 1 + rand(size(yV));
 statsLH.rsquared(yV, yHatV, wtV, dbg);
+
+statsLH.ProbMatrix2Dtest;
+
 
 % Weighted data: mean and std deviation
 statsLH.std_w_test;
