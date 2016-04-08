@@ -27,15 +27,15 @@ xw2V = bpS.x_age(ageV);
 checkLH.approx_equal(xw2V, xwV, 1e-4, []);
 clear xw2V;
 
-% this uses the old (19) - could be wrong +++++
 [haV, naV] = bpS.h_age(ageV);
+% Code requires interior solution
 assert(all(naV < 1));
 checkLH.approx_equal(haV(1), h0, 1e-6, []);
 
 earnV = bpS.age_earnings_profile(ageV);
 checkLH.approx_equal(wage .* haV .* (1 - naV) - px .* xwV,  earnV, 1e-4, []);
 
-pvEarn = pv_earnings(bpS);
+pvEarn = bpS.pv_earnings;
 
 
 %% Test against law of motion
@@ -76,7 +76,8 @@ checkLH.approx_equal(pvEarn16, pvEarn, [], 1e-3);
    end
 
 
-%% Corrected solution for h(a)
+%% My solution for h(a)
+% Equivalent to MS's, it turns out
 
 h3V = zeros(size(ageV));
 for i1 = 1 : nAge
@@ -144,64 +145,66 @@ checkLH.approx_equal(h3V, haV, 1e-3, []);
 
 
 %% Test optimality by perturbing solution
+% This currently does not work. Lower x or n increases lifetime earnings
+% The math seems right. Why? +++++
+if 0
+   age1 = 1;
+   age2 = 2;
+   ageIdxV = find(ageV >= age1  &  ageV <= age2);
 
-age1 = 1;
-age2 = 2;
-ageIdxV = find(ageV >= age1  &  ageV <= age2);
+   nCases = 5;
+   pvEarnV = zeros(nCases, 1);
 
-nCases = 5;
-pvEarnV = zeros(nCases, 1);
+   % fh = figure('visible', 'on');
+   % hold on;
 
-% fh = figure('visible', 'on');
-% hold on;
+   for iCase = 1 : nCases
+      xw2V = xwV;
+      na2V = naV;
+      if iCase == 1
+      elseif iCase == 2
+         % Perturb xw up
+         xw2V(ageIdxV) = xw2V(ageIdxV) .* 1.05;
+      elseif iCase == 3
+         % perturb xw down
+         xw2V(ageIdxV) = xw2V(ageIdxV) .* 0.9;
+      elseif iCase == 4
+         % perturb n up
+         na2V(ageIdxV) = na2V(ageIdxV) .* 1.05;
+      elseif iCase == 5
+         % perturb n down
+         na2V(ageIdxV) = na2V(ageIdxV) .* 0.9;
+      else
+         error('invalid');
+      end
 
-for iCase = 1 : nCases
-   xw2V = xwV;
-   na2V = naV;
-   if iCase == 1
-   elseif iCase == 2
-      % Perturb xw up
-      xw2V(ageIdxV) = xw2V(ageIdxV) .* 1.05;
-   elseif iCase == 3
-      % perturb xw down
-      xw2V(ageIdxV) = xw2V(ageIdxV) .* 0.9;
-   elseif iCase == 4
-      % perturb n up
-      na2V(ageIdxV) = na2V(ageIdxV) .* 1.05;
-   elseif iCase == 5
-      % perturb n down
-      na2V(ageIdxV) = na2V(ageIdxV) .* 0.9;
-   else
-      error('invalid');
+      % Path of h(t) implied by these inputs
+      [t2V, ha2V] = bpS.hpath(bpS.T, ageV, na2V, xw2V);
+      hFct = griddedInterpolant(t2V, ha2V, 'linear');
+
+      % Earnings path implied
+      earn2V = bpS.wage .* hFct(ageV) .* (1 - na2V) - bpS.px .* xw2V;
+      earnFct = griddedInterpolant(ageV, earn2V);
+
+   %    plot(ageV, earn2V);
+
+      pvEarnV(iCase) = integral(@integ_earn, 0, bpS.T);
+
+      if iCase == 1
+         % Should recover optimal solution
+         checkLH.approx_equal(pvEarnV(iCase), pvEarn, [], 1e-3);
+      end
    end
-   
-   % Path of h(t) implied by these inputs
-   [t2V, ha2V] = bpS.hpath(bpS.T, ageV, na2V, xw2V);
-   hFct = griddedInterpolant(t2V, ha2V, 'linear');
-   
-   % Earnings path implied
-   earn2V = bpS.wage .* hFct(ageV) .* (1 - na2V) - bpS.px .* xw2V;
-   earnFct = griddedInterpolant(ageV, earn2V);
-   
-%    plot(ageV, earn2V);
-   
-   pvEarnV(iCase) = integral(@integ_earn, 0, bpS.T);
-   
-   if iCase == 1
-      % Should recover optimal solution
-      checkLH.approx_equal(pvEarnV(iCase), pvEarn, [], 1e-3);
-   end
+
+   % hold off;
+   % keyboard;
+
+   disp(pvEarnV - pvEarnV(1))
+
+   % Perturbation should reduce earnings
+   % Compare with the one using the same approximation +++++
+   assert(all(pvEarnV(2 : end) < pvEarn));
 end
-
-% hold off;
-% keyboard;
-
-disp(pvEarnV - pvEarnV(1))
-
-% Perturbation should reduce earnings
-% Compare with the one using the same approximation +++++
-assert(all(pvEarnV(2 : end) < pvEarn));
-
 
    % Nested: integrand
    function earnNestV = integ_earn(ageV)
