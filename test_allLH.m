@@ -34,7 +34,6 @@ BenPorathLHtest;
 
 BenPorathContTimeTestLH;
 
-%
 % Nested CES production function
 CesNestedLHtest;
 
@@ -108,6 +107,8 @@ matrixLH.find_valid_test;
 
 
 %% Optimization
+
+pvectorLHtest;
 
 optimLH.GuessUnboundedTest;
 
