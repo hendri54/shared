@@ -7,7 +7,7 @@ subject to
    h(0) given
    \dot(h) = A (h * n) ^ alpha * x ^ beta - deltaH * h
 %}
-classdef BenPorathContTimeLH
+classdef BenPorathContTimeLH < handle
    
 properties
    A  double
@@ -72,6 +72,55 @@ methods
       out1 = bpS.A * bpS.gamma1 / (bpS.r + bpS.deltaH) * ((bpS.gamma2 / bpS.gamma1 * bpS.wage ./ bpS.px) ^ bpS.gamma2);
    end
    
+   % Marginal value of h. Only depends on horizon remaining, not on current h
+   % (20) in MS 2014
+   function q_aV = marginal_value_h(bpS, ageV)
+      q_aV = bpS.wage .* bpS.m_age(ageV) ./ (bpS.r + bpS.deltaH);
+   end
+   
+   
+   %% Marginal value of increasing starting age
+   % -r V + dV/d(age0)
+   %{
+   This can be computed without integration (easier than computing the parts separately)
+   Useful for optimal stopping rule that sets starting age (e.g. MS2014 school problem)
+   %}
+   function mValue = marginal_value_age0(bpS)
+      C1 = (1 - bpS.gamma) ./ bpS.gamma1 .* (bpS.bracket_term .^ (1 ./ (1 - bpS.gamma)));
+      mValue = bpS.wage .* bpS.h0 ./ (bpS.r + bpS.deltaH) .* (bpS.mprime_age(0) - bpS.r .* bpS.m_age(0)) ...
+         - bpS.wage .* C1 .* (bpS.m_age(0) .^ (1 ./ (1 - bpS.gamma)));
+      validateattributes(mValue, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+   end
+      
+% dV/d(age0)   
+%       C1 = bpS.h0 .* bpS.mprime_age(0) ./ (bpS.r + bpS.deltaH);
+%       C2 = -(bpS.m_age(0) .^ (1 ./ (1 - bpS.gamma)));
+%       C3 = integral(@mva_nested, 0, bpS.T);
+% 
+%       mValue = bpS.wage .* (C1 + (1 - bpS.gamma) ./ bpS.gamma1 .* (bpS.bracket_term .^ (1 ./ (1 - bpS.gamma))) .* ...
+%          (C2 + bpS.r .* C3));
+%       validateattributes(mValue, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+%       
+%       % Nested: integrand
+%       function outV = mva_nested(tV)
+%          outV = exp(- bpS.r .* tV) .* (bpS.m_age(tV) .^ (1 ./ (1 - bpS.gamma)));
+%       end
+%    end
+   
+   %% Marginal value of T
+   function mValue = marginal_value_T(bpS)
+      mValue = bpS.wage .* bpS.h0 ./ (bpS.r + bpS.deltaH) .* bpS.dm_dT(0)  +  ...
+         bpS.wage .* (1 - bpS.gamma) ./ bpS.gamma1 .* (bpS.bracket_term .^ (1 ./ (1-bpS.gamma))) .* ...
+         integral(@integ_mv, 0, bpS.T);
+      validateattributes(mValue, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+      
+      % Nested: integrand
+      function outV = integ_mv(tV)
+         outV = exp(-bpS.r .* tV) .* (bpS.m_age(tV) .^ (bpS.gamma ./ (1 - bpS.gamma))) .* ...
+            bpS.dm_dT(tV) ./ (1 - bpS.gamma);
+      end
+   end
+   
    
    %% Technology: hDot as a function of h,n,x
    function hDotV = htech(bpS, hV, nV, xV)
@@ -89,6 +138,8 @@ methods
    
    
    %% Present value of lifetime earnings
+   % Value function V(h,T)
+   % MS 2014 have a closed form solution
    function pvEarn = pv_earnings(bpS)
       pvEarn = integral(@integ_pv, 0, bpS.T);
       validateattributes(pvEarn, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
@@ -102,7 +153,10 @@ methods
    
    
    %% n(a) h(a) from (17)
-   % This agrees with MS
+   %{
+   This agrees with MS
+   Can be used to determine whether hh chooses n<1 at age 0
+   %}
    function [nhV, xV] = nh(bpS, ageV)
       %c1  = bpS.A .* (bpS.gamma1 .^ (1 - bpS.gamma2)) .* (bpS.gamma2 .^ bpS.gamma2) ./ (bpS.r + bpS.deltaH);
       %c2  = (bpS.wage ./ bpS.px) .^ bpS.gamma2;
@@ -175,9 +229,21 @@ methods
       validateattributes(maV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(ageV)})
    end
    
+   % m'(a)
+   function mPrimeV = mprime_age(bpS, ageV)
+      mPrimeV = -(bpS.r + bpS.deltaH) .* exp((bpS.r + bpS.deltaH) .* (ageV - bpS.T));
+   end
+   
+   % dm(a)/dT
+   function dmdT = dm_dT(bpS, ageV)
+      dmdT = (bpS.r + bpS.deltaH) .* exp((bpS.r + bpS.deltaH) .* (ageV - bpS.T));
+   end
+   
    
    %% Path h(a) for given inputs n(a), x(a); and h0
    %{
+   The result is not super precise (see test function)
+   
    IN
       ageV, naV, xaV
          on an age grid: inputs (will be interpolated)

@@ -10,7 +10,7 @@ T = 20;
 px = 1.8;
 r = 0.05;
 wage = 2.9;
-h0 = 9.8;
+h0 = 5.8;
 
 bpS = BenPorathContTimeLH(A, deltaH, gamma1, gamma2, T, h0, px, r, wage);
 
@@ -31,11 +31,60 @@ clear xw2V;
 % Code requires interior solution
 assert(all(naV < 1));
 checkLH.approx_equal(haV(1), h0, 1e-6, []);
+checkLH.approx_equal(nhV, haV .* naV, 1e-5, []);
 
 earnV = bpS.age_earnings_profile(ageV);
 checkLH.approx_equal(wage .* haV .* (1 - naV) - px .* xwV,  earnV, 1e-4, []);
 
 pvEarn = bpS.pv_earnings;
+
+q_aV = bpS.marginal_value_h(ageV);
+
+m_aV = bpS.m_age(ageV);
+mPrime_aV = bpS.mprime_age(ageV);
+
+
+%% Local functions
+
+foc_check(bpS)
+perturbation_test(bpS)
+marginal_value_age0_test(bpS);
+
+
+%% Test m'(a)
+
+dAge = 1e-4;
+m_a2V = bpS.m_age(ageV(1 : (nAge-1)) + dAge);
+mPrime2V = (m_a2V - m_aV(1 : (nAge-1))) ./ dAge;
+checkLH.approx_equal(mPrime_aV(1 : (nAge-1)), mPrime2V, 1e-4, []);
+
+
+% Test dm/dT
+
+dmdT = bpS.dm_dT(ageV);
+dT = 1e-4;
+bp2S = BenPorathContTimeLH(A, deltaH, gamma1, gamma2, T + dT, h0, px, r, wage);
+m_a2V = bp2S.m_age(ageV);
+dmdT2 = (m_a2V - m_aV) ./ dT;
+checkLH.approx_equal(dmdT2, dmdT, [], 1e-3);
+% fprintf('Max dev dmdT: %f \n',  max(abs(dmdT - dmdT2)));
+
+
+
+%% dV/dT
+
+% this is now the same as changing age 0 (b/c of discounting to age 0)
+
+mValue = bpS.marginal_value_T;
+
+dT = 1e-3;
+bp2S = BenPorathContTimeLH(A, deltaH, gamma1, gamma2, T + dT, h0, px, r, wage);
+pvEarn2 = bp2S.pv_earnings;
+mValue2 = (pvEarn2 - pvEarn) ./ dT;
+
+
+checkLH.approx_equal(mValue, mValue2, 1e-3, []);
+
 
 
 %% Test against law of motion
@@ -50,7 +99,7 @@ checkLH.approx_equal(hDiffV,  0.5 .* (hDotV(1 : (nAge-1)) + hDotV(2 : nAge)), 1e
 [tOutV, hOutV] = bpS.hpath(bpS.T, ageV, naV, xwV);
 % Check against claimed solution
 hOut2V = interp1(ageV, haV,  tOutV,  'linear');
-checkLH.approx_equal(hOut2V(:), hOutV(:),  1e-3, []);
+checkLH.approx_equal(hOut2V(:), hOutV(:), [],  1e-3);
 
 checkLH.approx_equal(nhV, haV .* naV, 1e-3, []);
 
@@ -59,6 +108,17 @@ checkLH.approx_equal(nhV, haV .* naV, 1e-3, []);
 % Assumes interior n
 idxV = find(nhV > 1e-5);
 checkLH.approx_equal(xwV(idxV) ./ nhV(idxV),  repmat(bpS.x2nh, size(idxV)),  [],  1e-5);
+
+
+%% Marginal value of h
+
+dh0 = 1e-4;
+bp2S = BenPorathContTimeLH(A, deltaH, gamma1, gamma2, T, h0 + dh0, px, r, wage);
+pvEarn2 = bp2S.pv_earnings;
+assert(abs(ageV(1)) < 1e-6);
+checkLH.approx_equal(q_aV(1), (pvEarn2 - pvEarn) ./ dh0, 1e-3, []);
+clear pvEarn2;
+clear bp2S;
 
 
 %% Test (16): closed form solution for lifetime earnings
@@ -74,6 +134,11 @@ checkLH.approx_equal(pvEarn16, pvEarn, [], 1e-3);
    function out1 = int1_nested(t)
       out1 = exp(-r .* (t - age)) .* (bpS.m_age(t) .^ (1 / (1 - bpS.gamma)));
    end
+
+% Try another expression
+% Fails. Hamiltonian ~= Value function
+% pvEarn2 = bpS.wage .* haV(1) .* (1 - naV(1)) - bpS.px .* xwV(1) + q_aV(1) .* bpS.htech(haV(1), naV(1), xwV(1));
+% checkLH.approx_equal(pvEarn2, pvEarn, 1e-4, []);
 
 
 %% My solution for h(a)
@@ -144,13 +209,53 @@ checkLH.approx_equal(h3V, haV, 1e-3, []);
 
 
 
+end
+
+
+
+%% Check first order conditions
+function foc_check(bpS)
+   % Solve for a set of ages
+   nAge = 100;
+   ageV = linspace(0, bpS.T, nAge);
+
+   xwV = bpS.x_age(ageV);
+   [haV, naV] = bpS.h_age(ageV);
+   q_aV = bpS.marginal_value_h(ageV);
+   
+   F_aV = bpS.htech(haV, naV, xwV) + bpS.deltaH .* haV;
+
+   dev13aV = bpS.wage .* haV .* naV - q_aV .* bpS.gamma1 .* F_aV;
+   checkLH.approx_equal(dev13aV, zeros(1, nAge), 1e-5, []);
+
+   dev13bV = bpS.px .* xwV - q_aV .* bpS.gamma2 .* F_aV;
+   checkLH.approx_equal(dev13bV, zeros(1, nAge), 1e-5, []);
+   
+   % qdot
+   dAge = 1e-3;
+   q_a2V = bpS.marginal_value_h(ageV(1 : (nAge-1)) + dAge);
+   qDot2V = (q_a2V - q_aV(1 : (nAge-1))) ./ dAge;
+   qDotV = bpS.r .* q_aV - q_aV .* (bpS.gamma1 .* F_aV ./ haV - bpS.deltaH) - bpS.wage .* (1 - naV);
+   checkLH.approx_equal(qDot2V, qDotV(1 : (nAge-1)), 1e-3, []);
+end
+
+
 %% Test optimality by perturbing solution
-% This currently does not work. Lower x or n increases lifetime earnings
-% The math seems right. Why? +++++
-if 0
+function perturbation_test(bpS)
+   % Solve for a set of ages
+   nAge = 100;
+   ageV = linspace(0, bpS.T, nAge);
+
+   xwV = bpS.x_age(ageV);
+   [haV, naV] = bpS.h_age(ageV);
+   pvEarn = bpS.pv_earnings;
+
+   % Ages for perturbation
    age1 = 1;
    age2 = 2;
    ageIdxV = find(ageV >= age1  &  ageV <= age2);
+   % Perturb all
+   ageIdxV = 1 : nAge;
 
    nCases = 5;
    pvEarnV = zeros(nCases, 1);
@@ -164,16 +269,16 @@ if 0
       if iCase == 1
       elseif iCase == 2
          % Perturb xw up
-         xw2V(ageIdxV) = xw2V(ageIdxV) .* 1.05;
+         xw2V(ageIdxV) = xw2V(ageIdxV) .* 1.02;
       elseif iCase == 3
          % perturb xw down
-         xw2V(ageIdxV) = xw2V(ageIdxV) .* 0.9;
+         xw2V(ageIdxV) = xw2V(ageIdxV) .* 0.98;
       elseif iCase == 4
          % perturb n up
-         na2V(ageIdxV) = na2V(ageIdxV) .* 1.05;
+         na2V(ageIdxV) = na2V(ageIdxV) .* 1.02;
       elseif iCase == 5
          % perturb n down
-         na2V(ageIdxV) = na2V(ageIdxV) .* 0.9;
+         na2V(ageIdxV) = na2V(ageIdxV) .* 0.98;
       else
          error('invalid');
       end
@@ -184,33 +289,59 @@ if 0
 
       % Earnings path implied
       earn2V = bpS.wage .* hFct(ageV) .* (1 - na2V) - bpS.px .* xw2V;
-      earnFct = griddedInterpolant(ageV, earn2V);
+      earnFct = griddedInterpolant(ageV, earn2V, 'linear');
 
    %    plot(ageV, earn2V);
 
       pvEarnV(iCase) = integral(@integ_earn, 0, bpS.T);
-
+      
       if iCase == 1
          % Should recover optimal solution
-         checkLH.approx_equal(pvEarnV(iCase), pvEarn, [], 1e-3);
+         % But the solution is not all that precise
+         checkLH.approx_equal(hFct(ageV),  haV, [],  1e-3);
       end
+      
    end
 
    % hold off;
    % keyboard;
 
-   disp(pvEarnV - pvEarnV(1))
-
+   % Should recover optimal solution (not very precise)
+   checkLH.approx_equal(pvEarnV(1), pvEarn, [], 1e-3);
+   
    % Perturbation should reduce earnings
-   % Compare with the one using the same approximation +++++
-   assert(all(pvEarnV(2 : end) < pvEarn));
-end
+   assert(all(pvEarnV(2 : end) < pvEarnV(1)));
 
    % Nested: integrand
    function earnNestV = integ_earn(ageV)
       earnNestV = earnFct(ageV) .* exp(-bpS.r .* ageV);
    end
 
+end
 
+
+%% Local: Test marginal value of age 0
+% -rV + dV/d(age0)
+function marginal_value_age0_test(bpS)
+   pvEarn = bpS.pv_earnings;
+   mValue = bpS.marginal_value_age0;
+
+   dT = 1e-3;
+   bp2S = BenPorathContTimeLH(bpS.A, bpS.deltaH, bpS.gamma1, bpS.gamma2, bpS.T - dT, bpS.h0, bpS.px, bpS.r, bpS.wage);
+   mValue2 = -bpS.r .* pvEarn + (bp2S.pv_earnings - pvEarn) ./ dT;
+   checkLH.approx_equal(mValue, mValue2, 1e-3, []);
+   % fprintf('Value of postponing age 0: %.3f / %.3f \n', mValue, mValue2);
+   
+   if false
+      TV = linspace(5, 15, 20)';
+      mValueV = zeros(size(TV));
+      for i1 = 1 : length(TV)
+         bp2S.T = TV(i1);
+         mValueV(i1) = bp2S.marginal_value_age0;
+      end
+      
+      disp('    T  -rV + dV/dT');
+      disp([TV, mValueV]);
+   end
 
 end

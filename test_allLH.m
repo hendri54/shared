@@ -107,6 +107,11 @@ matrixLH.apply_scalar_function_test;
 matrixLH.find_valid_test;
 
 
+%% Optimization
+
+optimLH.GuessUnboundedTest;
+
+
 %% Random numbers
 
 randomLH.MultiVarNormalTest;

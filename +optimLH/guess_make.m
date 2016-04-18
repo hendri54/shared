@@ -14,7 +14,7 @@ IN
 
 % ******  Set options
 if ~isfield(optS, 'rescale')
-   rescale = 1;
+   rescale = true;
 else
    rescale = optS.rescale;
 end
@@ -27,7 +27,7 @@ else
 end
 
 if any(guessV < lbV)  ||  any(guessV > ubV)
-   if rescale == 1
+   if rescale
       guessV = max(lbV, min(ubV, guessV));
    else
       error('Guesses out of bounds');
@@ -35,7 +35,7 @@ if any(guessV < lbV)  ||  any(guessV > ubV)
 end
 
 % Scale all guesses to lie between 1 and 2
-outV = guessMin + (guessV -lbV) .* (guessMax - guessMin) ./ (ubV - lbV);
+outV = guessMin + (guessV - lbV) .* (guessMax - guessMin) ./ (ubV - lbV);
 
 
 end

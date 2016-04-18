@@ -15,6 +15,11 @@ if ~isfield(optS, 'dbg')
 else
    dbg = optS.dbg;
 end
+if ~isfield(optS, 'rescale')
+   rescale = true;
+else
+   rescale = optS.rescale;
+end
 
 % *****  Input check
 if dbg > 10
@@ -27,6 +32,10 @@ if dbg > 10
    if any(guessV(:) > guessMax + 1e-6)
       error('guesses too high');
    end
+end
+
+if rescale
+   guessV = min(guessMax, max(guessMin, guessV));
 end
 
 % Unscale guesses

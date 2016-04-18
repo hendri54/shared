@@ -16,7 +16,7 @@ if ~isempty(absToler)
    end
 end
 if ~isempty(relToler)
-   if any(abs(x2M(:) ./ max(1e-8, x1M(:)) - 1) > relToler)
+   if any(abs((x2M(:) - x1M(:)) ./ max(1e-8, x1M(:))) > relToler)
       result = false;
    end
 end
