@@ -32,7 +32,10 @@ distribLH.NormalBivariateTest;
 %
 BenPorathLHtest;
 
+% Interior, continuous time
 BenPorathContTimeTestLH;
+% Corner, continuous time
+BenPorathCornerTestLH;
 
 % Nested CES production function
 CesNestedLHtest;
@@ -117,6 +120,7 @@ optimLH.GuessUnboundedTest;
 
 randomLH.MultiVarNormalTest;
 randomLH.rand_discrete_test;
+randomLH.rand_time_test;
 
 
 %% Regressions
@@ -135,6 +139,8 @@ statsLH.rsquared(yV, yHatV, wtV, dbg);
 
 statsLH.ProbMatrix2Dtest;
 
+% Construct correlation matrix from weights
+statsLH.corr_matrix_from_weights_test;
 
 % Weighted data: mean and std deviation
 statsLH.std_w_test;

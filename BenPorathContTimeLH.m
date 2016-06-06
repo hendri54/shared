@@ -6,6 +6,8 @@ max present value of
 subject to
    h(0) given
    \dot(h) = A (h * n) ^ alpha * x ^ beta - deltaH * h
+
+Code must be efficient
 %}
 classdef BenPorathContTimeLH < handle
    
@@ -21,6 +23,7 @@ properties
    % length of work life
    T     double
    h0    double
+   dbg   uint8 = 0
 end
 
 properties (Dependent)
@@ -67,7 +70,7 @@ methods
       xOverNh = bpS.wage / bpS.px * bpS.gamma2 / bpS.gamma1;
    end
    
-   % Term in brackets in many equations
+   % Term in brackets in many equations (Q)
    function out1 = bracket_term(bpS)
       out1 = bpS.A * bpS.gamma1 / (bpS.r + bpS.deltaH) * ((bpS.gamma2 / bpS.gamma1 * bpS.wage ./ bpS.px) ^ bpS.gamma2);
    end
@@ -84,11 +87,15 @@ methods
    %{
    This can be computed without integration (easier than computing the parts separately)
    Useful for optimal stopping rule that sets starting age (e.g. MS2014 school problem)
+   
+   Must be efficient
    %}
    function mValue = marginal_value_age0(bpS)
-      C1 = (1 - bpS.gamma) ./ bpS.gamma1 .* (bpS.bracket_term .^ (1 ./ (1 - bpS.gamma)));
-      mValue = bpS.wage .* bpS.h0 ./ (bpS.r + bpS.deltaH) .* (bpS.mprime_age(0) - bpS.r .* bpS.m_age(0)) ...
-         - bpS.wage .* C1 .* (bpS.m_age(0) .^ (1 ./ (1 - bpS.gamma)));
+      OneMinusGamma = 1 - bpS.gamma;
+      m0 = bpS.m_age(0);
+      C1 = OneMinusGamma ./ bpS.gamma1 .* (bpS.bracket_term .^ (1 ./ OneMinusGamma));
+      mValue = bpS.wage .* bpS.h0 ./ (bpS.r + bpS.deltaH) .* (bpS.mprime_age(0) - bpS.r .* m0) ...
+         - bpS.wage .* C1 .* (m0 .^ (1 ./ OneMinusGamma));
       validateattributes(mValue, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
    end
       
@@ -189,8 +196,6 @@ methods
 
    %% h(a) from (19)
    function [haV, naV] = h_age(bpS, ageV)
-      % c2 from the x(a) equation
-      % c2 = bpS.A * bpS.gamma1 / (bpS.r + bpS.deltaH) * ((bpS.gamma2 / bpS.gamma1 * bpS.wage ./ bpS.px) ^ bpS.gamma2);
       c2 = bpS.bracket_term;
 
       c3V = zeros(size(ageV));
@@ -223,10 +228,12 @@ methods
      
    
    %% m(a)
+   % Efficiency important here
    function maV = m_age(bpS, ageV)
-      validateattributes(bpS.T - ageV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0})
       maV = 1 - exp((bpS.r + bpS.deltaH) .* (ageV - bpS.T));
-      validateattributes(maV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(ageV)})
+      
+      %validateattributes(bpS.T - ageV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0})
+      %validateattributes(maV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(ageV)})
    end
    
    % m'(a)

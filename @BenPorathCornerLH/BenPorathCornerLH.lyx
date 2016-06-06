@@ -1,0 +1,850 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\input{notation.tex}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+BenPorathCornerLH
+\end_layout
+
+\begin_layout Standard
+Solves the corner solution period of a Ben-Porath problem of the form
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\vFct\left(h_{0},\tWork\right)=\max-\int_{0}^{\tOjt}e^{-ra}px\left(a\right)da+e^{-r\tOjt}\vOjt\left(h_{\tau},\tWork-\tOjt\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with time remaining 
+\begin_inset Formula $\tWork$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+subject to 
+\begin_inset Formula $h_{0}$
+\end_inset
+
+ given
+\begin_inset Formula 
+\begin{equation}
+\dot{h}=\techOjt\left(h,\nFixed,x\right)-\deltaOjt h
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Except for the corner and continuation value, that's the same problem as
+ BenPorathContTimeLH.
+\end_layout
+
+\begin_layout Standard
+Choice variables: 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+, 
+\begin_inset Formula $h\left(a\right),x\left(a\right),q\left(a\right)$
+\end_inset
+
+ for 
+\begin_inset Formula $a\le\tOjt$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Assumes
+\end_layout
+
+\begin_layout Enumerate
+corner solution: 
+\begin_inset Formula $n=\nFixed$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Enumerate
+no earnings during the corner!
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\techOjt\left(h,n,x\right)=\zOjt\left(hn\right)^{\ghOjt}x^{\gxOjt}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Possible corner: 
+\begin_inset Formula $\tOjt=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Corner if marginal value of extending 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is negative at 
+\begin_inset Formula $\tOjt=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Issue
+\end_layout
+
+\begin_layout Standard
+With Ben-Porath as continuation value, it is hard to compute the marginal
+ value of changing 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+.
+ The problem is that, for low 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+, the optimal 
+\begin_inset Formula $n\left(0\right)$
+\end_inset
+
+ at start of OJT is out of bounds.
+\end_layout
+
+\begin_layout Section
+Notation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $a$
+\end_inset
+
+: age
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\tRemain=\tWork-a$
+\end_inset
+
+: remaining time horizon
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+m\left(\tRemain\right)=1-\exp\left(-\left(r+\delta_{h}\right)\tRemain\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $m\left(0\right)=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\qTau=q\left(\tOjt,h_{\tOjt}\right)$
+\end_inset
+
+: depends, in general, on 
+\begin_inset Formula $h$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Hamiltonian
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Gamma=-px+q\left(\techOjt\left(h,\nFixed,x\right)-\deltaOjt h\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+FOC:
+\begin_inset Formula 
+\begin{eqnarray}
+-\pw+q\partial\techOjt/\partial x & = & 0\\
+\dot{q} & = & \left(r+\deltaOjt\right)q-q\partial\techOjt/\partial h\\
+\qTau & = & \partial\vOjt/\partial h
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In addition, we have the optimal stopping condition (27) from MS2014
+\begin_inset Formula 
+\begin{equation}
+h\left(\tOjt\right)=\left[Qm\left(\tWork-\tOjt\right)\right]^{1/\left(1-\gmOjt\right)}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula 
+\begin{equation}
+Q=\frac{z_{h}\gamma_{1}^{1-\gamma_{2}}\gamma_{2}^{\gamma_{2}}}{r+\delta_{h}}\left(\frac{w}{p}\right)^{\gamma_{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+But more general: marginal value of extending 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+ must be 0.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+-px\left(\tOjt\right)+\qTau\left(\techOjt\left(h\left(\tOjt\right),\nFixed,x\left(\tOjt\right)\right)-\deltaOjt h\left(\tOjt\right)\right)-r\vOjt\left(h\left(\tOjt\right),\tWork-\tOjt\right)+\partial\vOjt/\partial\tOjt=0\label{eq:ojtOptTau}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Solution
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\tOjt,h\left(\tOjt\right),q\left(\tOjt,h\left(\tOjt\right)\right)$
+\end_inset
+
+,
+\begin_inset Formula $q\left(0\right)$
+\end_inset
+
+ that solve
+\end_layout
+
+\begin_layout Enumerate
+optimal 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+: 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:ojtOptTau"
+
+\end_inset
+
+ or corner
+\end_layout
+
+\begin_layout Enumerate
+terminal 
+\begin_inset Formula $\qTau$
+\end_inset
+
+ given by continuation value
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $q\left(0\right)$
+\end_inset
+
+ given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:growthQHojt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $h\left(\tOjt\right)$
+\end_inset
+
+ given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:htOjt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Growth rate of x(a)
+\end_layout
+
+\begin_layout Standard
+FOC for 
+\begin_inset Formula $x$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+p & = & q\partial\techOjt/\partial x\\
+ & = & q\gxOjt\techOjt/x
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sub into technology:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+x\left(a\right)^{1-\gxOjt}=\gxOjt\frac{q\left(\tWork-a\right)}{p_{w}}\zOjt\left(h\left(a\right)\nFixed\right)^{\ghOjt}\label{eq:xFoc}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+g\left(x\right)\left(1-\gxOjt\right)=g\left(q\right)+\ghOjt g\left(h\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+g\left(h\right)=\techOjt/h-\deltaOjt
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{q}=\left(r+\deltaOjt\right)q-\ghOjt\techOjt/h
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, 
+\begin_inset Formula $x$
+\end_inset
+
+ grows at a constant rate:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+g\left(x\right)=\frac{g\left(q\right)+\ghOjt g\left(h\right)}{1-\gxOjt}=\frac{r+\deltaOjt\left(1-\ghOjt\right)}{1-\gxOjt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+h(a)
+\end_layout
+
+\begin_layout Standard
+Therefore, 
+\begin_inset Formula 
+\begin{equation}
+q\left(a\right)h\left(a\right)^{\ghOjt}=q\left(0\right)h\left(0\right)^{\ghOjt}e^{g\left(x\right)\left(1-\gxOjt\right)a}\label{eq:growthQHojt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+h production after subbing foc for x:
+\begin_inset Formula 
+\begin{equation}
+\techOjt^{1-\gxOjt}=\zOjt\left(h\nFixed\right)^{\ghOjt}\left(\gxOjt q/p\right)^{\gxOjt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{h}\left(a\right)=Cq\left(a\right)^{\gxOjt}h\left(a\right)^{\ghOjt/\left(1-\gxOjt\right)}-\deltaOjt h
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now use 
+\begin_inset Formula 
+\begin{equation}
+q\left(a\right)h\left(a\right)^{\ghOjt}=q\left(0\right)h\left(0\right)^{\ghOjt}e^{g\left(x\right)\left(1-\gxOjt\right)a}
+\end{equation}
+
+\end_inset
+
+ and sub in.
+ Then we get the equation from MS2014 with an additional constant that reflects
+ the fact that 
+\begin_inset Formula $\nFixed\ne1$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+h\left(a\right)=h\left(0\right)e^{-\deltaOjt a}\left[1+\frac{1-\ghOjt}{\mu}\left(h_{0}^{\gmOjt-1}\zOjt\nFixed^{\ghOjt}\left(q\left(0\right)\gxOjt/p\right)^{\gxOjt}\right)^{1/\left(1-\gxOjt\right)}\left(e^{\mu a}-1\right)\right]^{1/\left(1-\ghOjt\right)}\label{eq:htOjt}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+that needs to be verified numerically!
+\end_layout
+
+\begin_layout Subsection
+q(a)
+\end_layout
+
+\begin_layout Standard
+From 
+\begin_inset Formula $h\left(a\right)$
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:growthQHojt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+x(a)
+\end_layout
+
+\begin_layout Standard
+From 
+\begin_inset Formula $h\left(a\right)$
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:xFoc"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Better:
+\end_layout
+
+\begin_layout Standard
+Get 
+\begin_inset Formula $x\left(0\right)$
+\end_inset
+
+ from FOC.
+ Then apply growth rate of 
+\begin_inset Formula $x$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Algorithm
+\end_layout
+
+\begin_layout Subsection
+solve given params
+\end_layout
+
+\begin_layout Standard
+Given: 
+\begin_inset Formula $\tWork,h_{0}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Try 
+\begin_inset Formula $\tOjt=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+solution in 
+\family typewriter
+BenPorathContTimeLH
+\end_layout
+
+\begin_layout Itemize
+check that marginal value of 
+\begin_inset Formula $\tau$
+\end_inset
+
+ is negative
+\end_layout
+
+\begin_layout Standard
+Search over 
+\begin_inset Formula $\tOjt,h\left(\tOjt\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\qTau$
+\end_inset
+
+ from interior OJT
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $q\left(0\right)$
+\end_inset
+
+ from constant growth
+\end_layout
+
+\begin_layout Itemize
+deviations from optimal 
+\begin_inset Formula $\tOjt$
+\end_inset
+
+, solution for 
+\begin_inset Formula $h\left(\tOjt\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+drawback: must be able to compute the cost of postponing
+\end_layout
+
+\begin_layout Subsection
+claim: it is not optimal to choose s such that n>1 at start of ojt
+\end_layout
+
+\begin_layout Standard
+Assume: OJT and schooling params are the same except
+\end_layout
+
+\begin_layout Itemize
+productivity is higher during schooling
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $p$
+\end_inset
+
+ is lower during schooling
+\end_layout
+
+\begin_layout Standard
+Set 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+ as the value of 
+\begin_inset Formula $s$
+\end_inset
+
+ such that 
+\begin_inset Formula $n=1$
+\end_inset
+
+ at start of OJT
+\end_layout
+
+\begin_layout Standard
+Setting 
+\begin_inset Formula $s<\hat{s}$
+\end_inset
+
+ would not relax any constraints (because 
+\begin_inset Formula $n=1$
+\end_inset
+
+ binds).
+ It would only tighten constraints (
+\begin_inset Formula $x$
+\end_inset
+
+ is more expensive and productivity lower from 
+\begin_inset Formula $s$
+\end_inset
+
+ to 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+claim: marginal value of 
+\begin_inset Formula $s$
+\end_inset
+
+ is positive at 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+same assumptions as above
+\end_layout
+
+\begin_layout Standard
+this means: we only need to search for 
+\begin_inset Formula $s$
+\end_inset
+
+ above 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+ (where we can correctly calculate the marginal value of 
+\begin_inset Formula $s$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Proof
+\end_layout
+
+\begin_layout Standard
+Marginal value of 
+\begin_inset Formula $s$
+\end_inset
+
+= 
+\begin_inset Formula $-px+q\dot{h}+\partial\vOjt\partial s$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+At 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+: this is 0 evaluated at 
+\begin_inset Formula $p_{w}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{w}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $px$
+\end_inset
+
+ is increasing in 
+\begin_inset Formula $p$
+\end_inset
+
+ from its foc
+\end_layout
+
+\begin_layout Standard
+so is 
+\begin_inset Formula $nh$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+then 
+\begin_inset Formula $\dot{h}$
+\end_inset
+
+ is higher with school params
+\end_layout
+
+\begin_layout Standard
+QED
+\end_layout
+
+\begin_layout Standard
+Oddity: in the computations, occasionally I encounter a case where the marginal
+ value of 
+\begin_inset Formula $s$
+\end_inset
+
+ is negative at 
+\begin_inset Formula $\hat{s}$
+\end_inset
+
+.
+ Why? +++
+\end_layout
+
+\begin_layout Section
+eof
+\end_layout
+
+\end_body
+\end_document

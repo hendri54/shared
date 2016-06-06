@@ -4,6 +4,7 @@ disp('Testing all regression code');
 
 regressLH.format_regr_output_test;
 regressLH.regr_table_test;
+regressLH.RegrAgeSchoolYearTest;
 
 
 %% Make a regression model for test purposes

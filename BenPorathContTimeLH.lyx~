@@ -1,0 +1,546 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\newcommand{\oTech}{F}
+\newcommand{\vOjt}{V}
+\newcommand{\tInvest}{I_{n}}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip smallskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+BenPorathContTimeLH
+\end_layout
+
+\begin_layout Standard
+Solves continuous time Ben-Porath model of the form
+\begin_inset Formula 
+\begin{equation}
+V\left(h\left(0\right),T\right)=\max\int_{0}^{T}e^{-ra}\left\{ wh\left(a\right)\left(1-n\left(a\right)\right)-p_{w}x\left(a\right)\right\} da
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align}
+\dot{h}(a) & =\oTech\left(h\left(a\right),n\left(a\right),x\left(a\right)\right)-\delta_{h}h\left(a\right)\\
+ & =z_{h}\left(h\left(a\right)n\left(a\right)\right)^{\gamma_{1}}x\left(a\right)^{\gamma_{2}}-\delta_{h}h\left(a\right)
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h\left(0\right)\,given
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Assumes
+\end_layout
+
+\begin_layout Enumerate
+interior solution.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\oTech\left(h,n,x\right)=z\left(hn\right)^{\gamma_{1}}x^{\gamma_{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Notation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $t$
+\end_inset
+
+: remaining time horizon
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\tInvest=hn$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+m\left(t\right)=1-\exp\left(\left(r+\delta_{h}\right)t\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $m\left(0\right)=0$
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+Q=\frac{z_{h}\gamma_{1}^{1-\gamma_{2}}\gamma_{2}^{\gamma_{2}}}{r+\delta_{h}}\left(\frac{w}{p_{w}}\right)^{\gamma_{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Hamiltonian
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Gamma=wh\left(1-n\right)-p_{w}x+q\left[\oTech\left(h,n,x\right)-\delta_{h}h\right]
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+FOCs:
+\begin_inset Formula 
+\begin{align}
+whn & =q\gamma_{1}\oTech\\
+p_{w}x & =q\gamma_{2}\oTech\\
+\dot{q} & =rq-q\left\{ \gamma_{1}\oTech/h-\delta_{h}\right\} -w\left(1-n\right)\\
+q_{T} & =0
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Implied static condition
+\begin_inset Formula 
+\begin{equation}
+p_{w}x=whn\gamma_{2}/\gamma_{1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Solution
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $t=T-a$
+\end_inset
+
+ be the remaining horizon.
+\end_layout
+
+\begin_layout Standard
+Collect the equations that solve for 
+\begin_inset Formula $q\left(t\right),n\left(t\right)h\left(t\right),x\left(t\right),h\left(t\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+q\left(t\right)=\left(1-\tau\right)w\frac{m\left(t\right)}{r+\delta_{h}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Investment actually only depends on horizon remaining 
+\begin_inset Formula $t$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\tInvest\left(t\right)=nh\left(t\right)=\left[Qm\left(t\right)\right]^{1/\left(1-\gamma\right)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+x\left(t\right)=\tInvest\left(t\right)\frac{w}{p_{w}}\frac{\gamma_{2}}{\gamma_{1}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+h(a)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h\left(a\right)=e^{-\delta_{h}a}h\left(0\right)+Ce^{-\delta_{h}a}\int_{0}^{a}e^{\delta_{h}t}m\left(T-t\right)^{\gamma/\left(1-\gamma\right)}dt
+\end{equation}
+
+\end_inset
+
+with 
+\begin_inset Formula 
+\begin{equation}
+C=z_{h}Q^{\gamma/\left(1-\gamma\right)}\left(\frac{\gamma_{2}}{\gamma_{1}}\frac{w}{p_{w}}\right)^{\gamma_{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Value function
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V\left(h,T\right)=q\left(T\right)h+w\frac{1-\gamma}{\gamma_{1}}Q^{1/\left(1-\gamma\right)}\int_{0}^{T}e^{-rt}m\left(T-t\right)^{1/\left(1-\gamma\right)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Derivations
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Formula $q\left(t\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Simplify foc to get
+\begin_inset Formula 
+\begin{equation}
+\dot{q}\left(a\right)=\left(r+\delta_{h}\right)q\left(a\right)-w
+\end{equation}
+
+\end_inset
+
+with terminal condition 
+\begin_inset Formula $q\left(T\right)=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solution to that:
+\begin_inset Formula 
+\begin{equation}
+q\left(a\right)=q\left(T\right)e^{-\left(r+\delta_{h}\right)\left(T-a\right)}+e^{+\left(r+\delta_{h}\right)a}w\int_{a}^{T}e^{-\left(r+\delta_{h}\right)\tau}d\tau
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Check by differentiating.
+\end_layout
+
+\begin_layout Standard
+Where
+\begin_inset Formula 
+\begin{equation}
+e^{\left(r+\delta_{h}\right)a}\int_{a}^{T}e^{-\left(r+\delta_{h}\right)t}dt=\frac{1-e^{-\left(r+\delta_{h}\right)\left(T-a\right)}}{r+\delta_{h}}=\frac{m\left(T-a\right)}{r+\delta_{h}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, (20) is correct.
+\begin_inset Formula 
+\begin{equation}
+q\left(T-a\right)=w\frac{m\left(T-a\right)}{r+\delta_{h}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Notational inconsistency here: sometimes 
+\begin_inset Formula $q$
+\end_inset
+
+ is a function of age.
+\end_layout
+
+\begin_layout Subsection
+investment levels
+\end_layout
+
+\begin_layout Standard
+Sub in static condition to get
+\begin_inset Formula 
+\begin{equation}
+\oTech=z_{h}\left(\frac{\gamma_{2}}{\gamma_{1}}\frac{w}{p}\right)^{\gamma_{2}}\left(hn\right)^{\gamma}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sub that into foc for hn:
+\begin_inset Formula 
+\begin{equation}
+h\left(a\right)n\left(a\right)=\left[Qm\left(T-a\right)\right]^{1/\left(1-\gamma\right)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So 
+\begin_inset Formula 
+\begin{equation}
+F=Cm\left(t\right)^{\gamma/\left(1-\gamma\right)}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+with 
+\begin_inset Formula 
+\begin{equation}
+C=z_{h}Q^{\gamma/\left(1-\gamma\right)}\left(\frac{\gamma_{2}}{\gamma_{1}}\frac{w}{p_{w}}\right)^{\gamma_{2}}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+h(a)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+h\left(a\right) & = & \int_{0}^{a}\left(F\left(t\right)-\delta_{h}h(t)\right)dt\\
+ & = & \int_{0}^{a}\left(Cm\left(t\right)^{\frac{\gamma}{1-\gamma}}-\delta_{h}h\left(t\right)\right)dt
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Solution:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h\left(a\right)=e^{-\delta_{h}a}h\left(0\right)+Ce^{-\delta_{h}a}\int_{0}^{a}e^{\delta_{h}t}m\left(T-t\right)^{\gamma/\left(1-\gamma\right)}dt
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Verify by differentiating.
+\end_layout
+
+\begin_layout Subsection
+Value function
+\end_layout
+
+\begin_layout Standard
+I cannot derive MS's value function, but I checked it numerically:
+\begin_inset Formula 
+\begin{equation}
+V\left(h,T\right)=q\left(T\right)h+w\frac{1-\gamma}{\gamma_{1}}Q^{1/\left(1-\gamma\right)}\int_{0}^{T}e^{-r\tau}m\left(T-\tau\right)^{1/\left(1-\gamma\right)}d\tau
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+MS's (16) seems to be
+\begin_inset Formula 
+\begin{equation}
+V\left(h,a\right)=qh+\int_{a}^{T}e^{-r\left(t-a\right)}h\left(t\right)n\left(t\right)dt
+\end{equation}
+
+\end_inset
+
+which is correct if 
+\begin_inset Formula $qh=\int_{a}^{T}e^{-r\left(t-a\right)}wh\left(t\right)dt$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+I checked this numerically.
+\end_layout
+
+\begin_layout Subsubsection
+dV/dT
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\partial V/\partial T=\frac{wh}{r+\delta_{h}}\frac{\partial m\left(T\right)}{\partial T}+w\frac{1-\gamma}{\gamma_{1}}Q^{1/\left(1-\gamma\right)}\left\{ e^{-rT}m\left(0\right)^{1/\left(1-\gamma\right)}+C1\right\} 
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $m\left(0\right)=0$
+\end_inset
+
+ and
+\begin_inset Formula 
+\begin{equation}
+C_{1}=\frac{1}{1-\gamma}\int_{0}^{T}e^{-r\tau}m\left(T-\tau\right)^{\gamma/\left(1-\gamma\right)}\frac{\partial m\left(T-\tau\right)}{\partial T}d\tau
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+eof
+\end_layout
+
+\end_body
+\end_document
