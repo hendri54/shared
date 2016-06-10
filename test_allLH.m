@@ -17,6 +17,12 @@ cellLH.cell2vector_test;
 % Weighted cdf
 distribLH.cdf_weighted_test;
 
+% Assign each element in a vector to a percentile class
+distribLH.class_assign_test;
+
+% Bounds of percentile classes
+distribLH.cl_bounds_w_test;
+
 % Quantiles, weighted data
 distribLH.pcnt_weighted_test;
 
@@ -137,6 +143,7 @@ yHatV = yV + randn(size(yV));
 wtV = 1 + rand(size(yV));
 statsLH.rsquared(yV, yHatV, wtV, dbg);
 
+statsLH.CovMatrixTest;
 statsLH.ProbMatrix2Dtest;
 
 % Construct correlation matrix from weights
@@ -154,6 +161,11 @@ stringLH.contains_test;
 
 % Format one number in the same way as another (provided as a formatted string)
 stringLH.format_similar_test;
+
+
+%% Struct
+
+structLH.show_test;
 
 
 %% Vector

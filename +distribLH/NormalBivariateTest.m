@@ -47,7 +47,7 @@ for i1 = 1 : length(x2V)
    % Conditional density at x1 grid | x2
    outV = nbS.cond_density(x1V, x2V(i1) * ones(size(x1V)), dbg);
    % Implied moments
-   [xStd, xMean] = stats_lh.std_w(x1V, outV, dbg);
+   [xStd, xMean] = statsLH.std_w(x1V, outV, dbg);
    
    % Compare with analytical results
    e1 = nbS.cond_expect(x2V(i1), dbg);

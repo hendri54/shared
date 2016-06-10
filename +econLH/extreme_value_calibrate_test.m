@@ -40,16 +40,21 @@ fZeroOptS.TolFun = 1e-4;
 fmbOptS = optimset('fminsearch');
 fmbOptS.TolFun = 1e-5;
 
-% A loop for profiling
+
+%% A loop for profiling
+
 if doProfile
+   profile off;
+   profile clear;
    profile on;
 end
-for i1 = 1 : nIter
+for i1 = 1 : 1e2
    % Calibrate
    prefMeanV = econLH.extreme_value_calibrate(value_ixM, choiceFracV, prefScale, fZeroOptS, fmbOptS, dbg);
 end
 if doProfile
    profile report;
+   profile off;
 end
    
 % Check that choice probs are correct

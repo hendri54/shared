@@ -19,8 +19,8 @@ end
 methods
    % Constructor
    function mS = MultiVarNormal(meanV, stdV)
-      mS.meanV = meanV;
-      mS.stdV  = stdV;
+      mS.meanV = meanV(:);
+      mS.stdV  = stdV(:);
       if any(stdV < 0)
          error('Negative std');
       end
@@ -29,6 +29,9 @@ methods
    
    %%  Make a lower triangular weight matrix into a cov matrix
    %{
+   IN
+      wtM
+         lower triangular weight matrix
    OUT
       covMatM
          cov matrix implied by wtM and stdV

@@ -3,8 +3,8 @@ function PaperFiguresTest
 disp('Testing PaperFigures');
 
 lhS = const_lh;
-srcDefaultDir = lhS.testFileDir;
-tgDefaultDir  = lhS.testFileDir2;
+srcDefaultDir = lhS.dirS.testFileDir;
+tgDefaultDir  = lhS.dirS.testFileDir2;
 n = 25;
 
 pS = econLH.PaperFigures(srcDefaultDir, tgDefaultDir, n);
@@ -23,7 +23,7 @@ assert(strcmp(fileS.srcPath,  srcPath));
 assert(strcmp(fileS.tgPath,   fullfile(tgDefaultDir,  'new1.tex')));
 
 idx = idx + 1;
-srcPath = fullfile(lhS.baseDir, 'test2.tex');
+srcPath = fullfile(lhS.dirS.baseDir, 'test2.tex');
 tgPath  = fullfile(tgDefaultDir, 'test2', 'new2.tex');
 pS.add(srcPath, 'new2.tex', 'test2');
 fileS = pS.fileListV{idx};

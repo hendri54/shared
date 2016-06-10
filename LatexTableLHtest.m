@@ -7,7 +7,7 @@ nr = 4;
 nc = 3;
 rowHeaderV = string_lh.vector_to_string_array(1 : nr, 'Row%i');
 colHeaderV = string_lh.vector_to_string_array(1 : nc, 'Var%i');
-filePath = fullfile(lhS.testFileDir,  'LatexTableLHtest.tex');
+filePath = fullfile(lhS.dirS.testFileDir,  'LatexTableLHtest.tex');
 
 tS = LatexTableLH(nr, nc, 'filePath', filePath, 'rowHeaderV', rowHeaderV, 'colHeaderV', colHeaderV);
 

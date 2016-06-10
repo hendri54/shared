@@ -3,8 +3,8 @@ function rdir_test
 
 disp('Testing rdir');
 
-global lhS
-sharedDir = lhS.sharedDirV{1};
+lhS = const_lh;
+sharedDir = lhS.dirS.sharedDirV{1};
 
 outV = rdir(fullfile(sharedDir, '**/c*.m'));
 

@@ -227,11 +227,16 @@ classdef pvectorLH < handle
       IN
          paramS
             struct with parameter values
+            can also be a class
       OUT
          outV :: string array
             each entry is a formatted parameter
       %}
       function [outV, pNameV] = calibrated_values(p, paramS, doCalV)
+         % Is paramS a struct?
+         %  So we know how to access fields
+         isStruct = isa(paramS, 'struct');
+         
          outV = cell(p.np, 1);
          pNameV = cell(p.np, 1);
          pIdx = 0;
@@ -239,7 +244,8 @@ classdef pvectorLH < handle
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
                nameStr = p.nameV{i1};
-               if isfield(paramS, nameStr)
+               % Check whether field exists (only if paramS is struct)
+               if ~isStruct ||  isfield(paramS, nameStr)
                   valueV = paramS.(nameStr);
                   if length(valueV) <= 4
                      valueStr = string_lh.string_from_vector(valueV, '%.3f');

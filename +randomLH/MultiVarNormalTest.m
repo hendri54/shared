@@ -173,6 +173,7 @@ function conditional_distrib_test
    end
    
    for iVar = 1 : n1
+      % Regress y against its conditional mean
       idx1 = idx1V(iVar);
       linModel = fitlm(condMeanM(:, iVar), drawM(:, idx1));
       betaV = linModel.Coefficients.Estimate;

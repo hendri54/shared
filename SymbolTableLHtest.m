@@ -1,6 +1,6 @@
 function SymbolTableLHtest
 
-global lhS;
+lhS = const_lh;
 
 disp('Test SymbolTableLH');
 
@@ -22,7 +22,7 @@ if ~strcmp(symbolStr, '\gamma')
 end
 
 % Write preamble
-fPath = fullfile(lhS.sharedDirV{1}, 'SymbolTableLH_preamble.tex');
+fPath = fullfile(lhS.dirS.sharedDirV{1}, 'SymbolTableLH_preamble.tex');
 tS.preamble_write(fPath);
 
 end

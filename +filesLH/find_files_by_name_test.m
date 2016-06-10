@@ -1,8 +1,8 @@
 function find_files_by_name_test
 % Just syntax test. Without creating a test directory full of files, this is hard to test.
 
-global lhS;
-baseDir = lhS.sharedDirV{1};
+lhS = const_lh;
+baseDir = lhS.dirS.sharedDirV{1};
 fileMaskIn = '*.m';
 inclSubDirs = true;
 

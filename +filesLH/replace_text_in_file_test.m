@@ -1,7 +1,7 @@
 function replace_text_in_file_test
 
 lhS = const_lh;
-testDir = lhS.testFileDir;
+testDir = lhS.dirS.testFileDir;
 
 filePath0 = fullfile(testDir, 'replace_text_in_file_test0.txt');
 filePath1 = fullfile(testDir, 'replace_text_in_file_test1.txt');
