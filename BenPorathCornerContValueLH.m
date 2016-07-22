@@ -89,10 +89,10 @@ methods
       cvS.bpS.h0 = h0;
       cvS.bpS.T  = T;
       validateattributes(ageV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, '<=', T})
-      [hV, nV] = cvS.bpS.h_age(ageV);
-      xV = cvS.bpS.x_age(ageV);
+%       [hV, nV] = cvS.bpS.h_age(ageV);
+%       xV = cvS.bpS.x_age(ageV);
       qV = cvS.bpS.marginal_value_h(ageV);
-      incomeV = cvS.bpS.age_earnings_profile(ageV);
+      [incomeV, hV, nV, xV] = cvS.bpS.age_earnings_profile(ageV);
    end
    
    

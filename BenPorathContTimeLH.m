@@ -136,7 +136,7 @@ methods
    
    
    %% Age earnings profile
-   function earnV = age_earnings_profile(bpS, ageV)
+   function [earnV, haV, naV, xwV] = age_earnings_profile(bpS, ageV)
       xwV = bpS.x_age(ageV);
       [haV, naV] = bpS.h_age(ageV);
       earnV = bpS.wage .* haV .* (1 - naV) - bpS.px .* xwV;
@@ -148,14 +148,19 @@ methods
    % Value function V(h,T)
    % MS 2014 have a closed form solution
    function pvEarn = pv_earnings(bpS)
-      pvEarn = integral(@integ_pv, 0, bpS.T);
+      gma = bpS.gamma;
+      gmaInv = 1 / (1 - gma);
+      rr = bpS.r;
+
+      c1 = bpS.m_age(0) ./ (bpS.r + bpS.deltaH) .* bpS.h0;
+      c2 = (1 - gma) / bpS.gamma1 .* (bpS.bracket_term .^ gmaInv);
+      int1 = integral(@int1_nested, 0, bpS.T);
+      pvEarn = bpS.wage .* (c1 + c2 .* int1);
       validateattributes(pvEarn, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
-   
-      % Nested: integrand
-      % returns present value of earnings at given ages
-      function outV = integ_pv(ageV)
-         outV = exp(-bpS.r .* ageV) .* bpS.age_earnings_profile(ageV);
-      end
+
+         function out1 = int1_nested(t)
+            out1 = exp(-rr .* t) .* (bpS.m_age(t) .^ gmaInv);
+         end
    end
    
    
@@ -195,6 +200,10 @@ methods
 
 
    %% h(a) from (19)
+   %{
+   It would be nice to speed this up. The loop over ages is expensive, but hard to avoid
+   A faster version of intergral would help. Most of its time is spent on parsing arguments +++
+   %}
    function [haV, naV] = h_age(bpS, ageV)
       c2 = bpS.bracket_term;
 
@@ -205,7 +214,7 @@ methods
       end
       validateattributes(c3V, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
          '>=', 0, 'size', size(ageV)})
-
+      
       haV = exp(-bpS.deltaH .* ageV) .* bpS.h0  +  ...
          (bpS.r + bpS.deltaH) ./ bpS.gamma1 .* (c2 .^ (1 / (1 - bpS.gamma))) .* c3V;
       validateattributes(haV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...

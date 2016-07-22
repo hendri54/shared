@@ -123,17 +123,28 @@ clear bp2S;
 
 %% Test (16): closed form solution for lifetime earnings
 
-age = 0;
-c1 = bpS.m_age(age) ./ (r + deltaH) .* h0;
-c2 = (1 - bpS.gamma) / gamma1 .* (bpS.bracket_term .^ (1 / (1 - bpS.gamma)));
-int1 = integral(@int1_nested, age, T);
-pvEarn16 = bpS.wage .* (c1 + c2 .* int1);
-
+      
+pvEarn16 = integral(@integ_pv, 0, bpS.T);
 checkLH.approx_equal(pvEarn16, pvEarn, [], 1e-3);
 
-   function out1 = int1_nested(t)
-      out1 = exp(-r .* (t - age)) .* (bpS.m_age(t) .^ (1 / (1 - bpS.gamma)));
-   end
+% Nested: integrand
+% returns present value of earnings at given ages
+function outV = integ_pv(ageV)
+   outV = exp(-bpS.r .* ageV) .* bpS.age_earnings_profile(ageV);
+end
+
+
+% age = 0;
+% c1 = bpS.m_age(age) ./ (r + deltaH) .* h0;
+% c2 = (1 - bpS.gamma) / gamma1 .* (bpS.bracket_term .^ (1 / (1 - bpS.gamma)));
+% int1 = integral(@int1_nested, age, T);
+% pvEarn16 = bpS.wage .* (c1 + c2 .* int1);
+% 
+% checkLH.approx_equal(pvEarn16, pvEarn, [], 1e-3);
+% 
+%    function out1 = int1_nested(t)
+%       out1 = exp(-r .* (t - age)) .* (bpS.m_age(t) .^ (1 / (1 - bpS.gamma)));
+%    end
 
 % Try another expression
 % Fails. Hamiltonian ~= Value function

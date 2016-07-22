@@ -14,6 +14,8 @@ cellLH.cell2vector_test;
 
 %% Distributions
 
+WeightedDataTestLH;
+
 % Weighted cdf
 distribLH.cdf_weighted_test;
 
@@ -96,6 +98,9 @@ filesLH.find_files_containing_strings_test
 
 % Find files by name
 filesLH.find_files_by_name_test
+
+% FTP up and downloads to mounted volume (actually using rsync)
+filesLH.FtpTargetTest;
 
 % Multi file search and replace
 filesLH.replace_text_in_file_test;
