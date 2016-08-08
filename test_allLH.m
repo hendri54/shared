@@ -12,6 +12,11 @@ dbg = 111;
 cellLH.cell2vector_test;
 
 
+%% Data handling
+
+dataLH.VariableTest;
+
+
 %% Distributions
 
 WeightedDataTestLH;

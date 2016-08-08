@@ -8,6 +8,7 @@ IN
    value_ixM
       values of alternatives
       rows are types; columns are alternatives
+      works with a single type
    prefScale
       scale of type I extreme value shocks
 
@@ -20,6 +21,7 @@ TEST
 %}
 
 [nTypes, nx] = size(value_ixM);
+assert(nx > 1);
 
 % Could use logsumexp here
 

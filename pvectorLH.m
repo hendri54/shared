@@ -113,6 +113,9 @@ classdef pvectorLH < handle
       %{
          Also impose bounds when calibrated (doCal >= 1)
       
+         Can be used to make a paramS struct with all default values
+         But that creates a new copy of paramS
+      
          IN: 
             p: pvector
             paramS: struct to which fields are to be added

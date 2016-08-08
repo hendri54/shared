@@ -1,22 +1,36 @@
 function extreme_value_decision_test
 
-nTypes = 3;
 n = 4;
-value_ixM = linspace(1, 0.9, nTypes)' * linspace(100, 110, n);
 prefScale = 2;
 dbg = 111;
 
-[prob_ixM, eVal_iV] = econLH.extreme_value_decision(value_ixM, prefScale, dbg);
 
+for nTypes = [1, 3]
+
+   if nTypes == 1
+      value_ixM = linspace(100, 110, n);
+   else
+      value_ixM = linspace(1, 0.9, nTypes)' * linspace(100, 110, n);
+   end
+
+   [prob_ixM, eVal_iV] = econLH.extreme_value_decision(value_ixM, prefScale, dbg);
+   
+   test_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale);
+end
+
+
+end
 
 %% Test by simulation
+function test_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale)
+
+[nTypes, n] = size(value_ixM);
 
 nSim = 1e5;
-% Draw type I extreme value shocks
-rng(32);
 
 for iType = 1 : nTypes
    % Random vars for all alternatives
+   rng('default');
    randM = evrnd(0, 1, [nSim, n]);
 
    % Values including pref shocks
