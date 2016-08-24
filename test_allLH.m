@@ -111,6 +111,14 @@ filesLH.FtpTargetTest;
 filesLH.replace_text_in_file_test;
 
 
+%% Markdown
+
+markdownLH.ClassDatesTest;
+markdownLH.SubTopicTest;
+markdownLH.TopicTest;
+markdownLH.ClassScheduleTest;
+
+
 %% Markov chains
 
 markovLH.markov_sim_test;
@@ -127,6 +135,7 @@ matrixLH.find_valid_test;
 
 %% Optimization
 
+pstructTestLH;
 pvectorLHtest;
 
 optimLH.GuessUnboundedTest;

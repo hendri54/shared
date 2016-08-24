@@ -2,6 +2,8 @@
 %{
 Vector of potentially calibrated parameters
 
+Can handle matrix objects
+
 Flow:
 1. Set up the object
 2. Add potentially calibrated parameters, one by one
@@ -73,7 +75,7 @@ classdef pvectorLH < handle
          else
             % Update existing parameter
             ps = obj.valueV{idx1};
-            obj.valueV{idx1} = ps.update(valueV, lbV, ubV, doCal);
+            ps.update(valueV, lbV, ubV, doCal);
          end
       end
       
@@ -176,9 +178,10 @@ classdef pvectorLH < handle
          for i1 = 1 : p.np
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
-               idxV = idx1 + (1 : length(ps.valueV));
+               idxV = idx1 + (1 : numel(ps.valueV));
                % Take the value out of the paramS struct
-               guessV(idxV) = paramS.(ps.name);
+               %  Flatten matrices. This can be undone using reshape
+               guessV(idxV) = paramS.(ps.name)(:);
                lbV(idxV) = ps.lbV;
                ubV(idxV) = ps.ubV;
                idx1 = idxV(end);
@@ -216,8 +219,14 @@ classdef pvectorLH < handle
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
                % Position in guess vector
-               idxV = idx1 + (1 : length(ps.valueV));
-               paramS.(ps.name) = ps.lbV  +  (guessV(idxV) - p.guessMin) .* (ps.ubV - ps.lbV) ./ ...
+               idxV = idx1 + (1 : numel(ps.valueV));
+               gValueV = guessV(idxV);
+               % Reshape if needed
+               if ~isvector(ps.valueV)
+                  gValueV = reshape(gValueV, size(ps.valueV));
+               end
+               % Retrieve values
+               paramS.(ps.name) = ps.lbV  +  (gValueV - p.guessMin) .* (ps.ubV - ps.lbV) ./ ...
                   (p.guessMax - p.guessMin);
                idx1 = idxV(end);
             end
@@ -249,11 +258,11 @@ classdef pvectorLH < handle
                nameStr = p.nameV{i1};
                % Check whether field exists (only if paramS is struct)
                if ~isStruct ||  isfield(paramS, nameStr)
-                  valueV = paramS.(nameStr);
-                  if length(valueV) <= 4
-                     valueStr = string_lh.string_from_vector(valueV, '%.3f');
+                  pValueV = paramS.(nameStr);     
+                  if length(pValueV) <= 4
+                     valueStr = string_lh.string_from_vector(pValueV(:), '%.3f');
                   else
-                     valueStr = sprintf('%.3f to %.3f',  valueV(1), valueV(end));
+                     valueStr = sprintf('%.3f to %.3f',  pValueV(1), pValueV(end));
                   end
                else
                   valueStr = 'missing';

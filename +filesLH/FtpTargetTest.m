@@ -6,10 +6,15 @@ disp('Testing FtpTarget');
 
 kS = filesLH.FtpTarget;
 kS.testMode = true;
-kS.is_mounted;
-kS.upload_shared_code;
+isMounted = kS.is_mounted;
 
-testDir = lhS.localS.testFileDir;
-kS.updownload(testDir, testDir, 'up');
+if isMounted
+   kS.upload_shared_code;
+
+   testDir = lhS.localS.testFileDir;
+   kS.updownload(testDir, testDir, 'up');
+else
+   warning('Cannot test upload / download unless KURE is mounted as drive');
+end
 
 end

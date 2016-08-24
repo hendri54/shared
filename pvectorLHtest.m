@@ -2,19 +2,30 @@ function pvectorLHtest
 
 fprintf('\nTest code for pvector class\n');
 
+rng('default')
 doCalV = 0 : 2;
 n = 14;
 pv = pvectorLH(n, doCalV);
 
 paramS.blank = 1;
 
+nameV = cell(n, 1);
+pSizeV = cell(n, 1);
+pValueV = cell(n, 1);
+
 % Add objects
 for i1 = 1 : n
    nameStr = sprintf('var%i', i1);
-   valueV = randn([i1,1]);
+   nameV{i1} = nameStr;
+
+   sizeV = randi(5, [1,3]);
+   valueV = randn(sizeV);
+   pSizeV{i1} = sizeV;
+   pValueV{i1} = valueV;
+   
    doCal = randi([doCalV(1), doCalV(end)], [1,1]);
    pv.change(nameStr, sprintf('x%i', i1), sprintf('descr %i', i1), valueV, ...
-      -4 .* ones([i1,1]), 4 .* ones([i1,1]), doCal);
+      -4 .* ones(sizeV), 4 .* ones(sizeV), doCal);
    paramS.(nameStr) = valueV;
 end
 
@@ -23,6 +34,9 @@ guessV = pv.guess_make(paramS, doCalV(2));
 
 % Make parameter struct from guess
 param2S = pv.guess_extract(guessV, paramS, doCalV(2));
+for i1 = 1 : n
+   checkLH.approx_equal(param2S.(nameV{i1}), pValueV{i1}, 1e-8, []);
+end
 
 % Make guess vector again and check that it is unchanged
 guess2V = pv.guess_make(param2S, doCalV(2));

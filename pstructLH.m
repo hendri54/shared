@@ -9,49 +9,80 @@ doCal
 
 %}
 
-classdef pstructLH
-   properties
-      name        % name, such as prefBeta
-      symbolStr   % symbol used in paper
-      descrStr    % Long description used in param tables
-      valueV      % default values if not calibrated
-      lbV         % bounds if calibrated
-      ubV
-      doCal       % is it calibrated?
+classdef pstructLH < handle
+
+properties
+   name        % name, such as prefBeta
+   symbolStr   % symbol used in paper
+   descrStr    % Long description used in param tables
+   valueV      % default values if not calibrated
+   % bounds if calibrated
+   %  scalars are expanded to size of valueV
+   lbV         
+   ubV
+   doCal       % is it calibrated?
+end
+   
+methods      
+   %% Constructor
+   function p = pstructLH(nameStr, symbolStr, descrStr, valueV, lbV, ubV, doCal)
+      p.name = nameStr;
+      p.symbolStr = symbolStr;
+      p.descrStr = descrStr;
+      p.valueV = valueV;
+      %p.lbV = lbV;
+      %p.ubV = ubV;
+      p.doCal = doCal;
+      p.set_bounds(lbV, ubV);
+      validate(p);
+   end
+
+   %% Update with new data
+   function update(p, valueV, lbV, ubV, doCal)
+      if ~isempty(valueV)
+         p.valueV = valueV;
+      end
+      if ~isempty(doCal)
+         p.doCal = doCal;
+      end
+      p.set_bounds(lbV, ubV);
+      validate(p);
    end
    
-   methods      
-      % Constructor
-      function p = pstructLH(nameStr, symbolStr, descrStr, valueV, lbV, ubV, doCal)
-         p.name = nameStr;
-         p.symbolStr = symbolStr;
-         p.descrStr = descrStr;
-         p.valueV = valueV;
-         p.lbV = lbV;
-         p.ubV = ubV;
-         p.doCal = doCal;
-         validate(p);
-      end
-      
-      % Update with new data
-      function p = update(p, valueV, lbV, ubV, doCal)
-         if ~isempty(valueV)
-            p.valueV = valueV;
-         end
-         if ~isempty(lbV)
+   %% Set bounds with scalar expansion
+   function set_bounds(p, lbV, ubV)
+      if ~isempty(lbV)
+         if length(lbV) == 1  &&  length(p.valueV) > 1
+            p.lbV = repmat(lbV, size(p.valueV));
+         else
             p.lbV = lbV;
          end
-         if ~isempty(ubV)
+      end
+      if ~isempty(ubV)
+         if length(ubV) == 1  &&  length(p.valueV) > 1
+            p.ubV = repmat(ubV, size(p.valueV));
+         else
             p.ubV = ubV;
          end
-         if ~isempty(doCal)
-            p.doCal = doCal;
-         end
-         validate(p);
-      end
-      
+      end     
    end
+      
+   
+   %% Validate values in struct
+   function validate(p)
+   %    if ~any(p.doCal == [p.calBase, p.calNever, p.calExp])
+   %       error('Invalid doCal');
+   %    end
+      validateattributes(p.lbV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(p.valueV)})
+      if any(p.lbV >= p.ubV)
+         error('Invalid bounds');
+      end
+
+   end
+   
 end
+end
+
 
 % %% Validate doCal input
 % function validate_docal(doCal)
@@ -68,14 +99,3 @@ end
 %    end
 % end
 
-%% Validate values in struct
-function validate(p)
-%    if ~any(p.doCal == [p.calBase, p.calNever, p.calExp])
-%       error('Invalid doCal');
-%    end
-   validateattributes(p.lbV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(p.valueV)})
-   if any(p.lbV >= p.ubV)
-      error('Invalid bounds');
-   end
-
-end
