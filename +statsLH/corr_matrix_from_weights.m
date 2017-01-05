@@ -3,7 +3,7 @@ function corrM = corr_matrix_from_weights(wtM)
 %{
 This is useful for calibrating model correlation matrices
 
-Expect the matrix of weights to be of the form
+Expect the matrix of weights to be of the form (upper triangular)
 [1 b c;  0 1 e;  0 0 1]
 %}
 

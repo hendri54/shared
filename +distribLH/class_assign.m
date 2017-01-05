@@ -14,6 +14,7 @@ Then there is no unique assignment of x to a percentile class
 
 IN:
  xV
+      matrices are flattened into vectors
  wtV         
       Need not sum to 1
       May be [] for unweighted data
@@ -29,6 +30,8 @@ OUT:
 
 AUTHOR: Lutz Hendricks, 1999
 Checked: 2015-Feb-25
+
+Was previously called just class_assign
 %}
 
 
@@ -41,7 +44,7 @@ if nargin < 3
    error('Invalid nargin');
 end
 
-n  = length(xV);
+n  = numel(xV);
 nc = length(clUbV);
 clUbV = double(clUbV(:));
 
@@ -58,6 +61,7 @@ end
 
 
 if dbg > 10
+   validateattributes(xV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'real'})
    validateattributes(clUbV(:), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nc, 1], ...
       '>=', 0, '<=', 1})
    % Upper bounds must be increasing (weakly)
@@ -86,7 +90,8 @@ end
 % cumWtV(end) = 1;
 % 
 % 
-% %% Alternative algorithm
+
+%% Alternative algorithm
 % 
 % % % Upper bounds for all classes
 % % xUbV = repmat(tmp(1,1) - 1, [nc, 1]);
@@ -103,9 +108,9 @@ end
 % % Find class upper bounds by interpolating cumulative weights
 % xUbV = interp1(cumWtV, tmp(:,1), clUbV, 'linear', 'extrap');
 
-xUbV = distribLH.cl_bounds_w(xV(:), wtV(:), clUbV, dbg);
+xUbV = distribLH.cl_bounds_w(double(xV(:)), double(wtV(:)), clUbV, dbg);
 % For numerical reasons, push right edges up a bit
-xClV = discretize(double(xV(:)), [min(xV)-1; xUbV + 1e-8], 'IncludedEdge', 'left');
+xClV = discretize(double(xV(:)), [min(xV(:))-1; xUbV + 1e-8], 'IncludedEdge', 'left');
 
 
 %% Assign class to each obs

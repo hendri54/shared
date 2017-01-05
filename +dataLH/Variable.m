@@ -11,6 +11,8 @@ properties
    validValueV    double
    % Missing value codes
    missValCodeV   double
+   % These values indicate top codes
+   topCodeV    double
    
    % Other properties, stored as name/value pairs (cell array)
    otherV   cell
@@ -57,6 +59,28 @@ methods
          pIdx = find(strcmp(vS.otherV(1 : 2 : (n-1)),  otherName));
          if length(pIdx) == 1
             outVal = vS.otherV{pIdx+1};
+         end
+      end
+   end
+   
+   
+   %% Check that an input has codes consistent with that variable
+   function [out1, outMsg] = is_valid(vS, inV)
+      out1 = true;
+      outMsg = 'valid';
+      
+      if ~isempty(vS.minVal)
+         if any(inV < vS.minVal)
+            out1 = false;
+            outMsg = 'values below minimum';
+            return;
+         end
+      end
+      if ~isempty(vS.maxVal)
+         if any(inV > vS.maxVal)
+            out1 = false;
+            outMsg = 'values above maximum';
+            return;
          end
       end
    end

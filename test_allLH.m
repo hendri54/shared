@@ -5,11 +5,21 @@ function test_allLH
 
 dbg = 111;
 
+lhS = const_lh;
+
 
 %% Cell arrays
 %
 % Make a cell array of numbers into a vector
 cellLH.cell2vector_test;
+
+
+%% Config
+if lhS.runLocal  &&  false
+   % Editor not available on server. Generally not run because of screen display annoyance
+   configLH.MatlabEditorStateTest;
+   configLH.MatlabEditorTest;
+end
 
 
 %% Data handling
@@ -53,6 +63,9 @@ BenPorathCornerTestLH;
 % Nested CES production function
 CesNestedLHtest;
 
+% Bounded grid
+econLH.GridBoundedTest;
+
 % Discrete choice problem with type 1 extreme value shocks
 % Solve and calibrate its parameters
 econLH.extreme_value_decision_test;
@@ -73,9 +86,6 @@ SymbolTableLHtest;
 % Geometric sums
 econLH.geo_sum_test;
 %
-% Copy a set of figures / tables to a common directory (to be included in a paper)
-econLH.PaperFiguresTest;
-%
 % Perpetual inventory method
 econLH.perpetual_inventory_test;
 
@@ -85,8 +95,13 @@ econLH.regression_test_test(false);
 % Maintain a list of unique names (e.g. file names for model results)
 econLH.VariableListLHtest;
 %
-% Regress log wages on time and age dummies
-econLH.WageRegressionLHtest;
+
+
+
+%% Figures
+
+figuresLH.Bar3DTest;
+FigureLHtest;
 
 
 %% Files
@@ -94,6 +109,9 @@ econLH.WageRegressionLHtest;
 % RDIR is taken from the Matlab file exchange and used in some of my file routines
 % rdir cannot be in a subdir that's not on the path
 rdir_test
+
+% Find common base directory for a list of files
+filesLH.common_base_directory_test;
 
 % Test whether a file contains a set of strings
 filesLH.does_file_contain_strings_test
@@ -104,11 +122,20 @@ filesLH.find_files_containing_strings_test
 % Find files by name
 filesLH.find_files_by_name_test
 
+filesLH.FolderTest;
+
 % FTP up and downloads to mounted volume (actually using rsync)
+%  obsolete; use KureLH +++
 filesLH.FtpTargetTest;
+
+% Make absolute into relative paths
+filesLH.make_relative_paths_test;
 
 % Multi file search and replace
 filesLH.replace_text_in_file_test;
+
+% Make zip file, preserving directory structure
+filesLH.zip_files_test;
 
 
 %% Markdown
@@ -138,6 +165,7 @@ matrixLH.find_valid_test;
 pstructTestLH;
 pvectorLHtest;
 
+globalOptLH.test;
 optimLH.GuessUnboundedTest;
 
 
@@ -152,6 +180,12 @@ randomLH.rand_time_test;
 
 regressLH.test_all;
 
+
+%% SATs and ACTs
+
+sat_actLH.act2sat1Test;
+sat_actLH.sat_old2new_test;
+sat_actLH.sat2percentile_test;
 
 %% Statistics
 
@@ -181,6 +215,8 @@ stringLH.contains_test;
 % Format one number in the same way as another (provided as a formatted string)
 stringLH.format_similar_test;
 
+stringLH.string_array_to_cell_test;
+
 
 %% Struct
 
@@ -196,6 +232,28 @@ vectorLH.find_matches_test;
 % Given a set of (x,y) vectors, make an x vector that spans all the x values
 % Make a y matrix with all the y values
 vectorLH.xy_to_common_base_test;
+
+
+%% Build unit tests
+% Done at the end so results are clearly visible
+
+testStrV = {};
+
+testStrV = [testStrV, 'ProjectLHtest'];
+% Economics routines
+testStrV = [testStrV, 'econLH.test_all'];
+% File routines
+testStrV = [testStrV,  {'filesLH.FileNamesTest',  'filesLH.TextFileTest',  'filesLH.ZipFileTest'}];
+% Accessing ftp servers
+testStrV = [testStrV, 'KureLHtest'];
+% Linux routines
+testStrV = [testStrV, {'linuxLH.LSFtest', 'linuxLH.SBatchTest'}];
+% Maps and containers
+testStrV = [testStrV, {'mapsLH.StringIntMapTest'}];
+% Regression related
+testStrV = [testStrV, 'regressLH.unitTests'];
+
+runtests(testStrV)
 
 
 end

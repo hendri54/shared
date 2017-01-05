@@ -33,7 +33,7 @@ end
 guessV = pv.guess_make(paramS, doCalV(2));
 
 % Make parameter struct from guess
-param2S = pv.guess_extract(guessV, paramS, doCalV(2));
+param2S = pv.guess_extract(guessV(:)', paramS, doCalV(2));
 for i1 = 1 : n
    checkLH.approx_equal(param2S.(nameV{i1}), pValueV{i1}, 1e-8, []);
 end
@@ -61,5 +61,7 @@ ps = pv.retrieve('test1');
 if ~isequal(ps.doCal, doCalNew)
    error('Invalid');
 end
+calStatus = pv.cal_status('test1');
+assert(isequal(calStatus, doCalNew));
 
 end

@@ -1,6 +1,8 @@
 function [idxV, betaV] = find_regressors(mdl, varNameStrV, dbg)
 % Find regressors by name in a LinearModel
 %{
+If regressor not found: return NaN
+
 IN
    mdl
       linear model

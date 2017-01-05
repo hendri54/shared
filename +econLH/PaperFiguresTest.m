@@ -1,4 +1,5 @@
-function PaperFiguresTest
+function PaperFiguresTest(testCase)
+% Change: did not test sub dirs
 
 disp('Testing PaperFigures');
 
@@ -37,6 +38,15 @@ pS.add('test3.tex');
 fileS = pS.fileListV{idx};
 assert(strcmp(fileS.srcPath,  srcPath));
 assert(strcmp(fileS.tgPath,   tgPath));
+
+
+% Sub dir
+idx = idx + 1;
+srcPath = 'subdir/test4.txt';
+pS.add(srcPath);
+fileS = pS.fileListV{idx};
+assert(strcmp(fileS.srcPath,  fullfile(srcDefaultDir, srcPath)));
+assert(strcmp(fileS.tgPath,   fullfile(tgDefaultDir,  srcPath)));
 
 
 

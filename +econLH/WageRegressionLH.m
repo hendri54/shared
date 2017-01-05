@@ -6,6 +6,8 @@ Regress log wages on some combination of
 - cohort dummies
 - other regressors
 
+Important: first and last cohort dummy are set to 0 (by default)
+
 How to recover fitted values and their confidence bands?
 - need regressor matrix to get both
 - simply return them as outputs when running `regress`
@@ -255,10 +257,15 @@ methods
          [~, regrS.yearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'year', regrS.yearValueV, dbg);
          
          if wrS.useCohortEffects
+            % Remember that last cohort dummy is not there (imposed that it is 0 in the regression)
             bYearMin = wrS.yearV(1) - regrS.ageValueV(end) + 1;
             bYearMax = wrS.yearV(end) - regrS.ageValueV(1) + 1;
             regrS.bYearValueV = (bYearMin : bYearMax)';
             [~, regrS.bYearDummyV] = regressLH.dummy_pointers(wrS.modelV{iSchool}, 'bYear', regrS.bYearValueV, dbg);
+            % Impose last birth year dummy = 0
+            if isnan(regrS.bYearDummyV(end))
+               regrS.bYearDummyV(end) = 0;
+            end
          else
             regrS.bYearDummyV = [];
          end

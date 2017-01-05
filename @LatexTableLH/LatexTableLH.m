@@ -180,6 +180,7 @@ methods
       [fDir, fName, fExt] = fileparts(tS.filePath);
       textPath = fullfile(fDir, [fName, '.txt']);
       fp = fopen(textPath, 'w');
+      assert(fp > 0,  'Could not open file');
       
       cellLH.text_table(tS.cell_table, [1; tS.rowUnderlineV(:)], fp, dbg);
       

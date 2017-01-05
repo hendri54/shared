@@ -22,7 +22,7 @@ if ~strcmp(symbolStr, '\gamma')
 end
 
 % Write preamble
-fPath = fullfile(lhS.dirS.sharedDirV{1}, 'SymbolTableLH_preamble.tex');
+fPath = fullfile(filesLH.fullpaths(lhS.dirS.sharedDirV{1}), 'SymbolTableLH_preamble.tex');
 tS.preamble_write(fPath);
 
 end

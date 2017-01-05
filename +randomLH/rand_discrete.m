@@ -4,6 +4,7 @@ function idxM = rand_discrete(probV, uniRandM, dbg)
 IN:
    probV
       prob of each value in valueV
+      must sum to 1
    uniRandM
       matrix of uniform random vars 
 
@@ -39,6 +40,8 @@ if abs(cumProbV(n) - 1) > 1e-6
    error('Probs must sum to 1');
 end
 cumProbV(n) = 1;
+% Avoid numerical issues when cumulative probabilities hit 1 for values before the last
+cumProbV = min(1, cumProbV);
 
 
 % Assign output values

@@ -1,4 +1,4 @@
-function WageRegressionLHtest
+function WageRegressionLHtest(testCase)
 %{
 Change:
    test with missing values +++

@@ -4,8 +4,7 @@ lhS = const_lh;
 
 disp('Testing FtpTarget');
 
-kS = filesLH.FtpTarget;
-kS.testMode = true;
+kS = filesLH.FtpTarget('testMode', false);
 isMounted = kS.is_mounted;
 
 if isMounted

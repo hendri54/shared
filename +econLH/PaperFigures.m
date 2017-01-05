@@ -55,24 +55,45 @@ methods
    function outPath = make_src_path(pS, srcPath)
       [fDir, fName, fExt] = fileparts(srcPath);
       if ~isempty(fDir)
-         outPath = srcPath;
+         % Dir is provided, use it
+         if fDir(1) == filesep
+            % Absolute path: use it
+            outPath = srcPath;
+         else
+            % Relative path: add to default
+            outPath = fullfile(pS.srcDefaultDir, srcPath);
+         end
       else
+         % No dir provided: use default
          outPath = fullfile(pS.srcDefaultDir, [fName, fExt]);
       end
    end
+   
    
    %% Make a complete target path
    function outPath = make_tg_path(pS, srcPath, tgPath, tgSubDir)
       if isempty(tgPath)
          % Use defaults. Same as providing src file name and no dir
-         [~, fName, fExt] = fileparts(srcPath);
-         tgPath = [fName, fExt];
+         [fDir, fName, fExt] = fileparts(srcPath);
+         if  ~isempty(fDir)  &&  (fDir(1) ~= filesep)
+            % Relative path: keep it
+            tgPath = srcPath;
+         else
+            % Absolute path: ignore it
+            tgPath = [fName, fExt];
+         end
       end
       
       [fDir, fName, fExt] = fileparts(tgPath);
 
       if ~isempty(fDir)
-         outPath = tgPath;
+         if fDir(1) == filesep
+            % Absolute path: use it
+            outPath = tgPath;
+         else
+            % Relative path: add to default
+            outPath = fullfile(pS.tgDefaultDir, tgPath);
+         end
       else
          if isempty(tgSubDir)
             outPath = fullfile(pS.tgDefaultDir, [fName, fExt]);
@@ -80,6 +101,9 @@ methods
             outPath = fullfile(pS.tgDefaultDir, tgSubDir, [fName, fExt]);
          end
       end
+      
+%       outPath
+%       keyboard
    end
    
 

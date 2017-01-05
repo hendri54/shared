@@ -2,12 +2,15 @@ function test_all
 
 disp('Testing all regression code');
 
+% regressLH.dummy_pointers_test;
+% regressLH.find_regressors_test;
 regressLH.format_regr_output_test;
 regressLH.regr_table_test;
 regressLH.RegrAgeSchoolYearTest;
 
 
 %% Make a regression model for test purposes
+% There is now a function for that: make_test_model
 
 rng(32);
 dbg = 111;
@@ -73,3 +76,5 @@ clear rIdxV
 
 
 end
+
+

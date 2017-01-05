@@ -1,0 +1,323 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{mitpress}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+GlobalOptLH
+\end_layout
+
+\begin_layout Section
+Purpose
+\end_layout
+
+\begin_layout Standard
+Global optimization algorithm.
+\end_layout
+
+\begin_layout Standard
+Ideas:
+\end_layout
+
+\begin_layout Itemize
+start a local search from multiple points
+\end_layout
+
+\begin_layout Itemize
+avoid solving in same basin of attraction
+\end_layout
+
+\begin_layout Itemize
+avoid solving similar points - keep full record of all solved points
+\end_layout
+
+\begin_layout Itemize
+avoid working on hopeless points
+\end_layout
+
+\begin_layout Itemize
+work on points with a probability that depends on how promising they are
+\end_layout
+
+\begin_layout Itemize
+use previous solutions to make new ones, but also try completely random
+ solutions (to avoid getting stuck in a region)
+\end_layout
+
+\begin_layout Itemize
+parallel work on multiple points
+\end_layout
+
+\begin_layout Itemize
+each job runs independently; user provides a complete optimization function,
+ not an objective function (total flexibility)
+\end_layout
+
+\begin_layout Section
+User provided inputs
+\end_layout
+
+\begin_layout Standard
+Optimization function
+\end_layout
+
+\begin_layout Itemize
+IN: guessV, switch: evaluate or optimize
+\end_layout
+
+\begin_layout Itemize
+OUT: fVal, exitFlag, outS
+\end_layout
+
+\begin_layout Standard
+Bounds for guesses
+\end_layout
+
+\begin_layout Standard
+One starting guess
+\end_layout
+
+\begin_layout Standard
+max number of starting points to evaluate
+\end_layout
+
+\begin_layout Standard
+termination criteria
+\end_layout
+
+\begin_layout Itemize
+max time
+\end_layout
+
+\begin_layout Itemize
+stop when last N points failed to improve objective by more than X
+\end_layout
+
+\begin_layout Section
+Algorithm
+\end_layout
+
+\begin_layout Standard
+While not done
+\end_layout
+
+\begin_layout Enumerate
+Get results from next job; write it to history file
+\end_layout
+
+\begin_layout Enumerate
+Decide termination
+\end_layout
+
+\begin_layout Enumerate
+If not terminated: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+generate new point 
+\end_layout
+
+\begin_layout Enumerate
+submit next point
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Run one point
+\end_layout
+
+\begin_layout Enumerate
+call local search function
+\end_layout
+
+\begin_layout Enumerate
+return
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+starting point
+\end_layout
+
+\begin_layout Enumerate
+solution point
+\end_layout
+
+\begin_layout Enumerate
+optional: all intermediate points (useful for creating new points, but rarely
+ feasible)
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+History file
+\end_layout
+
+\begin_layout Standard
+contains info to retrace entire comp history, including which points are
+ starting points, which points are derived from which previous points.
+\end_layout
+
+\begin_layout Standard
+for each starting point:
+\end_layout
+
+\begin_layout Itemize
+guess
+\end_layout
+
+\begin_layout Itemize
+fVal
+\end_layout
+
+\begin_layout Itemize
+exitFlag
+\end_layout
+
+\begin_layout Itemize
+outS
+\end_layout
+
+\begin_layout Standard
+optional:
+\end_layout
+
+\begin_layout Itemize
+list of all solved points (guess and fVal)
+\end_layout
+
+\begin_layout Subsection
+Create new start point
+\end_layout
+
+\begin_layout Standard
+the most efficient approach may be to use quasi-random numbers and generate
+ a fixed number of start points up front (like Guvenen)
+\end_layout
+
+\begin_layout Standard
+From history:
+\end_layout
+
+\begin_layout Itemize
+pick 2 of the N best guesses so far
+\end_layout
+
+\begin_layout Itemize
+take a convex combination
+\end_layout
+
+\begin_layout Itemize
+evaluate function
+\end_layout
+
+\begin_layout Itemize
+decide whether or not to run point
+\end_layout
+
+\begin_layout Subsection
+Decide whether to run point
+\end_layout
+
+\begin_layout Standard
+Reject if
+\end_layout
+
+\begin_layout Itemize
+too close to a point already evaluate in the history file
+\end_layout
+
+\begin_layout Itemize
+starting fVal too large (compared with other starting points already in
+ history)
+\end_layout
+
+\begin_layout Subsection
+Decide termination
+\end_layout
+
+\begin_layout Itemize
+examine total time elapsed, no of fct evaluations, not enough progress of
+ the last N local searches
+\end_layout
+
+\begin_layout Section
+eof
+\end_layout
+
+\end_body
+\end_document

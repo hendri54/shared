@@ -3,15 +3,17 @@
 Assumes that it is mounted as a volume
 
 Because one would like to see output of rsync: allow option to write rsync commands to a file. +++
+
+DO NOT USE. REPLACED BY KureLH +++++
 %}
 classdef FtpTarget < handle
    
 properties
    % Mounted drive location
-   mountedVolume = '/Volumes/Macbook pro 2011/';
+   mountedVolume  char  = '/Volumes/Macbook pro 2011/';
    % Remote base dir
    % remoteBaseDir = '/users/lutz/';
-   testMode logical = false;
+   testMode  logical  =  false;
 end
 
 
@@ -20,8 +22,9 @@ methods
    % Provide name / value pairs as inputs
    function kS = FtpTarget(varargin)
       if ~isempty(varargin)
-         % general function: set default values from varargin +++++
-         error('not implemented');
+         for i1 = 1 : 2 : (length(varargin) - 1)
+            kS.(varargin{i1}) = varargin{i1+1};
+         end
       end
    end
    
@@ -30,6 +33,7 @@ methods
    function isMounted = is_mounted(kS)
       isMounted = (exist(kS.mountedVolume, 'dir') > 0);
    end
+   
    
    %% Upload shared code
    % Including startup files
@@ -41,7 +45,7 @@ methods
    end
    
    
-   %% Upload or download from KURE
+   %% Upload or download from remote
    %{
    Uses mounted volume (via rsync)
    User provides the full remote path
@@ -108,7 +112,9 @@ methods
       %keyboard;
       if ~kS.testMode
          % '&' runs asynchronously; omit the ';' at end to see output
-         system([scriptStr, '  &'])
+         % rsync does not generate output in matlab
+         [~, cmdOut] = system(scriptStr);
+         %disp(cmdOut)
       end
 
       disp(['Done syncing  ',  sourceDir,  '  to  ',  tgDir]);

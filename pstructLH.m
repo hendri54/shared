@@ -73,6 +73,7 @@ methods
    %    if ~any(p.doCal == [p.calBase, p.calNever, p.calExp])
    %       error('Invalid doCal');
    %    end
+      validateattributes(p.doCal, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', 'scalar'})
       validateattributes(p.lbV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(p.valueV)})
       if any(p.lbV >= p.ubV)
          error('Invalid bounds');

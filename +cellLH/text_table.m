@@ -13,6 +13,7 @@ IN
 if isempty(fp)
    fp = 1;
 end
+assert(fp > 0,  'File pointer not valid');
 
 [nRows, nCols] = size(dataM);
 

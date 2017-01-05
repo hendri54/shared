@@ -48,6 +48,13 @@ classdef pvectorLH < handle
       end
       
       
+      %% Retrieve calibration status
+      function calStatus = cal_status(obj, nameStr)
+         ps = obj.retrieve(nameStr);
+         calStatus = ps.doCal;
+      end
+      
+      
       %% Add new parameter
       function add(obj, ps)
          % Does this param exist?
@@ -182,8 +189,8 @@ classdef pvectorLH < handle
                % Take the value out of the paramS struct
                %  Flatten matrices. This can be undone using reshape
                guessV(idxV) = paramS.(ps.name)(:);
-               lbV(idxV) = ps.lbV;
-               ubV(idxV) = ps.ubV;
+               lbV(idxV) = ps.lbV(:);
+               ubV(idxV) = ps.ubV(:);
                idx1 = idxV(end);
             end
          end
@@ -200,7 +207,9 @@ classdef pvectorLH < handle
          guessV = min(ubV, max(lbV, guessV));
 
          % Transform
-         guessV = p.guessMin + (guessV - lbV) .* (p.guessMax - p.guessMin) ./ (ubV - lbV);
+         guessV = p.guessMin + (guessV(:) - lbV(:)) .* (p.guessMax - p.guessMin) ./ (ubV(:) - lbV(:));
+         
+         validateattributes(guessV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [idx1,1]})
       end
       
       
@@ -212,10 +221,12 @@ classdef pvectorLH < handle
             only guesses with doCal in doCalV are used
       %}
       function paramS = guess_extract(p, guessV, paramS, doCalV)
+         guessV = guessV(:);
          % Last entry in guessV that is used
          idx1 = 0;
          % Loop over calibrated guesses
          for i1 = 1 : p.np
+            % pstructLH for this param
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
                % Position in guess vector
@@ -225,10 +236,12 @@ classdef pvectorLH < handle
                if ~isvector(ps.valueV)
                   gValueV = reshape(gValueV, size(ps.valueV));
                end
-               % Retrieve values
+               % Retrieve values. May be matrices
                paramS.(ps.name) = ps.lbV  +  (gValueV - p.guessMin) .* (ps.ubV - ps.lbV) ./ ...
                   (p.guessMax - p.guessMin);
                idx1 = idxV(end);
+               validateattributes(paramS.(ps.name), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+                  'size', size(ps.valueV)})
             end
          end
       end

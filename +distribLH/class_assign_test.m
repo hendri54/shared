@@ -5,6 +5,9 @@ disp('Test of class_assign');
 dbg = 111;
 rng(21);
 
+% Test with matrix input
+distribLH.class_assign(rand(10, 8), [], linspace(0.3, 1, 3), dbg);
+
 
 %% Uniform random numbers
 if 1

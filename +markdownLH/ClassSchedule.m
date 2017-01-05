@@ -37,6 +37,7 @@ methods
       openV = ones(size(cS.classDateV));
       
       % Loop over topics
+      assert(length(cS.topicV) >= 1);
       for i1 = 1 : length(cS.topicV)
          % Find available class dates
          if ~isempty(cS.topicV{i1})
