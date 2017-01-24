@@ -100,7 +100,7 @@ methods
             elseif ~isempty(topicS.classDate)
                % Assign fixed date (must exist)
                idx1 = find(topicS.classDate == tS.classDateV, 1, 'first');
-               assert(idx1 > 0);
+               assert(idx1 > 0,  'Class date not valid');
                iDateV(i1) = idx1;
             elseif all(takenV == 1)
                % Assign last class date

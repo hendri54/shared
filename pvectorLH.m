@@ -55,10 +55,18 @@ classdef pvectorLH < handle
       end
       
       
+      %% Add a list of parameters
+      function param_add_list(obj, psV)
+         for i2 = 1 : length(psV)
+            obj.add(psV{i2});
+         end            
+      end
+
+      
       %% Add new parameter
       function add(obj, ps)
          % Does this param exist?
-         idx1 = find(strcmp(obj.nameV, ps.name));
+         idx1 = find(strcmp(obj.nameV, ps.name), 1, 'first');
          if ~isempty(idx1)
             error([ps.name, ' already exists']);
          else
@@ -90,7 +98,7 @@ classdef pvectorLH < handle
       %% Change calibration status
       function calibrate(obj, nameStr, doCal)
          % Does this param exist?
-         idx1 = find(strcmp(obj.nameV, nameStr));
+         idx1 = find(strcmp(obj.nameV, nameStr), 1, 'first');
          if isempty(idx1)
             error('%s does not exist', nameStr);
          end
@@ -115,6 +123,17 @@ classdef pvectorLH < handle
                end
             end
          end
+      end
+      
+      
+      %% Make a struct with default values for all params
+      function paramS = default_struct(p)
+         paramS = struct;
+         for i1 = 1 : p.np
+            paramS.(p.nameV{i1}) = p.valueV{i1}.valueV;
+         end
+         % Force non-calibrated params to be fixed at defaults
+         paramS = p.struct_update(paramS, 1);
       end
       
       
@@ -220,7 +239,8 @@ classdef pvectorLH < handle
          doCalV
             only guesses with doCal in doCalV are used
       %}
-      function paramS = guess_extract(p, guessV, paramS, doCalV)
+      function paramS = guess_extract(p, guessV, paramInS, doCalV)
+         paramS = paramInS;
          guessV = guessV(:);
          % Last entry in guessV that is used
          idx1 = 0;

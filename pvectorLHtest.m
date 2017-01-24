@@ -29,6 +29,11 @@ for i1 = 1 : n
    paramS.(nameStr) = valueV;
 end
 
+defaultS = pv.default_struct;
+for i1 = 1 : n
+   assert(isequal(defaultS.(nameV{i1}),  paramS.(nameV{i1})));
+end
+
 % Make guess vector
 guessV = pv.guess_make(paramS, doCalV(2));
 

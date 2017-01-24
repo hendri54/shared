@@ -1,6 +1,9 @@
-function result = approx_equal(x1M, x2M, absToler, relToler)
+function result = approx_equal(x1M, x2M, absToler, relToler, msgStr)
 % Check whether 2 matrices are approximately equal
 
+if nargin < 5
+   msgStr = 'Approx equal fails';
+end
 if nargin < 4
    relToler = [];
 end
@@ -30,7 +33,7 @@ if nargout < 1  &&  ~result
       disp(x1M);
       disp(x2M);
    end
-   error('Approx equal fails');
+   error(msgStr);
 end
 
 end

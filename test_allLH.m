@@ -240,8 +240,10 @@ vectorLH.xy_to_common_base_test;
 testStrV = {};
 
 testStrV = [testStrV, 'ProjectLHtest'];
+% Distributions
+testStrV = [testStrV,  'distribLH.truncated_normal_test'];
 % Economics routines
-testStrV = [testStrV, 'econLH.test_all'];
+testStrV = [testStrV,  {'econLH.BinaryDecisionTest',  'econLH.grid_round_to_test',  'econLH.test_all'}];
 % File routines
 testStrV = [testStrV,  {'filesLH.FileNamesTest',  'filesLH.TextFileTest',  'filesLH.ZipFileTest'}];
 % Accessing ftp servers
