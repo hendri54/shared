@@ -70,6 +70,7 @@ methods
    %% Append cell array of strings to file
    %{
    Opens and closes file
+   Special characters, such as % and \ are written correctly
    %}
    function write_strings(tS, stringV)
 %       wasOpen = tS.is_open;

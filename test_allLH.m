@@ -239,23 +239,39 @@ vectorLH.xy_to_common_base_test;
 
 testStrV = {};
 
-testStrV = [testStrV, 'ProjectLHtest'];
-% Distributions
-testStrV = [testStrV,  'distribLH.truncated_normal_test'];
+testStrV = [testStrV, 'devstructLHtest',  'devvectLHtest',  'ProjectLHtest'];
 % Economics routines
-testStrV = [testStrV,  {'econLH.BinaryDecisionTest',  'econLH.grid_round_to_test',  'econLH.test_all'}];
+% testStrV = [testStrV,  {'econLH.BinaryDecisionTest',  'econLH.grid_round_to_test',  'econLH.test_all'}];
 % File routines
-testStrV = [testStrV,  {'filesLH.FileNamesTest',  'filesLH.TextFileTest',  'filesLH.ZipFileTest'}];
+% testStrV = [testStrV,  {'filesLH.FileNamesTest',  'filesLH.TextFileTest',  'filesLH.ZipFileTest'}];
 % Accessing ftp servers
 testStrV = [testStrV, 'KureLHtest'];
+% Latex
+%latexV = {'latexLH.make_command_valid_test',  'latexLH.PreambleTest'};
 % Linux routines
-testStrV = [testStrV, {'linuxLH.LSFtest', 'linuxLH.SBatchTest'}];
+%linuxV = {'linuxLH.LSFtest', 'linuxLH.SBatchTest'};
 % Maps and containers
-testStrV = [testStrV, {'mapsLH.StringIntMapTest'}];
+%mapsV = {'mapsLH.StringIntMapTest'};
 % Regression related
-testStrV = [testStrV, 'regressLH.unitTests'];
+%regressV = 'regressLH.unitTests';
+%vectorV = {'vectorLH.count_elements_test', 'vectorLH.vector2matrix_test'};
+
+% testStrV = [testStrV, latexV, linuxV, mapsV, regressV, vectorV];
 
 runtests(testStrV)
+
+
+%% Tests for entire folders
+% There can be other functions ending in `test` in the folder. They are ignored
+
+import matlab.unittest.TestSuite
+
+displayV = [TestSuite.fromPackage('displayLH'),  TestSuite.fromPackage('econLH'),  ...
+   TestSuite.fromPackage('distribLH'),  TestSuite.fromPackage('filesLH'),  TestSuite.fromPackage('latexLH'), ...
+   TestSuite.fromPackage('linuxLH'),  TestSuite.fromPackage('mapsLH'),  TestSuite.fromPackage('regressLH'), ...
+   TestSuite.fromPackage('vectorLH')];
+
+run(displayV);
 
 
 end
