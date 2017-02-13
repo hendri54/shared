@@ -1,4 +1,5 @@
-% Utility function of the type u(c) = a * (c ^(1-sigma) / (1-sigma) - 1)
+% Utility function of the type 
+%     u(c) = a * (c ^(1-sigma) / (1-sigma) - 1)
 %{
 Assume multiple periods with discount factor beta
 Nests log as special case (sigma = 1)
@@ -8,10 +9,12 @@ If there is a constant scaling utility, it simply multiplies u(c), u'(c) and lif
 classdef UtilCrraLH
    
    properties
-      pSigma
-      pBeta
+      % Curvature
+      pSigma  double
+      % Discount factor
+      pBeta  double
       % Scale factor
-      pFactor
+      pFactor  double
    end
    
    
@@ -55,6 +58,15 @@ classdef UtilCrraLH
                validateattributes(mu_itM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
                   'positive', 'size', size(c_itM)})
             end
+         end
+      end
+      
+      
+      %% Inverse marginal utility
+      function c_itM = mu_inverse(uS, mu_itM, dbg)
+         c_itM = (mu_itM ./ uS.pFactor) .^ (-1 ./ uS.pSigma);
+         if dbg > 10
+            validateattributes(c_itM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
          end
       end
       

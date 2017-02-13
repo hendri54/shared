@@ -74,7 +74,7 @@ econLH.extreme_value_calibrate_test(false)
 
 %
 % CRRA utility and permanent income model
-UtilCrraLHtest;
+% UtilCrraLHtest;
 %
 % CES production function
 ces_lh_test;
@@ -266,8 +266,9 @@ runtests(testStrV)
 
 import matlab.unittest.TestSuite
 
-displayV = [TestSuite.fromPackage('displayLH'),  TestSuite.fromPackage('econLH'),  ...
-   TestSuite.fromPackage('distribLH'),  TestSuite.fromPackage('filesLH'),  TestSuite.fromPackage('latexLH'), ...
+displayV = [TestSuite.fromPackage('displayLH'),  TestSuite.fromPackage('distribLH'),  TestSuite.fromPackage('econLH'),  ...
+   TestSuite.fromPackage('filesLH'),   ...
+   TestSuite.fromPackage('latexLH'), ...
    TestSuite.fromPackage('linuxLH'),  TestSuite.fromPackage('mapsLH'),  TestSuite.fromPackage('regressLH'), ...
    TestSuite.fromPackage('vectorLH')];
 

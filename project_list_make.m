@@ -87,6 +87,15 @@ pS = ProjectLH('BP experience profiles', baseDirV{1}, progDirV{1}, [], 'so1', []
 plS.append(pS);
 
 
+%% Ben-Porath
+
+% Replicate HVY 2011
+baseDir = fullfile(dropBoxDir, 'hc', 'hvy2011');
+progDir = fullfile(baseDir, 'prog');
+pS = ProjectLH('HVY 2011', baseDir, progDir, [], 'hvy', []);
+plS.append(pS);
+
+
 %% Immigration
 
 % Document immigrant earnings in low income countries

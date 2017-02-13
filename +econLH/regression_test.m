@@ -11,6 +11,7 @@ IN
       simulated outcome by state
    wtM
       weights (e.g. to downweight rare states or states that cannot be solved precisely)
+      scalar weights are expanded. Provide wtM = []
    doShow
       show scatter plot?
 
@@ -26,11 +27,17 @@ Change:
    If data are very far from 0, then intercept can be quite a bit off.
    Better to look at pct deviation between regression and 45 degree line over range where we
    actually observe something
+
+   Better: test hypothesis of 0 intercept and unit slope. Return prob of reject
 %}
 
 %% Input check
 
-assert(isequal(size(trueM), size(simM)));
+if ~isequal(size(trueM), size(simM))
+   disp(size(trueM));
+   disp(size(simM));
+   error('Sizes do not match');
+end
 assert(isa(doShow, 'logical'));
 
 

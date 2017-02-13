@@ -1,13 +1,15 @@
-function UtilCrraLHtest
+function tests = UtilCrraLHtest
+   tests = functiontests(localfunctions);
+end
 
-disp('Testing UtilCrraLH');
+function oneTest(testCase)
 
 dbg = 111;
 pBeta = 0.95;
 pFactor = 0.3;
 R = 1.04;
 
-for pSigma = [2, 1, 0.5];
+for pSigma = [2, 1, 0.5]
    for nInd = [1, 20]
       uS = UtilCrraLH(pSigma, pBeta, pFactor);
 
@@ -23,6 +25,10 @@ for pSigma = [2, 1, 0.5];
       util2_itM = uS.util(c_itM + dc, dbg);
       mu2_itM = (util2_itM - util_itM) ./ dc;
       checkLH.approx_equal(mu2_itM, mu_itM, [], 1e-4);
+      
+      % Inverse marginal utility
+      c2_itM = uS.mu_inverse(mu_itM, dbg);
+      checkLH.approx_equal(c2_itM, c_itM, 1e-6, []);
 
       % Lifetime utility
       uS.lifetime_util(c_itM, dbg);
