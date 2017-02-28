@@ -135,7 +135,7 @@ methods
    
    
    %% Make remote dir that matches a local dir
-   % This is for uploading with rsync only. Assumes the local base dir is mounted as drive
+   % This is for uploading with rsync only. Assumes the local base dir is mounted as drive. Or ssh
    function remoteDir = make_remote_dir(kS, localDir)
       if kS.is_mounted
          % E.g. '/Volumes/longleaf/Users/lutz'
@@ -148,7 +148,13 @@ methods
    
    
    %% Upload or download a dir
+   %{
+   Empty remote dir: assume directory structure is replicated on remote
+   %}
    function updownload(kS, localDir, remoteDir, upDownStr)
+      if isempty(remoteDir)
+         remoteDir = kS.make_remote_dir(localDir);
+      end
       % Make the rsync command
       [scriptStr, sourceDir, tgDir] = kS.updownload_command(localDir, remoteDir, upDownStr);
       
@@ -179,16 +185,21 @@ methods
    
    %% Copy a list of files to the server
    %{
+   Uses ftp if needed, but cp if server is mounted
+   
    IN
       remoteDir
          if []: use same a localDir, but on server
    %}
-   function copy_files(kS, fileListV, localDir, remoteDir, upDownStr)
-      assert(kS.is_mounted);
+   function copy_files(kS, fileListV, localDir, remoteDir, upDownStr)      
+      if kS.is_mounted
+         cmdStr = 'cp ';
+      else
+         cmdStr = 'sftp ';
+      end
       
       if isempty(remoteDir)
-         % This needs volume attached, but not the path to /Users/lutz
-         remoteDir = fullfile(kS.mountedVolume, localDir);
+         remoteDir = kS.make_remote_dir(localDir);
       end
       if isa(fileListV, 'char')
          fileListV = {fileListV};
@@ -205,9 +216,10 @@ methods
          if ~kS.testMode
             fprintf('Copying from %s \n',  fullfile(localDir, fileListV{i1}));
             fprintf('        to   %s \n',  remoteFile);
-            scriptStr = ['cp ',  fullfile(localDir, fileListV{i1}),  ' ',  remoteFile];
+            scriptStr = [cmdStr,  fullfile(localDir, fileListV{i1}),  ' ',  remoteFile];
+            disp(scriptStr);
             [~, cmdOut] = system(scriptStr);
-            %disp(cmdOut)
+            disp(cmdOut)
          end         
       end
    end
@@ -216,7 +228,7 @@ methods
    %% Construct the command to run on KURE
    %{
    Command format is
-      project_kure_XX(arguments)
+      command({a, b, c})
    IN
       suffixStr
          project suffix, e.g. 'so1'
@@ -231,14 +243,33 @@ methods
       nCpus
          no of cpus (1 if not parallel)
    %}
-   function cmdStr = command(kS, suffixStr, argV, jobNameStr, logStr, nCpus)
+   function cmdStr = command(kS, mFileName, argV, jobNameStr, logStr, nCpus)
       % ******  Input check
       validateattributes(nCpus, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', 'scalar', ...
          '>=', 1, '<=', 16})
       assert(isa(logStr, 'char'));
       
+      argStr = kS.make_arg_string(argV);
+      mFileStr = [mFileName, kS.lBracketStr, argStr,  kS.rBracketStr];
+
+      switch kS.jobSubmitMethod
+         case 'lsf'
+            lS = linuxLH.LSF;
+            cmdStr = lS.command(mFileStr, logStr, nCpus);
+         case 'sbatch'
+            lS = linuxLH.SBatch;
+            cmdStr = lS.command(jobNameStr, mFileStr, logStr, nCpus);
+         otherwise
+            error('Invalid');
+      end
+   end
+
+   
+   
+   
+   %% Make cell array of arguments into string of format ', {a, b, c}'
+   function argStr = make_arg_string(kS, argV)
       if ~isempty(argV)
-         % Make string of format ', {a, b, c}'
          assert(isa(argV, 'cell'));      
 
          % Make a string out of the cell array of arguments
@@ -270,24 +301,11 @@ methods
                argStr = [argStr, ','];
             end
          end
-         argStr = [',', argStr, kS.rBraceStr];
+         argStr = [argStr, kS.rBraceStr];
       else
          % '[]'
          % argStr = '\[\]';
          argStr = '';
-      end
-      
-      mFileStr = ['project_kure', kS.lBracketStr, kS.quoteStr, suffixStr, kS.quoteStr,  argStr,  kS.rBracketStr];
-
-      switch kS.jobSubmitMethod
-         case 'lsf'
-            lS = linuxLH.LSF;
-            cmdStr = lS.command(mFileStr, logStr, nCpus);
-         case 'sbatch'
-            lS = linuxLH.SBatch;
-            cmdStr = lS.command(jobNameStr, mFileStr, logStr, nCpus);
-         otherwise
-            error('Invalid');
       end
    end
       

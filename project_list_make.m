@@ -4,6 +4,8 @@ function project_list_make
 All dirs must be fully qualified (not ~ for home dir)
 Assumes that remote dirs have same structure as local dirs, except root folder
 Directories are sometimes case sensitive
+
+Newer: in project_start
 %}
 
 lhS = const_lh;
@@ -26,13 +28,6 @@ plS = ProjectListLH;
 % plS.append(pS);
 
 
-% Borrowing constraints
-modelStr = 'model3';
-baseDirV = {fullfile(dropBoxDir, 'hc', 'borrow_constraints', modelStr), ...
-   fullfile(kureDir, 'hc', 'borrow_constraints', modelStr)};
-progDirV = {fullfile(baseDirV{1}, 'prog'), fullfile(baseDirV{2}, 'prog')};
-pS = ProjectLH('Borowing constraints', baseDirV{1}, progDirV{1}, [], 'bc3', []);
-plS.append(pS);
 
 % Census data (Borrowing constraints)
 baseDirV = {fullfile(dropBoxDir, 'hc', 'borrow_constraints', 'census'), kureDir};

@@ -5,7 +5,7 @@ This always interprets oldTextV and newTextV as regex
 
 NOTES:
 filePath cannot contain '~'
-Special characters must be escaped with '\':  \_
+Special characters are automatically escaped with '\': e.g.  \_
 But '.' is ok (no need to escape it).
 %}
 

@@ -13,6 +13,10 @@ xStr = regexprep(xStr, '([^\\]+)(\_)', '$1\\_');
 % Replace stuff\stuff with stuff\\stuff
 xStr = regexprep(xStr, '([a-z0-9]+)\\([a-z0-9])+', '$1\\\\$2');
 
+% Leading \
+if xStr(1) == '\'  &&  xStr(2) ~= '\'
+   xStr = ['\', xStr];
+end
 
 % Make sure we have no more single backslashes or '_'
 idxV = strfind(xStr, '_');
@@ -35,7 +39,7 @@ if ~isempty(idxV)
          end
       end
       if ~valid
-         error('Invalid string');
+         error(['Invalid string:  ',  xStr]);
       end
    end
 end

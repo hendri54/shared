@@ -68,6 +68,7 @@ if dbg > 10
    if any(diff(clUbV) < -1e-10)
       error('clUbV must be increasing');
    end
+   assert(clUbV(end) == 1);
 end
 
 

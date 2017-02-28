@@ -44,6 +44,15 @@ methods
    
    
    %% Make the grid from calibrated parameters
+   %{
+   IN
+      x1Ratio
+         where is first grid point in permitted range?
+         in (0,1)
+      dxV
+         grid increments in (0, 1)
+         each gives location of grid point between next lower point and upper bound
+   %}
    function gridV = make_grid(gS, x1Ratio, dxV)
       validateattributes(dxV(:), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<', 1, ...
          'size', [gS.n - 1, 1]})
