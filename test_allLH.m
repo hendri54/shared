@@ -93,7 +93,7 @@ econLH.perpetual_inventory_test;
 econLH.regression_test_test(false);
 %
 % Maintain a list of unique names (e.g. file names for model results)
-econLH.VariableListLHtest;
+% econLH.VariableListLHtest;
 %
 
 
@@ -239,7 +239,7 @@ vectorLH.xy_to_common_base_test;
 
 testStrV = {};
 
-testStrV = [testStrV, 'devstructLHtest',  'devvectLHtest',  'ProjectLHtest'];
+testStrV = [testStrV, 'devstructLHtest',  'devvectLHtest',  'ParPoolLHtest',  'ProjectLHtest'];
 % Economics routines
 % testStrV = [testStrV,  {'econLH.BinaryDecisionTest',  'econLH.grid_round_to_test',  'econLH.test_all'}];
 % File routines
@@ -267,7 +267,7 @@ runtests(testStrV)
 import matlab.unittest.TestSuite
 
 displayV = [TestSuite.fromPackage('displayLH'),  TestSuite.fromPackage('distribLH'),  TestSuite.fromPackage('econLH'),  ...
-   TestSuite.fromPackage('filesLH'),   ...
+   TestSuite.fromPackage('filesLH'),  TestSuite.fromPackage('functionLH'),   ...
    TestSuite.fromPackage('latexLH'), ...
    TestSuite.fromPackage('linuxLH'),  TestSuite.fromPackage('mapsLH'),  TestSuite.fromPackage('regressLH'), ...
    TestSuite.fromPackage('stringLH'),  TestSuite.fromPackage('structLH'),  TestSuite.fromPackage('vectorLH')];
