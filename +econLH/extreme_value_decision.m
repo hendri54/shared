@@ -15,13 +15,23 @@ IN
 OUT
    prob_ixM
       probability of choosing each option
+   eVal_iV
+      expected value for each type
 
 TEST
    by simulation in extreme_value_decision_test
 %}
 
 [nTypes, nx] = size(value_ixM);
-assert(nx > 1);
+
+if nx == 1
+   % One alternative
+   % Decision prob is 1
+   prob_ixM = ones([nTypes, nx]);
+   % Value is value of that alternative + mean pref shock
+   eVal_iV = value_ixM + 0.5772;
+   return;
+end
 
 % Could use logsumexp here
 

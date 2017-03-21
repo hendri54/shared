@@ -136,6 +136,23 @@ methods
    end
    
    
+   %% Scatter plot
+   function plot_scatter(fS, xV, yV, iLine)
+      % Open figure if needed
+      if isempty(fS.fh)
+         fS.new;
+      end
+      
+      if length(xV) < 200
+         markerStr = 'o';
+      else
+         markerStr = '.';
+      end
+      
+      plot(xV, yV, markerStr, 'color', fS.line_color(iLine));
+   end
+   
+   
    %% Format
    function format(fS)
       hold off;

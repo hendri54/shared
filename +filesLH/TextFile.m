@@ -53,6 +53,13 @@ methods
    end
    
    
+   %% Show on screen
+   % Name was `display` but overloading `display` is not recommended
+   function show(tS)
+      type(tS.fileName);
+   end
+   
+   
    %% Load
    function lineV = load(tS)
       if exist(tS.fileName, 'file')

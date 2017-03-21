@@ -48,6 +48,8 @@ properties
    
    % Show graph with optimization progress?
    showProgressGraph    logical  = true
+   % Number of cpus to request
+   nCpus  uint8 = 8
 end
 
 methods
@@ -172,7 +174,7 @@ methods
       pS.startTime = datetime('now');
       
       % Open parallel pool
-      parS = ParPoolLH;
+      parS = ParPoolLH('nWorkers', pS.nCpus);
       parS.open;
       
       % Initialize history file

@@ -65,6 +65,7 @@ classdef pvectorLH < handle
       
       %% Add new parameter
       function add(obj, ps)
+         assert(isa(ps, 'pstructLH'))
          % Does this param exist?
          idx1 = find(strcmp(obj.nameV, ps.name), 1, 'first');
          if ~isempty(idx1)
@@ -276,6 +277,7 @@ classdef pvectorLH < handle
       OUT
          outV :: string array
             each entry is a formatted parameter
+            formatted for on screen display during calibration
       %}
       function [outV, pNameV] = calibrated_values(p, paramS, doCalV)
          % Is paramS a struct?
