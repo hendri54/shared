@@ -8,32 +8,34 @@ properties
    % Axes handle
    axesHandle
    % Figure type: 'line', 'bar'
-   figType
+   figType  char
    % Color scheme :: string
    colorScheme
    % Height, width in inches (for printing)
-   height
-   width
+   height  double
+   width  double
    % The same in pixes (for screen)
-   screenHeight
-   screenWidth
+   screenHeight  double
+   screenWidth  double
    % Visible?
-   visible
+   visible  logical
    
-   lineWidth
-   figFontName
-   figFontSize
-   legendFontSize
+   lineWidth  double
+   figFontName  char
+   figFontSize  double
+   legendFontSize  double
    
    % Figure file info
    % Extension, such as '.pdf'
-   figExt
+   figExt  char
    % Format, such as 'pdf'
-   fileFormat
+   fileFormat  char
    % Save file with figure data ('.fig')?
-   saveFigFile
+   saveFigFile  logical = true
    % Sub-dir for figure data file
-   figFileDir
+   figFileDir  char
+   % Save file with figure notes? If so, populate this string vector
+   figNoteV  cell = []
    
    % Debug level
    dbg
@@ -62,10 +64,10 @@ methods
    % Use default if not provided
    function set_options(fS, argListV)      
       propertyV = {'colorScheme', 'height', 'width', 'visible', 'lineWidth', 'figFontName', 'figFontSize', ...
-         'legendFontSize', 'figType', 'saveFigFile', 'figFileDir', 'dbg', ...
+         'legendFontSize', 'figType', 'saveFigFile', 'figFileDir', 'figNoteV', 'dbg', ...
           'screenHeight',  'screenWidth'};
       defaultV  = {'default',       3,       3 * 1.61,   true,    2,          'Times',       10, ...
-         10,                'line',       true,       'figData',  111, ...
+         10,                'line',       true,       'figData',  [],  111, ...
          800, 800 * 1.61};
 
       % Parse the input args

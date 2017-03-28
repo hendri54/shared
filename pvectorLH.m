@@ -20,10 +20,10 @@ classdef pvectorLH < handle
       guessMax = 10;
    end
    properties
-      np = 0;        % no of entries
-      nameV          % parameter names
-      valueV         % array of pstruct
-      doCalV         % permitted values of doCal
+      np  uint16 = 0;        % no of entries
+      nameV  cell        % parameter names
+      valueV  cell        % array of pstruct
+      doCalV  double       % permitted values of doCal
    end
    
    methods
@@ -295,7 +295,7 @@ classdef pvectorLH < handle
                if ~isStruct ||  isfield(paramS, nameStr)
                   pValueV = paramS.(nameStr);     
                   if length(pValueV) <= 4
-                     valueStr = string_lh.string_from_vector(pValueV(:), '%.3f');
+                     valueStr = stringLH.string_from_vector(pValueV(:), '%.3f');
                   else
                      valueStr = sprintf('%.3f to %.3f',  pValueV(1), pValueV(end));
                   end

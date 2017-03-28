@@ -1,4 +1,11 @@
-function make_relative_paths_test
+function tests = make_relative_paths_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 fileListV = {which('classify_lh.m'),  which('EnumLH.m'),  which('statsLH.std_w')};
 

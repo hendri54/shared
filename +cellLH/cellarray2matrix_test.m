@@ -1,4 +1,11 @@
-function cellarray2matrix_test
+function tests = cellarray2matrix_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing cellarray2matrix');
 

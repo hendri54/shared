@@ -1,4 +1,11 @@
-function find_regressors_test(testCase)
+function tests = find_regressors_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 % Really just a syntax test. The code is so direct that any test would simply repeat it
 
 dbg = 111;

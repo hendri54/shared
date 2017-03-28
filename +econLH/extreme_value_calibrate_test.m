@@ -1,11 +1,15 @@
-function extreme_value_calibrate_test(doProfile)
+function tests = extreme_value_calibrate_test
 
-disp('Testing extreme_value_calibrate');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 dbg = 111;
 
-if nargin < 1
-   doProfile = true;
-end
+doProfile = false;
 
 if doProfile
    dbg = 0;

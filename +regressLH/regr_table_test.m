@@ -1,4 +1,11 @@
-function regr_table_test
+function tests = regr_table_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing regr_table');
 

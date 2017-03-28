@@ -4,14 +4,14 @@
 classdef devstructLH < handle
 
 properties
-   name     % eg 'fracEnterIq'
-   modelV   % model values
-   dataV    % data values
-   wtV      % relative weights, sum to 1
-   scaleFactor    % multiply model and data by this when constructing scalarDev
-   shortStr       % eg 'enter/iq'
-   longStr        % eg 'fraction entering college by iq quartile'
-   fmtStr         % for displaying the deviation
+   name  char     % eg 'fracEnterIq'
+   modelV  double   % model values
+   dataV  double    % data values
+   wtV  double      % relative weights, sum to 1
+   scaleFactor  double    % multiply model and data by this when constructing scalarDev
+   shortStr  char       % eg 'enter/iq'
+   longStr  char        % eg 'fraction entering college by iq quartile'
+   fmtStr  char         % for displaying the deviation
 end
 
 methods
@@ -32,9 +32,10 @@ methods
    end
    
    % Scalar deviation
+   % scaleFactor used to be inside the sum of squares
    function [scalarDev, scalarStr] = scalar_dev(d)
-      devV = d.wtV(:) .* (d.scaleFactor .* (d.modelV(:) - d.dataV(:))) .^ 2;
-      scalarDev = sum(devV);
+      devV = d.wtV(:) .* ((d.modelV(:) - d.dataV(:))) .^ 2;
+      scalarDev = d.scaleFactor .* sum(devV);
       scalarStr = sprintf(d.fmtStr, scalarDev);
    end
    

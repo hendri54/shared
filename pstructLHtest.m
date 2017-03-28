@@ -1,4 +1,11 @@
-function pstructTestLH
+function tests = pstructLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(23);
 n = 7;

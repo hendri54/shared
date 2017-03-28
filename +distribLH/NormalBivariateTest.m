@@ -1,4 +1,11 @@
-function NormalBivariateTest
+function tests = NormalBivariateTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing NormalBivariate');
 

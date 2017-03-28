@@ -1,4 +1,11 @@
-function geo_sum_test
+function tests = geo_sum_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Test geo_sum');
 t2 = 8;

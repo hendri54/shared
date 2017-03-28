@@ -1,4 +1,11 @@
-function PaperFiguresTest(testCase)
+function tests= PaperFiguresTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 % Change: did not test sub dirs
 
 disp('Testing PaperFigures');

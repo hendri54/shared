@@ -1,4 +1,11 @@
-function act2sat1Test
+function tests = act2sat1Test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 actV = randi([11, 35], [100, 1]);
 

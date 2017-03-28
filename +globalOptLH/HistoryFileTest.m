@@ -1,4 +1,11 @@
-function HistoryFileTest
+function tests = HistoryFileTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng('default');
 

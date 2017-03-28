@@ -1,4 +1,11 @@
-function CesNestedLHtest
+function tests = CesNestedLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 % Change: no need for alphas to sum to 1 (except cobb-douglas) +++++
 
@@ -46,8 +53,8 @@ for substElast = [0.5, 1, 2.5]
    fS.output(AV, alphaTopM, alphaM, xM);
 
 
-   mp_test(fS, AV, alphaTopM, alphaM, xM);
-   weight_test(fS, AV, alphaTopM, alphaM, xM, alphaTopSum, alphaSumV);
+   mp_tester(fS, AV, alphaTopM, alphaM, xM);
+   weight_tester(fS, AV, alphaTopM, alphaM, xM, alphaTopSum, alphaSumV);
 end
 
 end
@@ -55,7 +62,7 @@ end
 
 
 %% Test marginal products
-function mp_test(fS, AV, alphaTopM, alphaM, xM)
+function mp_tester(fS, AV, alphaTopM, alphaM, xM)
    nInputs = sum(fS.nV);
    yV = fS.output(AV, alphaTopM, alphaM, xM);
    mpM = fS.mproducts(AV, alphaTopM, alphaM, xM);
@@ -76,7 +83,7 @@ end
 
 
 %% Test recovery of factor weights
-function weight_test(fS, AV, alphaTopM, alphaM, xM, alphaTopSum, alphaSumV)
+function weight_tester(fS, AV, alphaTopM, alphaM, xM, alphaTopSum, alphaSumV)
    mpM = fS.mproducts(AV, alphaTopM, alphaM, xM);
    incomeM = mpM .* xM;
    

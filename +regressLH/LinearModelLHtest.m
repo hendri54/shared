@@ -1,4 +1,11 @@
-function LinearModelLHtest
+function tests = LinearModelLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing linear model');
 

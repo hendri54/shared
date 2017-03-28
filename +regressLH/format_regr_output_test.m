@@ -1,4 +1,11 @@
-function format_regr_output_test
+function tests = format_regr_output_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing format_regr_output');
 

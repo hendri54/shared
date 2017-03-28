@@ -36,13 +36,31 @@ methods
          validateattributes(v2V, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
       end
 
+      % Prob of choosing option 1
       prob1V = bS.prob1(v1V, v2V);
+      
       % Mean of pref shock, conditional on choosing option 2 (p > v1 - v2)
       % For very large v1-v2, prob1 = 1 and the truncated mean cannot be computed
-      pMeanV = distribLH.truncated_normal(0, bS.sigmaP,  (v1V - v2V) .* (prob1V < 1 - 1e6),  [],  bS.dbg);
+      pMeanV = distribLH.truncated_normal(0, bS.sigmaP,  (v1V - v2V) .* (prob1V < 1 - 1e-6),  [],  bS.dbg);
       eUtilV = prob1V .* v1V + (1 - prob1V) .* (v2V + pMeanV);
+      
+      % Check for cases with probabilities very close to 0 or 1
+      iV = (prob1V > 1 - 1e-6);
+      if any(iV)
+         eUtilV(iV) = v1V(iV);
+      end
+      iV = (prob1V < 1e-6);
+      if any(iV)
+         eUtilV(iV) = v2V(iV);
+      end
 
       validateattributes(eUtilV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(v1V)})
+
+%       rng('default');
+%       pV = randn(1e6,1) .* bS.sigmaP;
+%       pV(pV <= v1V - v2V) = [];
+%       pMean = mean(pV);
+%       keyboard
    end
    
 end

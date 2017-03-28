@@ -1,4 +1,11 @@
-function WeightedDataTestLH
+function tests = WeightedDataLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(450)
 n = 30;
@@ -18,14 +25,14 @@ validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'none
 
 pctV = wS.percentile_positions;
 
-pct_positions_repeated_test
-values_weights_test;
+% pct_positions_repeated_test
+% values_weights_test;
 
 end
 
 
 %% Testing assignment of percentile positions (repeated data)
-function pct_positions_repeated_test
+function pct_positions_repeated_test(testCase)
    rng(44);
    
    n = 100;
@@ -65,7 +72,7 @@ end
 
 
 %% Testing values_weights
-function values_weights_test
+function values_weights_test(testCase)
    n = 100;
    dataV = round(randn(n, 1) .* 10, 3);
    wtV = rand(n, 1) .* 10;

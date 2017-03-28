@@ -1,4 +1,6 @@
 % Scatter plot with option to print smoothed line
+%{
+%}
 classdef ScatterPlot < handle
       
 properties
@@ -11,7 +13,7 @@ end
 methods
    %% Constructor
    %{
-   Can pass a FigureLH object, so that properties can be set
+   Can pass a properties of a FigureLH object. Can also pass the FigureLH object directly
    %}
    function spS = ScatterPlot(figS, varargin)
       if isempty(figS)
@@ -26,7 +28,28 @@ methods
    end
    
    
+   %% Close figure
+   function close(spS)
+      spS.figS.close;
+   end
+   
+   
+   %% Format
+   function format(spS)
+      spS.figS.format;
+   end
+   
+   
+   %% Save
+   function save(spS, figFn, saveFigures)
+      spS.figS.save(figFn, saveFigures);
+   end
+   
+   
    %% Scatter and smooth line
+   %{
+   Leaves plot open
+   %}
    function plot(spS, xV, yV)
       spS.figS.new;
       hold on;

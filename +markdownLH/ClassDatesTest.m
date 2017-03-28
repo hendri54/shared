@@ -1,4 +1,11 @@
-function ClassDatesTest
+function tests = ClassDatesTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 startDate = datetime(2016, 8, 24);
 endDate = datetime(2016, 12, 7);

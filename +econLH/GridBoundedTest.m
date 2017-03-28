@@ -1,4 +1,11 @@
-function GridBoundedTest
+function tests = GridBoundedTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 n = 9;
 xMin = -0.9;

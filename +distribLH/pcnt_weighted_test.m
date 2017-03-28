@@ -1,7 +1,12 @@
-function pcnt_weighted_test
-% -------------------------------
+function tests = pcnt_weighted_test
 
-disp('Testing pcnt_weighted');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 
 % Draw uniform RVs
 rng(201);

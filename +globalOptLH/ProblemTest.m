@@ -1,4 +1,11 @@
-function ProblemTest
+function tests = ProblemTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 %rng('default');

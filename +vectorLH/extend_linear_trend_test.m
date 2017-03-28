@@ -1,6 +1,11 @@
-function extend_linear_trend_test
+function tests = extend_linear_trend_test
 
-disp('Testing extend_linear_trend');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(21);
 T = 20;

@@ -1,4 +1,11 @@
-function RegrAgeSchoolYearTest
+function tests = RegrAgeSchoolYearTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(20);
 

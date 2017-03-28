@@ -1,4 +1,11 @@
-function show_test
+function tests = show_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 testS.test1 = 123;
 testS.testV = linspace(1, 2, 4);

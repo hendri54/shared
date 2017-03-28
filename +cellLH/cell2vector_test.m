@@ -1,4 +1,10 @@
-function cell2vector_test
+function tests = cell2vector_test
+
+tests = functiontests(localfunctions);
+
+end
+
+function oneTest(testCase)
 
 dbg = 111;
 

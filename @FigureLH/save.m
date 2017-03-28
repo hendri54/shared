@@ -41,7 +41,7 @@ end
 
 
 %% Save figure
-if saveFigures == 1
+if saveFigures
    % Set figure position for printing
 
    figS.fh.Units = 'inches';
@@ -49,6 +49,7 @@ if saveFigures == 1
 
    export_fig([figFn, figExtStr], painterStr, '-painters', '-r600', '-nocrop');
    
+   % Also save as FIG file
    if figS.saveFigFile
       % Which dir?
       figFileDir = figS.figFileDir;
@@ -61,11 +62,23 @@ if saveFigures == 1
          filesLH.mkdir(figFileDir);
       end
       
-      % Also save as FIG file
       hgsave(gcf, fullfile(figFileDir, figName));
    end
+      
+   figS.close;
+
+   % Save figure notes, if any
+   if ~isempty(figS.figNoteV)
+      % Directory
+      notesDir = fullfile(figDir, 'fig_notes');
+      if ~exist(notesDir, 'dir')
+         filesLH.mkdir(notesDir);
+      end
+      tS = filesLH.TextFile(fullfile(notesDir, [figName, '.txt']));
+      tS.clear;
+      tS.write_strings(figS.figNoteV);
+   end
    
-   close;
    disp(['Saved figure:  ',  figFn, figExtStr]);
 
 else

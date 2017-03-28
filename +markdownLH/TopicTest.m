@@ -1,4 +1,11 @@
-function TopicTest
+function tests = TopicTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 classDateV = datetime(2016,8,24) : 3 : datetime(2016,12,7);
 

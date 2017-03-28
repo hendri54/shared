@@ -1,4 +1,11 @@
-function BenPorathCornerTestLH
+function tests = BenPorathCornerTestLH
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing BenPorathCornerLH');
 
@@ -38,7 +45,7 @@ for iCase = 1 : 2
 
    spS = BenPorathCornerLH(h0, z, deltaH, gamma1, gamma2, T, p, r, cvS);
 
-   test_all(spS);
+   testing_all(spS);
 end
 
 
@@ -48,10 +55,10 @@ end
 
 
 %% Tests
-function test_all(spS)
+function testing_all(spS)
    spS.test_cont_value;
    syntax_tests(spS);
-   technology_test(spS);
+   technology_tester(spS);
 
    % ***** Solve and check
 
@@ -284,7 +291,7 @@ end
 
 
 %% Local: Technology
-function technology_test(spS)
+function technology_tester(spS)
    n = 10;
    h_aV = linspace(1, 2, n)';
    x_aV = linspace(3, 2, n)';

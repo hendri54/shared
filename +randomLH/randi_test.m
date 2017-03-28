@@ -1,4 +1,11 @@
-function randi_test
+function tests = randi_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing randi');
 

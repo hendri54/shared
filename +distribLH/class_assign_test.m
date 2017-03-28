@@ -1,6 +1,11 @@
-function class_assign_test
+function tests = class_assign_test
 
-disp('Test of class_assign');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 rng(21);

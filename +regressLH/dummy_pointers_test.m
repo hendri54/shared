@@ -1,4 +1,11 @@
-function dummy_pointers_test(testCase)
+function tests = dummy_pointers_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 [mdl, modelS] = regressLH.make_test_model;

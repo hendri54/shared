@@ -1,4 +1,11 @@
-function FolderTest
+function tests = FolderTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 fPath = lhS.dirS.sharedDirV{1};

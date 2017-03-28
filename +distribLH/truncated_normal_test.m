@@ -5,12 +5,56 @@ tests = functiontests(localfunctions);
 end
 
 
+%% Test lots of truncation
+function lbTest(testCase)
+   % The test case is rigged to get about 100 valid obs
+   xMean = -1;
+   xStd = 0.8;
+   xLb = 2;
+   xUb = [];
+   dbg = 111;
+   
+   [meanL, varL] = distribLH.truncated_normal(xMean, xStd, xLb, xUb, dbg);
+   
+   rng(18);
+   nRandV = xMean + xStd .* randn([1e6, 1]);
+   nRandV(nRandV < xLb) = [];
+   assert(length(nRandV) > 100);
+   assert(length(nRandV) < 1e3);
+   checkLH.approx_equal(mean(nRandV), meanL, 2e-2, []);
+   checkLH.approx_equal(std(nRandV),  varL .^ 0.5,  2e-2, []);
+end
+
+
+function ubTest(testCase)
+   % The test case is rigged to get about 100 valid obs
+   xMean = -1;
+   xStd = 0.8;
+   xLb = [];
+   xUb = -3.7;
+   dbg = 111;
+   
+   [meanL, varL] = distribLH.truncated_normal(xMean, xStd, xLb, xUb, dbg);
+   
+   rng(18);
+   nRandV = xMean + xStd .* randn([1e6, 1]);
+   nRandV(nRandV > xUb) = [];
+   assert(length(nRandV) > 100);
+   assert(length(nRandV) < 1e3);
+   checkLH.approx_equal(mean(nRandV), meanL, 2e-2, []);
+   checkLH.approx_equal(std(nRandV),  varL .^ 0.5,  2e-2, []);
+
+end
+
+
+%% Main test cases
 function allTest(testCase)
 
 dbg = 111;
 xMean = 0.3;
 xStd = 2;
 rng(13);
+nRandV = randn([5e5, 1]);
 
 % Scalar or vector inputs
 for n = [1, 3]
@@ -39,8 +83,9 @@ for n = [1, 3]
 
 
       % Test by simulating
+      % It takes lots of observations to get close to the true mean
       for ix = 1 : n
-         xV = xMean + xStd .* randn([5e5, 1]);
+         xV = xMean + xStd .* nRandV;
          if ~isempty(xLb)
             xV(xV < xLb(ix)) = [];
          end

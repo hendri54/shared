@@ -1,6 +1,12 @@
-function ProbMatrix2Dtest
+function tests = ProbMatrix2Dtest
 
-disp('Testing ProbMatrix2D');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 
 nx = 130;
 ny = 14;

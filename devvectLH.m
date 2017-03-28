@@ -6,14 +6,14 @@ classdef devvectLH < handle
 
 properties
    % no of entries preallocated
-   nMax
+   nMax  uint16
    % no of entries filled
-   n
+   n  uint16
    % name of each entry
-   nameV
+   nameV  cell
    % vector of devstruct; one for each entry
-   dsV
-   end
+   dsV  cell
+end
    
 methods
    %% Constructor
@@ -27,7 +27,7 @@ methods
    
    %% Add a deviation
    %  ds is a devstruct
-   function v = dev_add(v, ds)
+   function dev_add(v, ds)
       if ~isa(ds, 'devstructLH')
          error('Invalid ds');
       end

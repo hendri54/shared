@@ -1,6 +1,11 @@
-function apply_scalar_function_test
+function tests = apply_scalar_function_test
 
-disp('Testing apply_scalar_function');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 for nDim = 3 : 5
    rng(43);

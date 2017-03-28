@@ -1,6 +1,12 @@
-function markov_sim_test
+function tests = markov_sim_test
 
-disp('Testing markov_sim');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 % Seed random number generator (for reproducability)
 rng(21);
 dbg = 111;

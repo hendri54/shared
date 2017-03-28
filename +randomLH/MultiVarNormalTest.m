@@ -1,8 +1,11 @@
-function MultiVarNormalTest
+function tests = MultiVarNormalTest
 
-disp('Testing MultiVarNormal');
+tests = functiontests(localfunctions);
 
-conditional_distrib_test;
+end
+
+
+function oneTest(testCase)
 
 
 %% Settings
@@ -139,7 +142,7 @@ end
 
 
 %% Test conditional distribution
-function conditional_distrib_test
+function conditional_distrib_test(testCase)
    dbg = 111;
    rng(41);
    n = 5;

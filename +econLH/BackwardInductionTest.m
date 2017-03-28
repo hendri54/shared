@@ -1,4 +1,11 @@
-function BackwardInductionTest
+function tests = BackwardInductionTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 uFct = @(c) log(c);

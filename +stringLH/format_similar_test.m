@@ -1,6 +1,12 @@
-function format_similar_test
+function tests = format_similar_test
 
-disp('Testing format_similar');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 dbg = 111;
 
 inStr = '123.456';

@@ -1,4 +1,11 @@
-function HistoryTest
+function tests = HistoryTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 
 %% Make inputs

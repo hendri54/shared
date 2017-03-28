@@ -1,4 +1,11 @@
-function cl_bounds_w_test
+function tests = cl_bounds_w_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 rng(409);

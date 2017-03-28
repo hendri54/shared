@@ -38,7 +38,7 @@ if isempty(outV)
 end
 fprintf('Number of matching files: %i \n', length(outV));
 
-if ~input_lh.ask_confirm('Replace with this file mask?', noConfirm)
+if ~inputLH.ask_confirm('Replace with this file mask?', noConfirm)
    return;
 end
 

@@ -1,4 +1,11 @@
-function FtpTargetTest
+function tests = FtpTargetTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 

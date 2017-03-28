@@ -1,4 +1,11 @@
-function extreme_value_decision_test
+function tests = extreme_value_decision_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 n = 4;
 prefScale = 2;
@@ -15,14 +22,14 @@ for nTypes = [1, 3]
 
    [prob_ixM, eVal_iV] = econLH.extreme_value_decision(value_ixM, prefScale, dbg);
    
-   test_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale);
+   check_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale);
 end
 
 
 end
 
 %% Test by simulation
-function test_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale)
+function check_by_sim(value_ixM, prob_ixM, eVal_iV, prefScale)
 
 [nTypes, n] = size(value_ixM);
 

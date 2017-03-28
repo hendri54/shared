@@ -2,7 +2,8 @@ function [meanLV, varLV] = truncated_normal(muL, sigmaL, lbV, ubV, dbg)
 % Return mean and variance of truncated normal
 %{
 IN:
-  mu, sigma
+  muL, sigmaL
+      mean and std dev of the normal to be truncated
   lb, ub
      Interval of truncation
      lb or ub can be empty for one-sided truncation

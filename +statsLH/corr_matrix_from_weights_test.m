@@ -1,4 +1,11 @@
-function corr_matrix_from_weights_test
+function tests = corr_matrix_from_weights_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(490);
 for n = 2 : 5

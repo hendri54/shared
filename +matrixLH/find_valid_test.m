@@ -1,6 +1,11 @@
-function find_valid_test
+function tests = find_valid_test
 
-disp('Testing find_valid');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 missVal = -9191;

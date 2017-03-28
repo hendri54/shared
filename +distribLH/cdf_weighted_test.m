@@ -1,5 +1,11 @@
-function cdf_weighted_test
-% -----------------------------------------
+function tests = cdf_weighted_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Test cdf_weighted');
 dbg = 111;

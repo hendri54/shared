@@ -34,13 +34,15 @@ properties
    maxTime  double
    % Max number of points to evaluate
    maxPoints
+   % Min points to evaluate (unless time runs out)
+   minPoints  uint16  =  1
    % fVal must fall by at least fToler in nRecent steps
    fToler   double  =  1e-3;
-   nRecent  double
+   nRecent  uint16
    
    % *** Selection of new points
    % Make new points from the nBest best points found so far
-   nBest    double   = 10;
+   nBest    uint16   = 10;
    % Probability of using random new point, not based on history
    probRandomPoint   double   = 0.2
    % Probabiliy of rejecting point in basin of attraction of another point
@@ -223,7 +225,7 @@ methods
          % Get results from next job
          [jobIdx,  outS] = fetchNext(jobV);
          doneV(jobIdx) = true;
-         fprintf('Finished job ID  %i \n', jobIdx);
+         fprintf('Finished job ID  %i,   fVal %.3f \n', jobIdx, outS.fVal);
          
          % Write to history
          histS = hfS.add(outS.guessV, outS.solnV, outS.fVal, outS.exitFlag);
@@ -263,7 +265,8 @@ methods
       end
       
       % Check progress over last N points
-      if histS.n > pS.nRecent
+      % But only if at least minPoints have been run
+      if (histS.n > pS.nRecent)  &&  (histS.n >= pS.minPoints)
          % Best point before last n
          bestBefore = min(histS.fValV(1 : (histS.n - pS.nRecent)));
          % Best point since last n

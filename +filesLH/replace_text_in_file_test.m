@@ -1,4 +1,11 @@
-function replace_text_in_file_test
+function tests = replace_text_in_file_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 testDir = lhS.dirS.testFileDir;

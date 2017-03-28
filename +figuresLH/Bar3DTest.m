@@ -1,4 +1,11 @@
-function Bar3DTest
+function tests = Bar3DTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 isVisible = false;
 

@@ -1,4 +1,11 @@
-function does_file_contain_strings_test
+function tests = does_file_contain_strings_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 testDir = fileparts(mfilename('fullpath'));
 findStrV = {'test1', 'test2'};

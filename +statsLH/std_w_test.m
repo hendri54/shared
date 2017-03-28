@@ -1,7 +1,11 @@
-function std_w_test
-% Test function
+function tests = std_w_test
 
-fprintf('\nTesting std_w\n');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 dbg = 111;
 rng(34);

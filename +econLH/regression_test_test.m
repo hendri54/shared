@@ -1,10 +1,13 @@
-function regression_test_test(doShow)
+function tests = regression_test_test
 
-disp('Testing regression_test');
+tests = functiontests(localfunctions);
 
-if nargin < 1
-   doShow = false;
 end
+
+
+function oneTest(testCase)
+
+doShow = false;
 
 rng(94);
 n = 1e3;

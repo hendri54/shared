@@ -1,4 +1,11 @@
-function SymbolTableLHtest
+function tests = SymbolTableLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 

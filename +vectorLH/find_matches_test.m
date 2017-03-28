@@ -1,6 +1,12 @@
-function find_matches_test
+function tests = find_matches_test
 
-disp('Testing find_matches');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 dbg = 111;
 
 yV = 1 : 5;
@@ -12,7 +18,7 @@ assert(isequal(xV, yV(idxV)));
 % Testing happens inside find_matches
 rng(43);
 valueV = 1 : 100;
-for i1 = 1 : 10;
+for i1 = 1 : 10
    yV = valueV(randperm(32));
    xV = valueV(randperm(14));
    vectorLH.find_matches(xV, yV, dbg);

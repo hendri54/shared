@@ -1,4 +1,11 @@
-function rdir_test
+function tests = rdir_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 % Note: rdir must be on the path (b/c it is recursive)
 
 disp('Testing rdir');

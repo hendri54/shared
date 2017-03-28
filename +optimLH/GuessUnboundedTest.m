@@ -1,4 +1,11 @@
-function GuessUnboundedTest
+function tests = GuessUnboundedTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(324);
 n = 5;

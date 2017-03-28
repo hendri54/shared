@@ -1,4 +1,11 @@
-function SubTopicTest
+function tests = SubTopicTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 classDate = datetime(2016, 8, 22);
 stringV = {'[Dynamics and steady state](olg/olg_analysis_sl.pdf)', '[solution for example](olg/OLG_example.pdf)', ...

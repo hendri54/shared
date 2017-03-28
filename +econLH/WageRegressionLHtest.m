@@ -1,4 +1,11 @@
-function WageRegressionLHtest(testCase)
+function tests = WageRegressionLHtest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 %{
 Change:
    test with missing values +++

@@ -1,6 +1,12 @@
-function rand_discrete_test
+function tests = rand_discrete_test
 
-disp('Testing rand_discrete');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 dbg = 111;
 rng(40);
 

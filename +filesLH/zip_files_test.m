@@ -1,4 +1,11 @@
-function zip_files_test
+function tests = zip_files_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 lhS = const_lh;
 zipFile = fullfile(lhS.dirS.testFileDir,  'zip_files_test.zip');

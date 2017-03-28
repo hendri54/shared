@@ -1,6 +1,11 @@
-function pvectorLHtest
+function tests = pvectorLHtest
 
-fprintf('\nTest code for pvector class\n');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng('default')
 doCalV = 0 : 2;

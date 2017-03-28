@@ -1,4 +1,11 @@
-function find_files_by_name_test
+function tests = find_files_by_name_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 % Just syntax test. Without creating a test directory full of files, this is hard to test.
 
 lhS = const_lh;

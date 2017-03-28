@@ -1,4 +1,11 @@
-function perpetual_inventory_test
+function tests = perpetual_inventory_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing perpetual_inventory');
 ny = 8;

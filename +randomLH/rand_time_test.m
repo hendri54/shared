@@ -1,4 +1,11 @@
-function rand_time_test
+function tests = rand_time_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 rng(45);
 y0 = rand(1,1);

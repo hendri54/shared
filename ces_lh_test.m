@@ -1,4 +1,11 @@
-function ces_lh_test
+function tests = ces_lh_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
    fprintf('Testing ces_lh \n');
 
    for N = [1, 3]
@@ -36,15 +43,15 @@ function ces_lh_test
 %          y2V = fS.output(AV .* 1.5, alphaM ./ 1.5, xM);
 %          checkLH.approx_equal(y2V, yV, 1e-7, []);
 
-         mp_test(fS);
-         factor_weights_test(fS);
+         mp_tester(fS);
+         factor_weights_tester(fS);
       end
    end
 end
 
 
 %%  Test marginal products
-function mp_test(fS)
+function mp_tester(fS)
    % fprintf('Testing marginal products\n');
    [T, n] = size(fS.alphaM);
    % If Cobb-Douglas: alphas must sum to 1
@@ -105,7 +112,7 @@ end
 
 
 %%  Test factor weights
-function factor_weights_test(fS)
+function factor_weights_tester(fS)
    mpM = fS.mproducts;
    
    alphaSum = sum(fS.alphaM(1,:));

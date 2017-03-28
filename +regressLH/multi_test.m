@@ -1,12 +1,11 @@
-function test_all
+function tests = multi_test
 
-disp('Testing all regression code');
+tests = functiontests(localfunctions);
 
-% regressLH.dummy_pointers_test;
-% regressLH.find_regressors_test;
-regressLH.format_regr_output_test;
-regressLH.regr_table_test;
-regressLH.RegrAgeSchoolYearTest;
+end
+
+
+function oneTest(testCase)
 
 
 %% Make a regression model for test purposes

@@ -1,4 +1,11 @@
-function string_array_to_cell_test
+function tests = string_array_to_cell_test
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 cellV = {'abc', 'defg'};
 strV = string(cellV);

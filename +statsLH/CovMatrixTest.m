@@ -1,4 +1,11 @@
-function CovMatrixTest
+function tests = CovMatrixTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 n = 5;
 varNameV = string_lh.vector_to_string_array(1 : n,  'var%i');

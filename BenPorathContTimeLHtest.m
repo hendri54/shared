@@ -1,4 +1,11 @@
-function BenPorathContTimeTestLH
+function tests = BenPorathContTimeTestLH
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 disp('Testing BenPorathContTimeLH');
 
@@ -47,8 +54,8 @@ mPrime_aV = bpS.mprime_age(ageV);
 %% Local functions
 
 foc_check(bpS)
-perturbation_test(bpS)
-marginal_value_age0_test(bpS);
+perturbation_check(bpS)
+marginal_value_age0_check(bpS);
 
 
 %% Test m'(a)
@@ -252,7 +259,7 @@ end
 
 
 %% Test optimality by perturbing solution
-function perturbation_test(bpS)
+function perturbation_check(bpS)
    % Solve for a set of ages
    nAge = 100;
    ageV = linspace(0, bpS.T, nAge);
@@ -333,7 +340,7 @@ end
 
 %% Local: Test marginal value of age 0
 % -rV + dV/d(age0)
-function marginal_value_age0_test(bpS)
+function marginal_value_age0_check(bpS)
    pvEarn = bpS.pv_earnings;
    mValue = bpS.marginal_value_age0;
 

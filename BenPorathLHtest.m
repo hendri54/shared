@@ -1,9 +1,13 @@
-function BenPorathLHtest
+function tests = BenPorathLHtest
 % Test solving Ben-Porath model
-%{
-%}
 
-fprintf('\nTesting Ben-Porath solution\n');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 
 dbg = 111;
 

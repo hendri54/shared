@@ -1,6 +1,12 @@
-function contains_test
+function tests = contains_test
 
-disp('Testing contains');
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
+
 dbg = 111;
 
 inStr = 'abc\d/e\_f.gh';

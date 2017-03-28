@@ -1,4 +1,11 @@
-function ClassScheduleTest
+function tests = ClassScheduleTest
+
+tests = functiontests(localfunctions);
+
+end
+
+
+function oneTest(testCase)
 
 classDateS = markdownLH.ClassDates(datetime(2016,8,24), datetime(2016,12,7), {'Monday', 'Wednesday'});
 classDateV = classDateS.date_list;
