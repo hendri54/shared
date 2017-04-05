@@ -203,11 +203,14 @@ classdef pvectorLH < handle
          % Last entry in guessV that is filled
          idx1 = 0;
          for i1 = 1 : p.np
+            % Get pstructLH
             ps = p.valueV{i1};
             if any(ps.doCal == doCalV)
                idxV = idx1 + (1 : numel(ps.valueV));
                % Take the value out of the paramS struct
                %  Flatten matrices. This can be undone using reshape
+               assert(isequal(length(idxV),  length(paramS.(ps.name)(:))),  ...
+                  sprintf('Size of %s in paramS does not match size in pvector',  ps.name));
                guessV(idxV) = paramS.(ps.name)(:);
                lbV(idxV) = ps.lbV(:);
                ubV(idxV) = ps.ubV(:);

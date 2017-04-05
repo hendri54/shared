@@ -1,5 +1,16 @@
 function result = approx_equal(x1M, x2M, absToler, relToler, msgStr)
 % Check whether 2 matrices are approximately equal
+%{
+If nargout < 1: throws error when discrepancies are found
+
+IN
+   x1M, x2M  ::  double, no NaN
+
+OUT
+   result  ::  logical
+      true = match
+      false = no match
+%}
 
 if nargin < 5
    msgStr = 'Approx equal fails';
@@ -12,9 +23,11 @@ end
 validateattributes(x1M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(x2M)})
 validateattributes(x2M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
 
+
 result = true;
 if ~isempty(absToler)
-   if any(abs(x1M(:) - x2M(:)) > absToler)
+   maxDiff = max(abs(x1M(:) - x2M(:)));
+   if maxDiff > absToler
       result = false;
    end
 end
@@ -24,6 +37,8 @@ if ~isempty(relToler)
    end
 end
 
+
+%% If no output arg and discrepancy: throw error
 
 if nargout < 1  &&  ~result
    absDiffV = abs(x1M(:) - x2M(:));

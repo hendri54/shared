@@ -41,8 +41,9 @@ for i1 = 1 : length(fBothV)
    if isnumeric(value1)
       if isnumeric(value2)
          if isequal(size(value1), size(value2))
-            if max(abs(value1(:) - value2(:))) > valueToler
-               fprintf('    %s  differs in value \n',  fn);
+            maxDiff = max(abs(value1(:) - value2(:)));
+            if maxDiff > valueToler
+               fprintf('    %s  differs in value by %.3g \n',  fn, maxDiff);
             end
          else
             fprintf('    %s  size mismatch \n',  fn);

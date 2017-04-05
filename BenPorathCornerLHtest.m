@@ -1,4 +1,4 @@
-function tests = BenPorathCornerTestLH
+function tests = BenPorathCornerLHtest
 
 tests = functiontests(localfunctions);
 
@@ -45,7 +45,7 @@ for iCase = 1 : 2
 
    spS = BenPorathCornerLH(h0, z, deltaH, gamma1, gamma2, T, p, r, cvS);
 
-   testing_all(spS);
+   check_all(spS);
 end
 
 
@@ -55,7 +55,7 @@ end
 
 
 %% Tests
-function testing_all(spS)
+function check_all(spS)
    spS.test_cont_value;
    syntax_tests(spS);
    technology_tester(spS);

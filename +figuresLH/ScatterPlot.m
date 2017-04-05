@@ -8,6 +8,9 @@ properties
    % Smoothing method
    smoothingMethod  char = 'rloess';
    smoothingParam   double = 0.2;
+   
+   % Ignore NaN when plotting?
+   ignoreNan  logical = true
 end
 
 methods
@@ -51,12 +54,24 @@ methods
    Leaves plot open
    %}
    function plot(spS, xV, yV)
+      % *******  Smoothing
+      if spS.ignoreNan
+         idxV = find(~isnan(xV(:))  &  ~isnan(yV(:)));
+         assert(length(idxV) > 2,  'Too few data points');
+         sortM = sortrows([xV(idxV), yV(idxV)]);
+         clear idxV;
+      else
+         assert(~any(isnan(xV(:))),  'NaN x values encountered');
+         assert(~any(isnan(yV(:))),  'NaN y values encountered');
+         sortM = sortrows([xV(:), yV(:)]);
+      end
+      smoothV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
+      
+      
+      % *******  Plot
       spS.figS.new;
       hold on;
       iLine = 0;
-
-      sortM = sortrows([xV(:), yV(:)]);
-      smoothV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
       
       iLine = iLine + 1;
       spS.figS.plot_scatter(sortM(:,1), sortM(:,2), iLine);

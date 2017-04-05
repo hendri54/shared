@@ -10,19 +10,23 @@ IN
       file pointer; if not present, use std io
 %}
 
+%% Input check
+
 if isempty(fp)
    fp = 1;
 end
 assert(fp > 0,  'File pointer not valid');
 
 [nRows, nCols] = size(dataM);
+assert(isa(dataM, 'cell'),  'Expecting cell array input');
 
 if length(rowUnderlineV) ~= nRows
    error('Invalid rowUnderlineV');
 end
 
 
-% Find the width for each column
+%% Find the width for each column
+
 colWidthV = zeros(1, nCols);
 lengthM = zeros(nRows, nCols);
 for ic = 1 : nCols
@@ -36,6 +40,9 @@ end
 tbWidth = sum(colWidthV) + 2 .* nCols + 1;
 
 underlineStr = repmat('-', [1, tbWidth]);
+
+
+%% Write the table
 
 fprintf(fp, '\n');
 fprintf(fp, underlineStr);

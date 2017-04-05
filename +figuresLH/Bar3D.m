@@ -2,7 +2,7 @@
 %{
 Just a better interface for the matlab bar graph
 %}
-classdef Bar3D
+classdef Bar3D < handle
    
 properties
    % Data to plot
@@ -17,6 +17,8 @@ properties
    
    % FigureLH object
    figureS    FigureLH
+   
+   dbg  uint16 = 1
 end
 
 
@@ -50,6 +52,12 @@ methods
    end
    
    
+   % Set figure notes
+   function fig_notes(bS, figNoteV)
+      bS.figureS.fig_notes(figNoteV);
+   end
+   
+   
    %% Save
    function save(bS, figFn, saveFigures)
       bS.figureS.save(figFn, saveFigures);
@@ -59,6 +67,38 @@ methods
    %% Close
    function close(bS)
       bS.figureS.close;
+   end
+   
+   
+   %% Write text table with underlying data
+   function text_table(bS, outFn, fmtStr)
+      [nx, ny] = size(bS.data_xyM);
+      dataM = cell([nx+1, ny+1]);
+      
+      dataM{1,1} = [bS.xLabel, ' / ', bS.yLabel];
+      
+      % Header row
+      for iy = 1 : ny
+         dataM{1, iy+1} = sprintf('%i', iy);
+      end
+      
+      % Header column
+      for ix = 1 : nx
+         dataM{ix+1, 1} = sprintf('%i', ix);
+      end
+      
+      % Body
+      for ix = 1 : nx
+         for iy = 1 : ny
+            dataM{ix+1, iy+1} = sprintf(fmtStr, bS.data_xyM(ix,iy));
+         end
+      end
+
+      % ***  Write
+      fp = fopen(outFn, 'w');
+      rowUnderlineV = [1; zeros([nx, 1])];
+      cellLH.text_table(dataM, rowUnderlineV, fp, bS.dbg);
+      fclose(fp);
    end
 end
    

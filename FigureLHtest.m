@@ -9,8 +9,9 @@ function oneTest(testCase)
 
 lhS = const_lh;
 isVisible = false;
+% isVisible = true;
 
-fS = FigureLH('height', 3.5, 'width', 4.2, 'visible', false);
+fS = FigureLH('height', 3.5, 'width', 4.2, 'visible', isVisible);
 
 fS.set_defaults;
 

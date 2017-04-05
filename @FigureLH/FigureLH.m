@@ -88,6 +88,11 @@ methods
       fS.fileFormat = 'pdf';
    end
    
+   % Set figure notes
+   function fig_notes(fS, noteV)
+      fS.figNoteV = noteV;
+   end
+   
    
    %% New figure
    %{
