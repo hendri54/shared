@@ -172,15 +172,15 @@ progDirV = {fullfile(baseDirV{1}, 'grades720'), []};
 pS = ProjectLH('Grades 720', baseDirV{1}, progDirV{1}, [], 'grades720', []);
 plS.append(pS);
 
-baseDirV = {'/Users/lutz/Documents/data/web/hendri54.github.io/econ520', []};
-progDirV = baseDirV;
-pS = ProjectLH('Econ 520', baseDirV{1}, progDirV{1}, [], '520', []);
-plS.append(pS);
+% baseDirV = {'/Users/lutz/Documents/data/web/hendri54.github.io/econ520', []};
+% progDirV = baseDirV;
+% pS = ProjectLH('Econ 520', baseDirV{1}, progDirV{1}, [], '520', []);
+% plS.append(pS);
 
-baseDirV = {'/Users/lutz/Documents/data/web/hendri54.github.io/econ720', []};
-progDirV = baseDirV;
-pS = ProjectLH('Schedule 720', baseDirV{1}, progDirV{1}, [], '720', []);
-plS.append(pS);
+% baseDirV = {'/Users/lutz/Documents/data/web/hendri54.github.io/econ720', []};
+% progDirV = baseDirV;
+% pS = ProjectLH('Schedule 720', baseDirV{1}, progDirV{1}, [], '720', []);
+% plS.append(pS);
 
 baseDirV = {'/Users/lutz/Documents/data/web/hendri54.github.io/econ920', []};
 progDirV = baseDirV;

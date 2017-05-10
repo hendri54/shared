@@ -49,23 +49,40 @@ methods
    end
    
    
-   %% Scatter and smooth line
-   %{
-   Leaves plot open
-   %}
-   function plot(spS, xV, yV)
-      % *******  Smoothing
+   %% Produce smooth line through scatter
+   function [xOutV, yOutV] = smooth_line(spS, xV, yV)
       if spS.ignoreNan
          idxV = find(~isnan(xV(:))  &  ~isnan(yV(:)));
          assert(length(idxV) > 2,  'Too few data points');
          sortM = sortrows([xV(idxV), yV(idxV)]);
-         clear idxV;
       else
          assert(~any(isnan(xV(:))),  'NaN x values encountered');
          assert(~any(isnan(yV(:))),  'NaN y values encountered');
          sortM = sortrows([xV(:), yV(:)]);
       end
-      smoothV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
+      yOutV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
+      xOutV = sortM(:,1);
+   end
+   
+   
+   %% Scatter and smooth line
+   %{
+   Leaves plot open
+   %}
+   function plot(spS, xV, yV)
+      [xSmoothV, ySmoothV] = spS.smooth_line(xV, yV);
+%       % *******  Smoothing
+%       if spS.ignoreNan
+%          idxV = find(~isnan(xV(:))  &  ~isnan(yV(:)));
+%          assert(length(idxV) > 2,  'Too few data points');
+%          sortM = sortrows([xV(idxV), yV(idxV)]);
+%          clear idxV;
+%       else
+%          assert(~any(isnan(xV(:))),  'NaN x values encountered');
+%          assert(~any(isnan(yV(:))),  'NaN y values encountered');
+%          sortM = sortrows([xV(:), yV(:)]);
+%       end
+%       smoothV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
       
       
       % *******  Plot
@@ -74,10 +91,10 @@ methods
       iLine = 0;
       
       iLine = iLine + 1;
-      spS.figS.plot_scatter(sortM(:,1), sortM(:,2), iLine);
+      spS.figS.plot_scatter(xV, yV, iLine);
 
       iLine = iLine + 1;
-      spS.figS.plot_line(sortM(:,1), smoothV, iLine);
+      spS.figS.plot_line(xSmoothV, ySmoothV, iLine);
 
       hold off;
    end

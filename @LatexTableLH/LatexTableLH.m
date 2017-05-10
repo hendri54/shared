@@ -1,9 +1,13 @@
-classdef LatexTableLH < handle
 %{
+Assumes that the dimensions of the table are known when the table is allocated
+   
+Body is separate from header rows or columns
+   
 Other methods:
    write_table
       write to latex file
 %}
+classdef LatexTableLH < handle
    
 properties
    filePath
@@ -14,9 +18,11 @@ properties
    % ***  Table contents
    
    % Body
-   tbM
-   colHeaderV
-   rowHeaderV
+   tbM  cell
+   colHeaderV  cell
+   rowHeaderV  cell
+   % String that goes into top left cell
+   topLeftCell  char = ' '
    
    % ***  Formatting info
    
@@ -48,7 +54,7 @@ methods
       tS.nc = nc;
       tS.tbM = cell(nr, nc);
       defaultM = tS.default_values;
-      tS = function_lh.input_parse(varargin, tS, defaultM(:,1), defaultM(:,2));
+      tS = functionLH.input_parse(varargin, tS, defaultM(:,1), defaultM(:,2));
    end
    
    
@@ -170,6 +176,7 @@ methods
       dataM(2:end, 1) = tS.rowHeaderV;
       % May have to wrap these in `{}` for `siunitx` package
       dataM(1, 2:end) = tS.colHeaderV;
+      dataM{1,1} = tS.topLeftCell;
    end
    
    

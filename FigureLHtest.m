@@ -5,7 +5,53 @@ tests = functiontests(localfunctions);
 end
 
 
-function oneTest(testCase)
+%% Grouped bar graph
+function groupedBarTest(testCase)
+   nx = 4;
+   ny = 3;
+   
+   rng('default');
+   data_xyM = rand(nx, ny);
+   
+   xLabelV = cell([nx, 1]);
+   for ix = 1 :nx
+      xLabelV{ix} = sprintf('x%i', ix);
+   end
+
+   lhS = const_lh;
+   isVisible = false;
+   % isVisible = true;
+
+   fS = FigureLH('height', 3.5, 'width', 4.2, 'visible', isVisible, 'figType', 'bar');
+   fS.new;
+
+   fS.bar_graph(data_xyM, xLabelV)
+   fS.format;
+   fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHGroupedBarTest'), true);
+end
+
+
+%% Bar graph
+function barTest(testCase)
+   lhS = const_lh;
+   isVisible = false;
+   % isVisible = true;
+
+   fS = FigureLH('height', 3.5, 'width', 4.2, 'visible', isVisible, 'figType', 'bar');
+   fS.new;
+   bar(1:5, sqrt(1:5)' * linspace(1,2, 4));
+   fS.text(2, 3, 'Test text');
+   fS.format;
+   if isVisible
+      pause;
+   end
+   fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHBartest'), true);
+   fS.close;
+end
+
+
+%% Line graph
+function lineTest(testCase)
 
 lhS = const_lh;
 isVisible = false;

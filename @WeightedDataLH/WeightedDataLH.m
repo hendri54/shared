@@ -1,5 +1,7 @@
 % Weighted data class
 %{
+NaN observations are ignored
+Zero weights are ignored
 %}
 classdef WeightedDataLH < handle
    
@@ -32,6 +34,7 @@ methods
       n = length(wS.dataV);
       wS.validV = ~isnan(wS.dataV)  &  (wS.wtV > 0);
       vIdxV = find(wS.validV);
+      % assert(length(vIdxV) > 2,  'Too few observations');
       
       wS.totalWt = sum(wS.wtV(vIdxV));
       
@@ -52,6 +55,26 @@ methods
       % Sorted data must be increasing
       validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
          'nondecreasing'})
+   end
+   
+   
+   %% Mean and std dev
+   function [xVar, xMean] = var(wS)
+      vIdxV = find(wS.validV);
+      xMean = sum(wS.dataV(vIdxV) .* wS.wtV(vIdxV)) ./ wS.totalWt;
+      xVar  = sum(((wS.dataV(vIdxV) - xMean) .^ 2)  .* wS.wtV(vIdxV)) ./ wS.totalWt;
+   end
+   
+   
+   %% Median
+   function xMedian = median(wS)
+      % Sorted percentiles
+      pctV = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
+      idxMedian = find(pctV <= 0.5, 1, 'last');
+      xMedian = wS.dataV(wS.sortIdxV(idxMedian));
+%       idxMedian = find(wS.percentile_positions <= 0.5, 1, 'last');
+%       xMedian = wS.
+      validateattributes(xMedian, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
    end
    
    

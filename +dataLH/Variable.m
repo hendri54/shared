@@ -2,17 +2,33 @@
 classdef Variable < handle
 
 properties
-   % Name in dataset
+   % Name to be used to save the variable (e.g. 'age')
    nameStr  char
-   % Min, max values
-   minVal   double
-   maxVal   double
-   % Limited set of valid values
-   validValueV    double
+   % Name in original dataset
+   origNameStr  char
+   
+   % Class (e.g. double)
+   vClass  char  =  'double'
+   
+   % Min, max values (not including missing value codes)
+   minVal = []   
+   maxVal = []  
+   % Discrete or continuous
+   isDiscrete  logical  = false
+   % Limited set of valid values (if discrete)
+   validValueV = []   
+   % Value labels (if discrete)
+   valueLabelV  cell = []
    % Missing value codes
-   missValCodeV   double
+   missValCodeV = []
    % These values indicate top codes
-   topCodeV    double
+   topCodeV = []   
+   
+   % Missing value code used to replace variable specific ones
+   missingCode = NaN
+   % Are NaN values permitted?
+   % If not, they generate errors. If yes: they are left alone
+   permitNan  logical = true
    
    % Other properties, stored as name/value pairs (cell array)
    otherV   cell
@@ -23,6 +39,7 @@ methods
    %% Constructor
    function vS = Variable(nameStr, varargin)
       vS.nameStr = nameStr;
+      vS.origNameStr = nameStr;
       
       n = length(varargin);
       if n > 0
@@ -38,11 +55,15 @@ methods
    %% Validate
    function validate(vS)
       if ~isempty(vS.minVal)
-         validateattributes(vS.minVal, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+         validateattributes(vS.minVal, {vS.vClass}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
       end
       if ~isempty(vS.maxVal)
-         validateattributes(vS.maxVal, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+         validateattributes(vS.maxVal, {vS.vClass}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
       end
+%       if vS.isDiscrete
+%          % Check that all values are in discrete set
+%          assert(all(ismember
+%       end
    end
    
    
@@ -65,25 +86,93 @@ methods
    
    
    %% Check that an input has codes consistent with that variable
+   %{
+   But ignore missing value codes
+   %}
    function [out1, outMsg] = is_valid(vS, inV)
       out1 = true;
       outMsg = 'valid';
       
+      if vS.permitNan
+         % Only check values that are not NaN
+         inV = inV(~isnan(inV));
+         if all(isnan(inV))
+            return;
+         end
+      elseif any(isnan(inV))
+         out1 = false;
+         outMsg = 'NaN encountered';
+         return;
+      end
+      
+      % Mark valid observations
+      if ~isempty(vS.missValCodeV)
+         validV = ~ismember(inV, vS.missValCodeV);
+      else
+         validV = true(size(inV));
+      end
+      
       if ~isempty(vS.minVal)
-         if any(inV < vS.minVal)
+         if any(inV(validV) < vS.minVal)
             out1 = false;
             outMsg = 'values below minimum';
             return;
          end
       end
       if ~isempty(vS.maxVal)
-         if any(inV > vS.maxVal)
+         if any(inV(validV) > vS.maxVal)
             out1 = false;
             outMsg = 'values above maximum';
             return;
          end
       end
+      
+      if vS.isDiscrete
+         % Check that all values are in discrete set
+         if any(~ismember(inV,  [vS.validValueV(:); vS.missValCodeV(:)]))
+            out1 = false;
+            outMsg = 'invalid discrete values';
+            return;
+         end
+      end
    end
+   
+   
+   %% Replace missing value codes with common code (could be NaN)
+   %{
+   If no missing value codes defined: do nothing
+   NaNs are not replaced, unless they are in missValCodeV
+   %}
+   function outV = replace_missing_values(vS, inV)
+      outV = inV;
+      if ~isempty(vS.missValCodeV)
+         for i1 = 1 : length(vS.missValCodeV)
+            outV(inV == vS.missValCodeV(i1)) = vS.missingCode;
+         end
+      end
+   end
+   
+   
+   %% Process one variable during import
+   %{
+   Check that values match with variable info
+   Then make common missing value code
+   %}
+   function outV = process(varS, xV)
+      % Check that it's valid
+      if ~varS.is_valid(xV)
+         fprintf('Error in variable %s \n',  varS.origNameStr);
+         [~, msgStr] = varS.is_valid(xV);
+         error(msgStr);
+      end
+
+      % Change to expected type
+      outV = cast(xV, varS.vClass);
+
+      % Replace missing values with common code
+      outV = varS.replace_missing_values(outV);
+   end
+   
 end
    
 end

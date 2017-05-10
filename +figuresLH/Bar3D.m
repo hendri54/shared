@@ -14,6 +14,7 @@ properties
    yLabel   char = 'y';
    zLabel   char = 'z';
    zLimV    double
+   colorM   double
    
    % FigureLH object
    figureS    FigureLH
@@ -22,9 +23,11 @@ properties
 end
 
 
+
 methods
    %% Constructor: shows the graph
    function bS = Bar3D(data_xyM, varargin)
+      bS.set_default_colors;
       bS.data_xyM = data_xyM;
       [nx, ny] = size(data_xyM);
       
@@ -48,7 +51,22 @@ methods
       view([-45, 45]);
       set(gca, 'XTick', 1 : nx);
       set(gca, 'YTick', 1 : ny); 
+      bS.format;
+   end
+   
+   
+   %% Format
+   function format(bS)
       bS.figureS.format;
+      % Set a colormap that works better for 3d bar graphs
+      colormap(bS.colorM);
+   end
+   
+   
+   %% Default color map
+   function set_default_colors(bS)
+      n = 10;
+      bS.colorM = [repmat(0.7, [n,1]),  linspace(0.6, 0.4, n)',  linspace(0.2, 0.6, n)'];
    end
    
    
@@ -71,6 +89,11 @@ methods
    
    
    %% Write text table with underlying data
+   %{
+   IN
+      outFn  ::  char
+         path for output table
+   %}
    function text_table(bS, outFn, fmtStr)
       [nx, ny] = size(bS.data_xyM);
       dataM = cell([nx+1, ny+1]);
@@ -95,7 +118,9 @@ methods
       end
 
       % ***  Write
-      fp = fopen(outFn, 'w');
+      % Make extension, if none given
+      tbFn = filesLH.change_extension(outFn, '.txt', false, bS.dbg);
+      fp = fopen(tbFn, 'w');
       rowUnderlineV = [1; zeros([nx, 1])];
       cellLH.text_table(dataM, rowUnderlineV, fp, bS.dbg);
       fclose(fp);

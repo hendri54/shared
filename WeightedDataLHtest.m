@@ -8,11 +8,13 @@ end
 function oneTest(testCase)
 
 rng(450)
-n = 30;
+n = 3000;
 dataV = randn(n, 1) .* 10;
 wtV   = rand(n, 1) .* 10;
 wtV(wtV > 9) = 0;
 dataV(wtV > 8  &  wtV < 9.5) = nan;
+
+vIdxV = find(~isnan(dataV)  &  (wtV > 0));
 
 wS = WeightedDataLH(dataV, wtV);
 
@@ -27,6 +29,17 @@ pctV = wS.percentile_positions;
 
 % pct_positions_repeated_test
 % values_weights_test;
+
+% Median
+xMedian = wS.median;
+massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= xMedian));
+massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > xMedian));
+checkLH.approx_equal(massBelow ./ (massAbove + massBelow), 0.5, 1e-3, []);
+
+% Std dev
+xStd = wS.var .^ 0.5;
+trueStd = statsLH.std_w(dataV(vIdxV), wtV(vIdxV), 111);
+checkLH.approx_equal(xStd, trueStd, 1e-3, []);
 
 end
 

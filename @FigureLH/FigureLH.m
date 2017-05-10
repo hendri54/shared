@@ -11,6 +11,11 @@ properties
    figType  char
    % Color scheme :: string
    colorScheme
+%    % Color map where this can be used
+%    colorMap  char = 'autumn'
+   % Color matrix
+   colorM  double
+   
    % Height, width in inches (for printing)
    height  double
    width  double
@@ -42,16 +47,17 @@ properties
 end
    
 
-properties (Dependent)
-   % Line colors
-   colorM
-end
+% properties (Dependent)
+%    % Line colors
+%    colorM
+% end
 
    
 methods
    %% Constructor
    % Just populate properties
    function fS = FigureLH(varargin)
+      fS.colorM = fS.default_colors;
       if ~isempty(varargin)
          fS.set_options(varargin);
       else
@@ -160,14 +166,14 @@ methods
    end
    
    
-   %% Format
-   function format(fS)
-      hold off;
-      % Make a struct with options
-      optS.figFontSize = fS.figFontSize;
-      optS = struct_lh.merge(fS, optS, fS.dbg);
-      figures_lh.format(fS.fh, fS.figType, optS);
-   end
+%    %% Format
+%    function format(fS)
+%       hold off;
+%       % Make a struct with options
+%       optS.figFontSize = fS.figFontSize;
+%       optS = struct_lh.merge(fS, optS, fS.dbg);
+%       figures_lh.format(fS.fh, fS.figType, optS);
+%    end
    
    
    %% Set axis range
@@ -220,7 +226,8 @@ methods
    
    
    %% Set color matrix
-   function outM = get.colorM(fS)
+   % This works for line graphs, but not well for 3d bar graphs
+   function outM = default_colors(fS)
       % Set default colors muted
       xV = 0.2 : 0.15 : 0.96;
       ncol = length(xV);

@@ -281,6 +281,8 @@ classdef pvectorLH < handle
          outV :: string array
             each entry is a formatted parameter
             formatted for on screen display during calibration
+         pNameV  ::  cell array
+            parameter names
       %}
       function [outV, pNameV] = calibrated_values(p, paramS, doCalV)
          % Is paramS a struct?
@@ -347,6 +349,65 @@ classdef pvectorLH < handle
                end
             end
          end
+      end
+      
+      
+      %% Latex parameter table
+      %{
+      Create a nicely formatted table with parameters that have doCal in doCalV
+      Table is divided into groups, each with a header (e.g., 'Endowments', 'Preferences')
+      
+      IN
+         groupV  ::  cell
+            each contains a struct with fields
+            groupHeader  ::  char
+               group header, such as 'Endowments'
+            pNameV  ::  cell
+               names of params in that group
+         paramS  ::  struct
+            calibrated parameter structure
+         tbPath  ::  char
+            path where table should be saved
+      %}
+      function latex_param_table(p, groupV, paramS, doCalV, tbPath)
+         nc = 2;
+         dataM = cell(100, nc);
+         rowUnderlineV = zeros(100,1);
+         rowHeaderV = cell(100, 1);
+         
+         ir = 0;
+         for ig = 1 : length(groupV)
+            % Process group
+            ir = ir + 1;
+            rowHeaderV{ir} = groupV{ig}.groupHeader;
+            for ip = 1 : length(groupV{ig}.pNameV)
+               pName = groupV{ig}.pNameV{ip};
+               % pstructLH contains symbol and description
+               ps = p.retrieve(pName);
+               if ~isempty(ps)
+                  if ismember(ps.doCal, doCalV)
+                     ir = ir + 1;
+                     rowHeaderV{ir} = ps.symbolStr;
+                     % Formatting could be improved
+                     dataM(ir,:) = {ps.descrStr,  stringLH.string_from_vector(paramS.(pName), '%.3g')};
+                     %tbS.fill_row(ir, rowV);
+                  end
+               end
+            end
+            rowUnderlineV(ir) = 1;
+         end
+         nr = ir;
+         
+         
+         tbS = LatexTableLH(nr, nc, 'colHeaderV', {'Description', 'Value'},  ...
+            'rowHeaderV', rowHeaderV(1 : nr),  'topLeftCell',  'Parameter',  ...
+            'filePath', tbPath,  'rowUnderlineV', rowUnderlineV(1 : nr));
+         for ir = 1 : nr
+            tbS.fill_row(ir, dataM(ir,:));
+         end
+         tbS.write_table;
+         tbS.write_text_table;
+         
       end
    end
 end

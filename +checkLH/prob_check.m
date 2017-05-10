@@ -13,9 +13,9 @@ validateattributes(xM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>='
 if ~isempty(probTol)
    % This automatically handles vectors correctly
    prSumV = sum(xM);
-   if any(abs(prSumV - 1) > probTol)
-      pMin = min(prSumV);
-      pMax = max(prSumV);
+   if any(abs(prSumV(:) - 1) > probTol)
+      pMin = min(prSumV(:));
+      pMax = max(prSumV(:));
       error('Probs do not sum to 1.  Range %f to %f', pMin, pMax);
    end
 end
