@@ -17,6 +17,7 @@ function groupedBarTest(testCase)
    for ix = 1 :nx
       xLabelV{ix} = sprintf('x%i', ix);
    end
+   yLabelV = stringLH.vector_to_string_array(1 : ny, 'y%i');
 
    lhS = const_lh;
    isVisible = false;
@@ -25,7 +26,8 @@ function groupedBarTest(testCase)
    fS = FigureLH('height', 3.5, 'width', 4.2, 'visible', isVisible, 'figType', 'bar');
    fS.new;
 
-   fS.bar_graph(data_xyM, xLabelV)
+   % Grouped by y, for which we provide labels
+   fS.bar_graph(data_xyM, yLabelV)
    fS.format;
    fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHGroupedBarTest'), true);
 end

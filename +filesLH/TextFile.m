@@ -32,7 +32,7 @@ methods
          tS.close;
       end
       tS.fid = fopen(tS.fileName, openMode);
-      assert(tS.fid > 0,  'Cannot open file');
+      assert(tS.fid > 0,  ['Cannot open file [',  tS.fileName, ']']);
    end
    
    function isOpen = is_open(tS)
@@ -78,26 +78,34 @@ methods
    %{
    Opens and closes file
    Special characters, such as % and \ are written correctly
+   
+   IN
+      stripFormatting  ::  logical
+         removes strings such as `<strong>` that are captured by evalc
    %}
-   function write_strings(tS, stringV)
-%       wasOpen = tS.is_open;
-%       if ~wasOpen
-         % Open for append if necessary
-         tS.open('a');
-%       end
+   function write_strings(tS, stringV, stripFormatting)
+      if nargin < 3
+         stripFormatting = false;
+      end
       
-      % Write lines
       if ischar(stringV)
          stringV = {stringV};
       end
+      
+      if stripFormatting
+         oldV = {'<strong>', '</strong>'};
+         for i1 = 1 : length(oldV)
+            stringV = replace(stringV, oldV{i1}, '');
+         end
+      end
+      
+      % Write lines
+      tS.open('a');
       for i1 = 1 : length(stringV)
          fprintf(tS.fid,  '%s\n',  stringV{i1});
       end
       
-      % Close, if necessary
-%       if ~wasOpen
-         tS.close;
-%       end
+      tS.close;
    end
 end
    

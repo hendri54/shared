@@ -34,6 +34,19 @@ methods
    end
    
    
+   %% Rename variable
+   %{
+   Changes original name and name of Variable
+   %}
+   function var_rename(vlS, oldName, newName)
+      % Make sure variable exists
+      vIdx = vlS.find_by_name(oldName);
+      assert(length(vIdx) == 1,  'Variable not found');
+      vlS.listV{vIdx}.origNameStr = newName;
+      vlS.listV{vIdx}.nameStr = newName;
+   end
+   
+   
    %% Add variables
    % Must not exist, unless skipExisting = true
    function add_variables(vlS, addListV, skipExisting)
@@ -101,7 +114,9 @@ methods
             case 'logical'
                validV(i1) = isequal(varS.vClass, 'logical');
             case 'discrete'
-               validV(i1) = varS.isDiscrete;
+               validV(i1) = varS.isDiscrete;    
+            case 'categorical'
+               validV(i1) = isequal(varS.vClass, 'categorical');
             otherwise
                error('Invalid');
          end

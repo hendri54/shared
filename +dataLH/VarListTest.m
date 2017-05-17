@@ -21,6 +21,14 @@ function oneTest(testCase)
    assert(isempty(vIdx));
    varS = vlS.retrieve('test1');
    
+   % Rename
+   vlS.var_rename('test1', 'new1');
+   varS = vlS.retrieve('new1');
+   assert(~isempty(varS));
+   assert(~vlS.var_exists('test1'));
+   vlS.var_rename('new1', 'test1');
+   
+   
    % Add a variable
    addList = {dataLH.Variable('age', 'vClass', 'double')};
    vlS.add_variables(addList);

@@ -67,13 +67,11 @@ methods
          fracV = fracV ./ max(sum(fracV), 1e-8);
       else
          % Fractions are simply based on counts
-         fracV = double(countV) ./ max(1, double(sum(countV)));
+         fracV = double(countV) ./ mdouble(sum(countV));
       end
       
       validateattributes(countV, {'uint64'}, {'finite', 'nonnan', 'size', size(dS.valueV)})
-      if any(countV > 0)
-         checkLH.prob_check(fracV, 1e-8);
-      end
+      checkLH.prob_check(fracV, 1e-8);
    end
    
    

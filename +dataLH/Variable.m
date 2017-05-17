@@ -6,6 +6,8 @@ properties
    nameStr  char
    % Name in original dataset
    origNameStr  char
+   % Descriptive string
+   descrStr  char
    
    % Class (e.g. double)
    vClass  char  =  'double'
@@ -19,7 +21,7 @@ properties
    validValueV = []   
    % Value labels (if discrete)
    valueLabelV  cell = []
-   % Missing value codes
+   % Missing value codes. Include NaN if that should be replaced with `missingCode`
    missValCodeV = []
    % These values indicate top codes
    topCodeV = []   
@@ -40,6 +42,7 @@ methods
    function vS = Variable(nameStr, varargin)
       vS.nameStr = nameStr;
       vS.origNameStr = nameStr;
+      vS.descrStr = nameStr;
       
       n = length(varargin);
       if n > 0
@@ -59,6 +62,9 @@ methods
       end
       if ~isempty(vS.maxVal)
          validateattributes(vS.maxVal, {vS.vClass}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+      end
+      if ~isempty(vS.missValCodeV(~ismissing(vS.missValCodeV)))
+         validateattributes(vS.missValCodeV(~ismissing(vS.missValCodeV)), {vS.vClass}, {'finite', 'real'})
       end
 %       if vS.isDiscrete
 %          % Check that all values are in discrete set
@@ -95,11 +101,11 @@ methods
       
       if vS.permitNan
          % Only check values that are not NaN
-         inV = inV(~isnan(inV));
-         if all(isnan(inV))
+         inV = inV(~ismissing(inV));
+         if all(ismissing(inV))
             return;
          end
-      elseif any(isnan(inV))
+      elseif any(ismissing(inV))
          out1 = false;
          outMsg = 'NaN encountered';
          return;
@@ -107,7 +113,7 @@ methods
       
       % Mark valid observations
       if ~isempty(vS.missValCodeV)
-         validV = ~ismember(inV, vS.missValCodeV);
+         validV = ~ismember(cast(inV, vS.vClass), vS.missValCodeV);
       else
          validV = true(size(inV));
       end
@@ -129,7 +135,7 @@ methods
       
       if vS.isDiscrete
          % Check that all values are in discrete set
-         if any(~ismember(inV,  [vS.validValueV(:); vS.missValCodeV(:)]))
+         if any(~ismember(cast(inV, vS.vClass),  [vS.validValueV(:); vS.missValCodeV(:)]))
             out1 = false;
             outMsg = 'invalid discrete values';
             return;

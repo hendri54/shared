@@ -18,7 +18,7 @@ switch suffixStr
       cd(baseDir);
       init_bc3;    
    case 'mmp'
-      baseDir = fullfile(docuDir, 'econ', 'Migration', 'nis_wage_gains', 'mmp', 'prog');
+      baseDir = fullfile(docuDir, 'econ', 'Migration', 'nis_wage_gains', 'mmp', 'github', 'prog');
       cd(baseDir);
       init_mmp;
    case '520'

@@ -88,7 +88,7 @@ dirS.userDir = userDir;
 dirS.baseDir = baseDir;
 
 % All general purpose matlab code hangs off this dir
-dirS.sharedBaseDir = fullfile(dirS.baseDir, 'econ', 'matlab');
+dirS.sharedBaseDir = fullfile(dirS.baseDir, 'econ', 'Matlab');
 % Startup files
 dirS.iniFileDir = fullfile(dirS.sharedBaseDir, 'ini_files');
 % For github repos from other users

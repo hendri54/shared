@@ -41,6 +41,13 @@ methods (Test)
       assert(isequal(xV, tbM.male));
       assert(isequal(varS.nameStr, 'male'));
       
+      % Rename
+      dS.rename_variable({'age', 'doesNotExist'}, 'new1');
+      dS.validate;
+      assert(dS.var_exists('new1'));
+      assert(~dS.var_exists('age'));
+      dS.rename_variable('new1', 'age');
+      
       
       % Add variable
       vAdd = dataLH.Variable('added', 'vClass', 'double');
