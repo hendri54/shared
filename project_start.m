@@ -29,6 +29,9 @@ switch suffixStr
       % Standard startup
       progDir = fullfile(webSiteDir, 'econ720');
       standard_startup(suffixStr, progDir);
+   case 'honors'
+      progDir = fullfile(webSiteDir, 'honors');
+      standard_startup(suffixStr, progDir);
    otherwise
       start_from_file(suffixStr, restoreState);
 end

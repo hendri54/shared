@@ -2,6 +2,8 @@
 %{
 NaN observations are ignored
 Zero weights are ignored
+
+NaN if there are no valid observations
 %}
 classdef WeightedDataLH < handle
    
@@ -10,10 +12,14 @@ properties
    % Weights
    wtV      double
    validV   logical
+   % Total weight of all valid observations
    totalWt  double
    % Sort indices; for valid obs only
    % Shorter than dataV
    sortIdxV double 
+   
+   % Fraction missing (weight of observations that are NaN)
+   fracMiss  double
 end
 
 
@@ -32,49 +38,95 @@ methods
    %}
    function implied(wS)
       n = length(wS.dataV);
+      % Total weight before dropping missing values
+      % wtSum = sum(max(0, wS.wtV));
+      % Weight of missing observations
+      if any(isnan(wS.dataV))
+         missWt = sum(max(0, wS.wtV) .* isnan(wS.dataV));
+         wtSum  = sum(max(0, wS.wtV));
+         wS.fracMiss = missWt ./ wtSum;
+      else
+         %missWt = 0;
+         wS.fracMiss = 0;
+      end
+      
       wS.validV = ~isnan(wS.dataV)  &  (wS.wtV > 0);
       vIdxV = find(wS.validV);
       % assert(length(vIdxV) > 2,  'Too few observations');
       
-      wS.totalWt = sum(wS.wtV(vIdxV));
-      
-      % Zero weights for missing values
-      wS.wtV(~wS.validV) = 0;
-      wS.dataV(~wS.validV) = nan;
-      
-      % Sort order
-      % Nan values are placed last
-      sortM = sortrows([wS.dataV, (1 : n)', wS.validV]);
-      % Keep the valid obs (sortM(:,3) = true)
-      wS.sortIdxV = sortM(find(sortM(:,3)), 2);
-      
+      if length(vIdxV) >= 2
+         wS.totalWt = sum(wS.wtV(vIdxV));
 
-      % Output check
-      validateattributes(wS.dataV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
-      validateattributes(wS.wtV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
-      % Sorted data must be increasing
-      validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-         'nondecreasing'})
+         % Zero weights for missing values
+         wS.wtV(~wS.validV) = 0;
+         wS.dataV(~wS.validV) = nan;
+
+         % Sort order
+         % Nan values are placed last
+         sortM = sortrows([wS.dataV, (1 : n)', wS.validV]);
+         % Keep the valid obs (sortM(:,3) = true)
+         wS.sortIdxV = sortM(find(sortM(:,3)), 2);
+
+
+         % Output check
+         validateattributes(wS.dataV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
+         validateattributes(wS.wtV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
+         % Sorted data must be increasing
+         validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+            'nondecreasing'})
+      else
+         wS.totalWt = 0;
+      end
+   end
+   
+   
+%    %% Fraction missing
+%    function fracMiss = frac_missing(wS)
+%       if all(wS.wtV > 0)
+%          fracMiss = 0;
+%       else
+%          fracMiss = 1 - sum(wS.wtV(wS.wtV >= 0)) ./ wS.totalWt;
+%       end
+%    end
+   
+   
+   %% Mean
+   function xMean = mean(wS)
+      vIdxV = find(wS.validV);
+      if ~isempty(vIdxV)
+         xMean = sum(wS.dataV(vIdxV) .* wS.wtV(vIdxV)) ./ wS.totalWt;      
+      else
+         xMean = NaN;
+      end
    end
    
    
    %% Mean and std dev
    function [xVar, xMean] = var(wS)
       vIdxV = find(wS.validV);
-      xMean = sum(wS.dataV(vIdxV) .* wS.wtV(vIdxV)) ./ wS.totalWt;
-      xVar  = sum(((wS.dataV(vIdxV) - xMean) .^ 2)  .* wS.wtV(vIdxV)) ./ wS.totalWt;
+      if ~isempty(vIdxV)
+         xMean = sum(wS.dataV(vIdxV) .* wS.wtV(vIdxV)) ./ wS.totalWt;
+         xVar  = sum(((wS.dataV(vIdxV) - xMean) .^ 2)  .* wS.wtV(vIdxV)) ./ wS.totalWt;
+      else
+         xMean = NaN;
+         xVar = NaN;
+      end
    end
    
    
    %% Median
    function xMedian = median(wS)
-      % Sorted percentiles
-      pctV = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
-      idxMedian = find(pctV <= 0.5, 1, 'last');
-      xMedian = wS.dataV(wS.sortIdxV(idxMedian));
-%       idxMedian = find(wS.percentile_positions <= 0.5, 1, 'last');
-%       xMedian = wS.
-      validateattributes(xMedian, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+      if wS.totalWt > 0
+         % Sorted percentiles
+         pctV = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
+         idxMedian = find(pctV <= 0.5, 1, 'last');
+         xMedian = wS.dataV(wS.sortIdxV(idxMedian));
+   %       idxMedian = find(wS.percentile_positions <= 0.5, 1, 'last');
+   %       xMedian = wS.
+         validateattributes(xMedian, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
+      else
+         xMedian = NaN;
+      end
    end
    
    
@@ -87,10 +139,12 @@ methods
    %}
    function pctV = percentile_positions(wS)
       pctV = nan(size(wS.dataV));
-      pctV(wS.sortIdxV) = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
-      
-      validateattributes(pctV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
-      validateattributes(pctV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing', 'positive'})
+      if wS.totalWt > 0
+         pctV(wS.sortIdxV) = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
+
+         validateattributes(pctV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
+         validateattributes(pctV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing', 'positive'})
+      end
    end
    
    
@@ -101,22 +155,25 @@ methods
    Assign the obs with the 2nd smallest value the mass of values 1 and 2; etc
    %}
    function pctV = pct_positions_repeated(wS)
-      % List of values (sorted) and fractions
-      [valueListV, valueFracV] = values_weights(wS);
-      cumFracV = cumsum(valueFracV);
-      cumFracV(end) = 1;
-      
-      % Assign to groups
-      groupV = zeros(size(wS.dataV));
-      vIdxV = find(wS.validV);
-      groupV(vIdxV) = discretize(wS.dataV(vIdxV), [valueListV(1)-1; valueListV(:) + 1e-4]);
-      
       pctV = nan(size(wS.dataV));
-      for i1 = 1 : length(valueListV)
-         pctV(groupV == i1) = cumFracV(i1);
+
+      if wS.totalWt > 0
+         % List of values (sorted) and fractions
+         [valueListV, valueFracV] = values_weights(wS);
+         cumFracV = cumsum(valueFracV);
+         cumFracV(end) = 1;
+
+         % Assign to groups
+         groupV = zeros(size(wS.dataV));
+         vIdxV = find(wS.validV);
+         groupV(vIdxV) = discretize(wS.dataV(vIdxV), [valueListV(1)-1; valueListV(:) + 1e-4]);
+
+         for i1 = 1 : length(valueListV)
+            pctV(groupV == i1) = cumFracV(i1);
+         end
+
+         validateattributes(pctV(vIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
       end
-      
-      validateattributes(pctV(vIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
    end
 end
    

@@ -1,3 +1,7 @@
+% List of class dates
+%{
+Specify start and end dates; week days.
+%}
 classdef ClassDates
    
 properties
@@ -11,6 +15,9 @@ end
 
 methods
    %% Constructor
+   %{
+   Start and end date need not be class dates.
+   %}
    function cdS = ClassDates(startDate, endDate, weekDayV)
       cdS.startDate = startDate;
       cdS.endDate = endDate;

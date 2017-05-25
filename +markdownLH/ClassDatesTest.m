@@ -7,10 +7,10 @@ end
 
 function oneTest(testCase)
 
-startDate = datetime(2016, 8, 24);
-endDate = datetime(2016, 12, 7);
+startDate = datetime(2017, 8, 22);
+endDate = datetime(2017, 12, 6);
 
-weekDayV = {'Monday', 'Wednesday'};
+weekDayV = {'Tuesday', 'Thursday'};
 
 cdS = markdownLH.ClassDates(startDate, endDate, weekDayV);
 

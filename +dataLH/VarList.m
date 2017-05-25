@@ -54,6 +54,7 @@ methods
          skipExisting = false;
       end
       assert(isa(addListV, 'cell'));
+      addListV = addListV(:);
       
       existV = false(size(addListV));
       for i1 = 1 : length(addListV)
@@ -74,7 +75,7 @@ methods
    function drop_variables(vlS, dropListV)
       for i1 = 1 : length(dropListV)
          vIdx = vlS.find_by_name(dropListV{i1});
-         assert(~isempty(vIdx),  'Variable not found');
+         assert(~isempty(vIdx),  ['Variable not found:  ', dropListV{i1}]);
          vlS.listV(vIdx) = [];
       end
    end
