@@ -36,11 +36,36 @@ massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= xMedian));
 massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > xMedian));
 checkLH.approx_equal(massBelow ./ (massAbove + massBelow), 0.5, 1e-3, []);
 
+% Quantiles
+pctUbV = 0.1 : 0.1 : 0.9;
+qV = wS.quantiles(pctUbV);
+for i1 = 1 : length(pctUbV)
+   massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= qV(i1)));
+   massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > qV(i1)));
+   checkLH.approx_equal(massBelow ./ (massAbove + massBelow), pctUbV(i1), 1e-3, []);   
+end
+
 % Std dev
 xStd = wS.var .^ 0.5;
 trueStd = statsLH.std_w(dataV(vIdxV), wtV(vIdxV), 111);
 checkLH.approx_equal(xStd, trueStd, 1e-3, []);
 
+end
+
+
+%% Var log
+function var_log_test(testCase)
+   rng('default');
+   n = 1e5;
+   dataV = exp(randn(n, 1) .* 2);
+   wtV = rand(n, 1) .* 3;
+   dataV(wtV < 0.1) = NaN;
+   
+   wS = WeightedDataLH(dataV, wtV);
+   [varLog, meanLog] = wS.var_log;
+   % Even with a large sample, the tolerance must be this high
+   checkLH.approx_equal(sqrt(varLog), 2, 1e-2, []);
+   checkLH.approx_equal(meanLog, 0, 1e-2, []);
 end
 
 

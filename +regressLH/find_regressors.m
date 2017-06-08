@@ -1,10 +1,9 @@
 function [idxV, betaV] = find_regressors(mdl, varNameStrV, dbg)
 % Find regressors by name in a LinearModel
 %{
-The match is limited for first N characters (the length of varNameStrV{i1})
-E.g., looking for 'exper' also returns 'exper^2'
-
 If regressor not found: return NaN
+
+'regressors_by_name' looks for partial matches
 
 IN
    mdl

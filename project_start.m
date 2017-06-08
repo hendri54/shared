@@ -17,10 +17,22 @@ switch suffixStr
       baseDir = fullfile(dropBoxDir, 'hc', 'borrow_constraints', 'model3', 'prog');
       cd(baseDir);
       init_bc3;    
+   case 'cps'
+      progDir = fullfile(docuDir, 'econ', 'data', 'Cps', 'prog');
+      standard_startup(suffixStr, progDir);
+   case 'hon'
+      progDir = fullfile(dropBoxDir, 'classes', 'honors', 'code');
+      standard_startup(suffixStr, progDir);
+   case 'icps'
+      progDir = fullfile(docuDir, 'econ', 'Migration', 'nis_wage_gains', 'cps', 'github', 'prog');
+      standard_startup(suffixStr, progDir);
    case 'mmp'
       baseDir = fullfile(docuDir, 'econ', 'Migration', 'nis_wage_gains', 'mmp', 'github', 'prog');
       cd(baseDir);
       init_mmp;
+   case 'pu'
+      progDir = fullfile(docuDir, 'econ', 'data', 'MicAnalyst', 'prog2017');
+      standard_startup(suffixStr, progDir);
    case '520'
       % Standard startup
       progDir = fullfile(webSiteDir, 'econ520');

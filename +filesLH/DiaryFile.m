@@ -63,6 +63,16 @@ methods
          delete(dS.fileName);
       end
    end
+   
+   
+   %% Strip formatting from a diary file
+   %{
+   Removes strings such as <strong>
+   %}
+   function strip_formatting(dS)
+      tS = filesLH.TextFile(dS.fileName);
+      tS.strip_formatting;
+   end
 end
    
 end

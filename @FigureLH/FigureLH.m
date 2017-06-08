@@ -63,6 +63,14 @@ methods
       else
          fS.set_options({'visible', false});
       end
+      
+      fS.validate;
+   end
+   
+   
+   %% Validate
+   function validate(fS)
+      assert(ismember(fS.visible, [true, false]));
    end
    
    

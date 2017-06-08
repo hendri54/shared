@@ -114,7 +114,27 @@ methods
    end
    
    
+   %% Mean and std for log
+   % Drops observations <= 0
+   function [xVar, xMean] = var_log(wS)
+      vIdxV = find(wS.validV  &  wS.dataV > 0);
+      if ~isempty(vIdxV)
+         logDataV = log(wS.dataV(vIdxV));
+         wt1V = wS.wtV(vIdxV) ./ sum(wS.wtV(vIdxV));
+         xMean = sum(logDataV .* wt1V);
+         xVar  = sum(((logDataV - xMean) .^ 2)  .* wt1V);
+      else
+         xMean = NaN;
+         xVar = NaN;
+      end
+   end
+   
+   
    %% Median
+   %{
+   Max observation below cumulative mass 0.5
+   No interpolation, but can use quantiles for that
+   %}
    function xMedian = median(wS)
       if wS.totalWt > 0
          % Sorted percentiles
@@ -127,6 +147,13 @@ methods
       else
          xMedian = NaN;
       end
+   end
+   
+   
+   %% Quantiles
+   % Uses interpolation
+   function qV = quantiles(wS, pctUbV)
+      qV = interp1(min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt),  wS.dataV(wS.sortIdxV),  pctUbV,  'linear');
    end
    
    

@@ -211,11 +211,11 @@ pS = ProjectLH('Census data 2000', baseDirV{1}, progDirV{1}, [], 'p2000', []);
 plS.append(pS);
 
 
-% CPS
-baseDirV = {fullfile(docuDir, 'econ', 'data', 'cps'), kureDir};
-progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
-pS = ProjectLH('CPS data', baseDirV{1}, progDirV{1}, [], 'cps', []);
-plS.append(pS);
+% % CPS
+% baseDirV = {fullfile(docuDir, 'econ', 'data', 'cps'), kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
+% pS = ProjectLH('CPS data', baseDirV{1}, progDirV{1}, [], 'cps', []);
+% plS.append(pS);
 
 % CPS earnings profiles
 baseDirV = {'/Users/lutz/Documents/econ/data/Cps/earn_profiles/', kureDir};

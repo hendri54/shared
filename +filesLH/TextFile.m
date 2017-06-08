@@ -93,10 +93,11 @@ methods
       end
       
       if stripFormatting
-         oldV = {'<strong>', '</strong>'};
-         for i1 = 1 : length(oldV)
-            stringV = replace(stringV, oldV{i1}, '');
-         end
+         stringV = stringLH.strip_formatting(stringV);
+%          oldV = {'<strong>', '</strong>'};
+%          for i1 = 1 : length(oldV)
+%             stringV = replace(stringV, oldV{i1}, '');
+%          end
       end
       
       % Write lines
@@ -106,6 +107,20 @@ methods
       end
       
       tS.close;
+   end
+   
+   
+   %% Strip formatting from an existing text file
+   function strip_formatting(tS)
+      % Load
+      lineV = load(tS);
+      if isempty(lineV)
+         return;
+      end
+      
+      % Write and strip
+      tS.clear;
+      tS.write_strings(lineV, true);
    end
 end
    

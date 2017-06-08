@@ -39,6 +39,7 @@ end
 
 methods
    %% Constructor
+   % Numeric inputs are cast to correct class
    function vS = Variable(nameStr, varargin)
       vS.nameStr = nameStr;
       vS.origNameStr = nameStr;
@@ -47,7 +48,13 @@ methods
       n = length(varargin);
       if n > 0
          for i1 = 1 : 2 : (n-1)
-            vS.(varargin{i1}) = varargin{i1+1};
+            % Numeric inputs are cast to correct class
+            % Assumes that 'vClass' is provided before numeric arguments!
+            x = varargin{i1+1};
+            if isnumeric(x)
+               x = cast(x, vS.vClass);
+            end
+            vS.(varargin{i1}) = x;
          end
       end
       

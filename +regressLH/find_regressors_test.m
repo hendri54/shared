@@ -14,12 +14,14 @@ mdl = regressLH.make_test_model;
 
 varNameStrV = {'cat1_2', 'cat2_2', 'var1', 'var2'};
 
+% Complete names
 [idxV, betaV] = regressLH.find_regressors(mdl, varNameStrV, dbg);
 validateattributes(betaV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [length(varNameStrV), 1]})
 
 if ~isempty(testCase)
    verifyTrue(testCase,  isa(betaV, 'double'));
 end
+
 
 
 end
