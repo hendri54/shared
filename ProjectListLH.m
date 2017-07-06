@@ -15,17 +15,23 @@ methods
          defaults to value from const_lh
    %}
    function plS = ProjectListLH(fileNameStr)
-      lhS = const_lh;
       if nargin < 1
-         fileNameStr = lhS.projectFile;
+         fileNameStr = plS.default_project_file;
       end
       if isempty(fileNameStr)
-         fileNameStr = lhS.projectFile;
+         fileNameStr = plS.default_project_file;
       end
       
       plS.fileNameStr = fileNameStr;
       plS.projectV = cell(300, 1);
       plS.n = 0;
+   end
+
+   
+   %% Default project file
+   function fnStr = default_project_file(plS)
+      lhS = const_lh;
+      fnStr = fullfile(lhS.dirS.sharedDirV{1}, 'project_list.mat');
    end
    
    

@@ -1,0 +1,4 @@
+This is for testing paper_format. 
+It contains commands, such as \cmdOne, that need to be replaced. Also \commandTwo and \cThree. But nothing else.
+Also need to test the case where one command is longer than the other, as in \cThreeOne.
+That's it.

@@ -21,7 +21,7 @@ disp('Processing startup.m');
 lhS = const_lh;
 
 % Add dir for startup routines
-addpath(filesLH.fullpaths(lhS.dirS.iniFileDir));
+% addpath(filesLH.fullpaths(lhS.dirS.iniFileDir));
 % for i1 = 1 : length(lhS.dirS.sharedDirV)
 %    addpath(filesLH.fullpaths(lhS.dirS.sharedDirV{i1}));
 % end

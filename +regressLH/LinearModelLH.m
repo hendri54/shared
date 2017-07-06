@@ -67,7 +67,7 @@ methods
    % Names of x variables: x_1, ..., x_nx
    function xNameV = get.xNameV(mS)
       if mS.nx > 0
-         xNameV = string_lh.vector_to_string_array(1 : mS.nx,  'x_%i');
+         xNameV = stringLH.vector_to_string_array(1 : mS.nx,  'x_%i');
       else
          xNameV = [];
       end
@@ -75,7 +75,7 @@ methods
    
    function catNameV = get.catNameV(mS)
       if mS.nCat > 0
-         catNameV = string_lh.vector_to_string_array(1 : mS.nCat,  'cat%i');
+         catNameV = stringLH.vector_to_string_array(1 : mS.nCat,  'cat%i');
       else
          catNameV = [];
       end

@@ -197,7 +197,7 @@ methods
    %% Get info for a line
    function colorV = line_color(fS, iLine)
       n = size(fS.colorM, 1);
-      i1 = integer_lh.sequential_bounded(iLine, n);
+      i1 = integerLH.sequential_bounded(iLine, n);
       colorV = fS.colorM(i1, :);
    end
    
@@ -205,7 +205,7 @@ methods
    function lineStyle = line_style_dense(fS, iLine)
       lineTypeV = {'-', '--', '-.', ':'};
       n = length(lineTypeV);
-      i1 = integer_lh.sequential_bounded(iLine, n);
+      i1 = integerLH.sequential_bounded(iLine, n);
       lineStyle = lineTypeV{i1};
    end
    
@@ -213,7 +213,7 @@ methods
    function markerOut = marker(fS, iLine)   
       markerV = 'odx+*s^vph';
       n = length(markerV);
-      i1 = integer_lh.sequential_bounded(iLine, n);
+      i1 = integerLH.sequential_bounded(iLine, n);
       markerOut = markerV(i1);
    end
    

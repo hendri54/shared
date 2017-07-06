@@ -7,7 +7,7 @@ end
 
 function oneTest(testCase)
 
-fileListV = {which('classify_lh.m'),  which('EnumLH.m'),  which('statsLH.std_w')};
+fileListV = {which('EnumLH.m'),  which('statsLH.std_w')};
 
 [relPathV, baseDir] = filesLH.make_relative_paths(fileListV);
 

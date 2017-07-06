@@ -55,7 +55,7 @@ for ir = 1 : nRows
       strV = [strV, repmat(' ', [1, nSpaces]), dataM{ir,ic}];
    end
    % Format correctly for fprintf
-   fprintf(fp, latex_lh.str_escape(strV));
+   fprintf(fp, latexLH.str_escape(strV));
    fprintf(fp, '\n');
 
    if rowUnderlineV(ir) == 1  ||  ir == nRows

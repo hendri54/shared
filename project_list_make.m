@@ -5,6 +5,7 @@ All dirs must be fully qualified (not ~ for home dir)
 Assumes that remote dirs have same structure as local dirs, except root folder
 Directories are sometimes case sensitive
 
+Mostly obsolete
 Newer: in project_start
 %}
 
@@ -73,14 +74,6 @@ pS = ProjectLH('Occupational wages', baseDirV{1}, progDirV{1}, [], 'ow', []);
 plS.append(pS);
 
 
-% School-OJT: accounting for experience profiles
-baseDir = fullfile(dropBoxDir, 'hc', 'school_ojt', 'experience', 'model2');
-baseDirV = {baseDir,  fullfile(kureDir, 'school_ojt', 'experience', 'model2')};
-progDirV = {fullfile(baseDir, 'prog'), ...
-   fullfile(kureDir, 'school_ojt', 'experience', 'model2', 'prog')};
-pS = ProjectLH('BP experience profiles', baseDirV{1}, progDirV{1}, [], 'so1', []);
-plS.append(pS);
-
 
 %% Ben-Porath
 
@@ -110,11 +103,11 @@ plS.append(pS);
 % plS.append(pS);
 
 
-% CPS wage profiles
-baseDirV = {fullfile(dropBoxDir, 'hc', 'ipums_migrants', 'cps'),  kureDir};
-progDirV = {fullfile(baseDirV{1}, 'prog'),  kureDir};
-pS = ProjectLH('IPUMS migrants cps', baseDirV{1}, progDirV{1}, [], 'icps', []);
-plS.append(pS);
+% % CPS wage profiles
+% baseDirV = {fullfile(dropBoxDir, 'hc', 'ipums_migrants', 'cps'),  kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'prog'),  kureDir};
+% pS = ProjectLH('IPUMS migrants cps', baseDirV{1}, progDirV{1}, [], 'icps', []);
+% plS.append(pS);
 
 
 
@@ -217,11 +210,11 @@ plS.append(pS);
 % pS = ProjectLH('CPS data', baseDirV{1}, progDirV{1}, [], 'cps', []);
 % plS.append(pS);
 
-% CPS earnings profiles
-baseDirV = {'/Users/lutz/Documents/econ/data/Cps/earn_profiles/', kureDir};
-progDirV = {fullfile(baseDirV{1}, 'progs'),  kureDir};
-pS = ProjectLH('CPS earnings profiles', baseDirV{1}, progDirV{1}, [], 'cpsearn', []);
-plS.append(pS);
+% % CPS earnings profiles
+% baseDirV = {'/Users/lutz/Documents/econ/data/Cps/earn_profiles/', kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'progs'),  kureDir};
+% pS = ProjectLH('CPS earnings profiles', baseDirV{1}, progDirV{1}, [], 'cpsearn', []);
+% plS.append(pS);
 
 
 % HERI freshman surveys (CIRP)

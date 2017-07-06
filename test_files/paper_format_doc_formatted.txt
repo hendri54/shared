@@ -1,0 +1,4 @@
+This is for testing paper_format. 
+It contains commands, such as valueOne, that need to be replaced. Also vTwo and xThree. But nothing else.
+Also need to test the case where one command is longer than the other, as in 31.
+That's it.

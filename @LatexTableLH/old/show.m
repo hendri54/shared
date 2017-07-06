@@ -86,5 +86,5 @@ function strV = row_string(headStr, headWidth, rowStrV, colWidthV)
       strV = [strV, repmat(' ', [1, nSpaces]), rowStrV{ic}];
    end
    % Format correctly for fprintf
-   strV = latex_lh.str_escape(strV);
+   strV = latexLH.str_escape(strV);
 end

@@ -31,7 +31,7 @@ assert(isa(valueV, 'numeric'));
 %    varNameV = {[varNameStr, '_true']};
 % else
    % Return dummies for numerical values
-   varNameV = string_lh.vector_to_string_array(valueV,  [varNameStr, '_%i']);
+   varNameV = stringLH.vector_to_string_array(valueV,  [varNameStr, '_%i']);
 % end
 
 

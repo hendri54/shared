@@ -99,7 +99,7 @@ methods
          xNameV = [];
       else
          nVar = size(wrS.x_astvM, 4);
-         xNameV = string_lh.vector_to_string_array(1 : nVar, 'x%i');
+         xNameV = stringLH.vector_to_string_array(1 : nVar, 'x%i');
       end
    end
    

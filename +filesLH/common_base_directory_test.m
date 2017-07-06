@@ -7,9 +7,10 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
-fileListV = {which('classify_lh.m'),  which('EnumLH.m'),  which('statsLH.std_w')};
-baseDir = filesLH.common_base_directory(fileListV);
-assert(strcmp(baseDir, lhS.dirS.sharedBaseDir));
+baseDir = '/Users/lutz';
+fileListV = {fullfile(baseDir, 'sub1', 'file1.txt'),  fullfile(baseDir, 'file1.doc'), ...
+   fullfile(baseDir, 'sub1', 'sub2', 'file3.txt')};
+outDir = filesLH.common_base_directory(fileListV);
+testCase.verifyTrue(strcmp(baseDir, outDir));
 
 end

@@ -1,0 +1,123 @@
+function cS = var_numbers
+
+%%  Model Variables: 1 - 199
+
+Try replacing special characters
+aXline/withXslashes
+anotherZline\withXbackslashes
+and_two_with_underscores
+
+NOW(we have brackets)
+AND[braces]
+
+A {line} with {curly} braces. This would be a MACRO that could be {\macroTwo} substituted.
+
+statsLH.std_w(x)
+
+% Calibration results
+newS.vCalResults = 1;
+% Calibrated parameters
+newS.vParams = 8;
+
+% Hh new2 functions
+newS.vHhSolution = 3;
+
+% Random variables to reuse for simulating histories
+newS.vRandomVars = 2;
+% Sim stats. Computed after calibration is done
+newS.vSimStats = 11;
+% Aggregate stats implied by model
+% newS.vAggrStats = 20;
+% Aggregate study times
+newS.vAggrSTime = 18;
+
+% History of globalsearch_lh
+newS.vOptimHistory = 6;
+newS.vOptimHistoryTemp = 7;
+
+% Inputs to calibration deviation
+newS.vCalDevInputs = 9;
+
+% Pv of lifetime earnings, mean log, by [school, cohort]
+% also with random school assignment
+%newS.vPvLty = 10;
+% Results of pvearn_notraining
+cS.pvEarnNoTraining = 13;
+
+% Selection experiments
+% Effect on wage paths
+%newS.vSelectionPath = 12;
+% Aggregate stats with random school assignment
+newS.vAggrStatsNoSelection = 19;
+
+% Flat spot wage path from model
+newS.vFlatSpotModel = 14;
+
+% Results of perturbing ddh and R
+newS.vPerturbR = 15;
+newS.vPerturbDdh = 16;
+
+% Reserved for testing: 90 - 99
+
+newS.vErrorData = 91;
+
+
+% Preamble results are collected here
+newS.vPreambleData = 17;
+
+
+% *******  Saved as single, loaded as double: 151-199
+% Save / load with the usual function
+
+% Simulated histories (created by sim_histories)
+newS.vSimResults = 151;
+% Simulated steady state solutions
+% newS.vSteadyStates = 152;
+
+
+
+%%  Data variables: 201-300
+
+% Range of data variables
+cS.dataVarRangeV = [201, 300];
+
+% Stats by [age, school, year]. Simply copied from cpsojt
+newS.vAgeSchoolYearStats = 201;
+
+% Stats by [birth year, school, age]. Simply copied from cpsojt
+newS.vBYearSchoolAgeStats = 208;
+
+% Data wage profiles
+newS.vDataProfiles = 202;
+
+% Schooling by cohort
+newS.vCohortSchool = 203;
+
+% Age hours profiles
+newS.vCohortHours = 204;
+
+% Data constants, for preamble etc
+newS.vDataConstants = 205;
+
+% Data wages by year
+% newS.vDataWageYear = 206;
+
+% CPS population weights by [age, school]. For computing constant composition aggregates
+% Mass in each cell. Averaged over years
+newS.vAggrCpsWeights = 210;
+
+% Aggregate CPS wage stats
+newS.vAggrCpsStats = 211;
+
+% Flat spot wages
+newS.vFlatSpotWages = 207;
+
+% Calibration targets
+% Calibration targets
+newS.vCalTargets = 209;
+
+% IQ targets (from NLSY)
+newS.vTgIq = 213; 
+
+
+end

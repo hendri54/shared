@@ -24,7 +24,7 @@ nx = 4;
 betaYearV = linspace(0.5, 1.5, ny)';
 betaAgeV = linspace(3.3, 1.1, nAge)';
 betaXV = linspace(-1.2, 0.3, nx)';
-xNameV = string_lh.vector_to_string_array(1 : nx, 'x_%i');
+xNameV = stringLH.vector_to_string_array(1 : nx, 'x_%i');
 
 year_ayM = repmat(yearV(:)', [nAge, 1]);
 age_ayM = repmat(ageV(:), [1, ny]);

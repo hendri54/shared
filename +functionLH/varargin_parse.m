@@ -1,6 +1,8 @@
 function varargin_parse(x, inputV)
 % Parse inputs provided as (name / value) pairs
 %{
+Call as 
+   `varargin_parse(objS, varargin(:))`
 IN
    x
       handle objectthat gets modified

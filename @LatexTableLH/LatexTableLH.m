@@ -6,6 +6,10 @@ Body is separate from header rows or columns
 Other methods:
    write_table
       write to latex file
+
+Change:
+   add method that constructs table body from a `table`
+   table without row headers
 %}
 classdef LatexTableLH < handle
    
@@ -70,9 +74,9 @@ methods
       ir = ir + 1;
       defaultM(ir, :) = {'alignHeader', 'r'};
       ir = ir + 1;
-      defaultM(ir,:) = {'colHeaderV', string_lh.vector_to_string_array(1 : (tS.nc), 'Var%i')};
+      defaultM(ir,:) = {'colHeaderV', stringLH.vector_to_string_array(1 : (tS.nc), 'Var%i')};
       ir = ir + 1;
-      defaultM(ir,:) = {'rowHeaderV', string_lh.vector_to_string_array(1 : (tS.nr), 'Row%i')};
+      defaultM(ir,:) = {'rowHeaderV', stringLH.vector_to_string_array(1 : (tS.nr), 'Row%i')};
       ir = ir + 1;
       defaultM(ir,:) = {'colLineV', zeros(tS.nc, 1)};
       ir = ir + 1;
@@ -132,7 +136,7 @@ methods
          tS.tbM(ir, :) = valueV;
       else
          % Vector of numbers
-         tS.tbM(ir, :) = string_lh.vector_to_string_array(valueV, fmtStr);
+         tS.tbM(ir, :) = stringLH.vector_to_string_array(valueV, fmtStr);
       end
    end
 
@@ -143,7 +147,7 @@ methods
          tS.tbM(:, ic) = valueV;
       else
          % Vector of numbers
-         tS.tbM(:, ic) = string_lh.vector_to_string_array(valueV, fmtStr);
+         tS.tbM(:, ic) = stringLH.vector_to_string_array(valueV, fmtStr);
       end
    end
 
