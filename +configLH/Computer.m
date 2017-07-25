@@ -111,7 +111,7 @@ methods
 
       cS.docuDir = fullfile(cS.baseDir, 'Documents');      
          % All general purpose matlab code hangs off this dir
-         cS.sharedBaseDir = fullfile(cS.docuDir, 'Documents', 'econ', 'Matlab');
+         cS.sharedBaseDir = fullfile(cS.docuDir, 'econ', 'Matlab');
             % Startup files
             % dirS.iniFileDir = fullfile(dirS.sharedBaseDir, 'ini_files');
             % For github repos from other users

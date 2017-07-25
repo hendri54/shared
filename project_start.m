@@ -47,9 +47,22 @@ switch suffixStr
       baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'mmp', 'github', 'prog');
       cd(baseDir);
       init_mmp;
+   case 'nisimp'
+      % NIS project. Solve model with imperfect substitution
+      baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'imperfect_substitution', 'nisimp', 'prog');
+      cd(baseDir);
+      init_nisimp;
       
       
    %% Single authored
+   case 'cstrat'
+      % College stratification in IPEDS data
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'college_stratification', 'github', 'prog');
+      standard_startup(suffixStr, progDir);
+   case 'ms'
+      % Manuelli/Seshadri (2014 AER)
+      progDir = fullfile(compS.docuDir, 'projects', 'p2016', 'ms2014', 'prog');
+      standard_startup(suffixStr, progDir);
    case 'so1'
       % Accounting for experience profiles (BE Journal 2017)
       progDir = fullfile(compS.dropBoxDir, 'hc', 'school_ojt', 'experience', 'model2', 'prog');
@@ -58,6 +71,11 @@ switch suffixStr
       
       
    %% Data projects      
+   case 'bl2013'
+      % Barro Lee 2013
+      progDir = {fullfile(compS.docuDir, 'econ', 'data', 'BarroLee', 'bl2013', 'prog'), kureDir};
+      standard_startup(suffixStr, progDir);
+   
    case 'cps'
       progDir = fullfile(compS.docuDir, 'econ', 'data', 'Cps', 'prog');
       standard_startup(suffixStr, progDir);
@@ -66,6 +84,10 @@ switch suffixStr
       standard_startup(suffixStr, progDir);      
    case 'pu'
       progDir = fullfile(compS.docuDir, 'econ', 'data', 'MicAnalyst', 'prog2017');
+      standard_startup(suffixStr, progDir);
+   case 'sat'
+      % SAT/ACT routines
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'sat_act', 'prog');
       standard_startup(suffixStr, progDir);
       
       
@@ -124,7 +146,9 @@ function onPath = shared_dir_on_path
    % Switch to home dir (so that we are not in shared right now)
    cd('~');
    % Try to find a file in shared
-   onPath = ~isempty(which('const_lh'));
+   x = which('const_lh');
+   % If not found, `which` returns 'Not on path' message
+   onPath = ~strncmpi(x, 'not', 3);
    % Restore previous dir
    cd(currDir);
 end

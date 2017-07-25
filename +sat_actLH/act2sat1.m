@@ -2,6 +2,8 @@ function satV = act2sat1(actV)
 % Convert ACT (combined) to SAT I (math + verbal) scores
 %{
 Conversion table from Dorans (1999)
+Same as Table 3 in Schneider and Dorans (1999): "Concordance Between SAT® I and ACTTM Scores for
+Individual Students"
 
 If ACT outside of conversion table range: NaN
 %}

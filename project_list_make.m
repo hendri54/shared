@@ -54,11 +54,11 @@ pS = ProjectLH('Jones generalize approach', baseDirV{1}, progDirV{1}, [], 'jones
 plS.append(pS);
 
 
-% Manuelli / Seshadri (2014 AER)
-baseDirV = {fullfile(dropBoxDir, 'hc', 'ms2014'), kureDir};
-progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
-pS = ProjectLH('MS2014', baseDirV{1}, progDirV{1}, [], 'ms', []);
-plS.append(pS);
+% % Manuelli / Seshadri (2014 AER)
+% baseDirV = {fullfile(dropBoxDir, 'hc', 'ms2014'), kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
+% pS = ProjectLH('MS2014', baseDirV{1}, progDirV{1}, [], 'ms', []);
+% plS.append(pS);
 
 % Manuelli / Seshadri (2014 AER). Heterogeneous agents
 baseDirV = {fullfile(dropBoxDir, 'hc', 'ms2014', 'model2'), kureDir};
@@ -183,11 +183,11 @@ plS.append(pS);
 
 %% Data projects
 
-% Barro Lee 2013
-baseDirV = {fullfile(dataDir, 'BarroLee', 'bl2013'), kureDir};
-progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
-pS = ProjectLH('Barro Lee 2013', baseDirV{1}, progDirV{1}, [], 'bl2013', []);
-plS.append(pS);
+% % Barro Lee 2013
+% baseDirV = {fullfile(dataDir, 'BarroLee', 'bl2013'), kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
+% pS = ProjectLH('Barro Lee 2013', baseDirV{1}, progDirV{1}, [], 'bl2013', []);
+% plS.append(pS);
 
 
 % Census (PUMS)
