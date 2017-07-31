@@ -81,6 +81,12 @@ BenPorathContTimeLH
 \end_layout
 
 \begin_layout Standard
+Note: All of this is based on Manuelli & Seshadri (2014 AER).
+ The material below just organizes their solution and adds details to the
+ derivations.
+\end_layout
+
+\begin_layout Standard
 Solves continuous time Ben-Porath model of the form
 \begin_inset Formula 
 \begin{equation}

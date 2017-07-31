@@ -1,5 +1,6 @@
 % Scatter plot with option to print smoothed line
 %{
+
 %}
 classdef ScatterPlot < handle
       
@@ -51,6 +52,8 @@ methods
    
    %% Produce smooth line through scatter
    function [xOutV, yOutV] = smooth_line(spS, xV, yV)
+      xV = xV(:);
+      yV = yV(:);
       if spS.ignoreNan
          idxV = find(~isnan(xV(:))  &  ~isnan(yV(:)));
          assert(length(idxV) > 2,  'Too few data points');
@@ -68,8 +71,20 @@ methods
    %% Scatter and smooth line
    %{
    Leaves plot open
+   Smoothing currently ignores weights
+   
+   IN
+      wtV  ::  double
+         weights; optional
    %}
-   function plot(spS, xV, yV)
+   function plot(spS, xV, yV, wtV)
+      if nargin < 3
+         weighted = false;
+      else
+         weighted = true;
+         validateattributes(wtV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, 'size', size(xV)})
+      end
+      
       [xSmoothV, ySmoothV] = spS.smooth_line(xV, yV);
 %       % *******  Smoothing
 %       if spS.ignoreNan
@@ -91,7 +106,17 @@ methods
       iLine = 0;
       
       iLine = iLine + 1;
-      spS.figS.plot_scatter(xV, yV, iLine);
+      if weighted
+         % Marker size: proportional to sqrt of weight, but must be visible
+         medianWt = median(wtV);
+         mkSizeV = max(1, min(1e3, (wtV ./ medianWt) .* 24));
+         % Does not set correct marker color +++
+         scatter(gca, xV, yV, mkSizeV);
+      else
+         % scatter(gca, xV, yV);
+         spS.figS.plot_scatter(xV, yV, iLine);
+      end
+      
 
       iLine = iLine + 1;
       spS.figS.plot_line(xSmoothV, ySmoothV, iLine);

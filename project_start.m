@@ -63,6 +63,10 @@ switch suffixStr
       % Manuelli/Seshadri (2014 AER)
       progDir = fullfile(compS.docuDir, 'projects', 'p2016', 'ms2014', 'prog');
       standard_startup(suffixStr, progDir);
+   case 'occ'
+      % Occupations: heterogeneity in education within occupations
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'occupations', 'github', 'prog');
+      standard_startup(suffixStr, progDir);
    case 'so1'
       % Accounting for experience profiles (BE Journal 2017)
       progDir = fullfile(compS.dropBoxDir, 'hc', 'school_ojt', 'experience', 'model2', 'prog');
@@ -100,12 +104,15 @@ switch suffixStr
       % Standard startup
       progDir = fullfile(webSiteDir, 'econ720');
       standard_startup(suffixStr, progDir);
-   case 'honors'
-      progDir = fullfile(webSiteDir, 'honors');
-      standard_startup(suffixStr, progDir);
+%    case 'honors'
+%       progDir = fullfile(webSiteDir, 'honors');
+%       standard_startup(suffixStr, progDir);
    case 'hon'
+      % Code for honors class Econ691H
+      % Must be self-contained
       progDir = fullfile(compS.dropBoxDir, 'classes', 'honors', 'code');
-      standard_startup(suffixStr, progDir);
+      init_hon;
+      %standard_startup(suffixStr, progDir);
       
       
    %% From github
