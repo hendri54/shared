@@ -1,6 +1,8 @@
 function paramS = input_parse(argListV, paramInS, paramNameV, defaultValueV)
 % A better interface for Matlab input parser
 %{
+All inputs in argListV must be valid fields for paramS
+
 IN
    argListV :: cell array
       this will usually be varargin from a function call

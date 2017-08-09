@@ -146,7 +146,8 @@ methods
       if isempty(fS.fh)
          fS.new;
       end
-      
+      hold on;
+
       if length(xV) < 16
          lineStyleStr = fS.line_style(iLine);
       else
@@ -154,6 +155,16 @@ methods
       end
       
       plot(xV, yV, lineStyleStr, 'color', fS.line_color(iLine), 'LineWidth', fS.lineWidth);
+   end
+   
+   
+   %% Plot 45 degree line
+   function plot45(fS, iLine)
+      axisV = axis;
+      x1 = min(axisV([1,3]));
+      x2 = max(axisV([2,4]));
+      xV = linspace(x1, x2, 50);
+      fS.plot_line(xV, xV,  iLine);
    end
    
    

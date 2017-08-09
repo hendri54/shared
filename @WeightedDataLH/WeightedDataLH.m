@@ -4,6 +4,8 @@ NaN observations are ignored
 Zero weights are ignored
 
 NaN if there are no valid observations
+
+For discrete data, it is typically better to use DiscreteData class
 %}
 classdef WeightedDataLH < handle
    

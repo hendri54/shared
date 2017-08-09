@@ -54,7 +54,7 @@ if saveFigures
       % Which dir?
       figFileDir = figS.figFileDir;
       % Is path relative to current dir?
-      if isempty(strfind(figFileDir, filesep))
+      if ~contains(figFileDir, filesep)
          figFileDir = fullfile(figDir, figFileDir);
       end
       
@@ -79,10 +79,10 @@ if saveFigures
       tS.write_strings(figS.figNoteV);
    end
    
-   disp(['Saved figure:  ',  figFn, figExtStr]);
+   disp(['Saved figure:  ',  formatLH.file_path(figFn), figExtStr]);
 
 else
-   disp(['Figure name:   ',  figFn]);
+   disp(['Figure name:   ',  formatLH.file_path(figFn)]);
    pause;
    close;
 end

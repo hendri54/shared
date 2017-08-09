@@ -18,7 +18,7 @@ IN:
  wtV         
       Need not sum to 1
       May be [] for unweighted data
-   clUbV       
+clUbV       
       Vector of class upper bounds (between 0 and 1)
       Top class (<= 1) is not automatically attached. It is required
       The smallest clUbV(1) pct of the xV get xClV = 1 etc.

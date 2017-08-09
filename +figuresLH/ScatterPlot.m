@@ -1,17 +1,23 @@
 % Scatter plot with option to print smoothed line
 %{
-
+Weighted data can be shown as marker sizes
 %}
 classdef ScatterPlot < handle
       
 properties
    figS  FigureLH
    % Smoothing method
+   %  'none': don't show smoothed line
    smoothingMethod  char = 'rloess';
    smoothingParam   double = 0.2;
    
    % Ignore NaN when plotting?
    ignoreNan  logical = true
+end
+
+properties (Dependent)
+   % Show smoothed line?
+   useSmoothing
 end
 
 methods
@@ -29,6 +35,12 @@ methods
       else
          spS.figS = figS;
       end
+   end
+   
+   
+   %% Dependent
+   function out1 = get.useSmoothing(spS)
+      out1 = ~strcmpi(spS.smoothingMethod, 'none');
    end
    
    
@@ -71,7 +83,6 @@ methods
    %% Scatter and smooth line
    %{
    Leaves plot open
-   Smoothing currently ignores weights
    
    IN
       wtV  ::  double
@@ -85,21 +96,6 @@ methods
          validateattributes(wtV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, 'size', size(xV)})
       end
       
-      [xSmoothV, ySmoothV] = spS.smooth_line(xV, yV);
-%       % *******  Smoothing
-%       if spS.ignoreNan
-%          idxV = find(~isnan(xV(:))  &  ~isnan(yV(:)));
-%          assert(length(idxV) > 2,  'Too few data points');
-%          sortM = sortrows([xV(idxV), yV(idxV)]);
-%          clear idxV;
-%       else
-%          assert(~any(isnan(xV(:))),  'NaN x values encountered');
-%          assert(~any(isnan(yV(:))),  'NaN y values encountered');
-%          sortM = sortrows([xV(:), yV(:)]);
-%       end
-%       smoothV = smooth(sortM(:,1), sortM(:,2), spS.smoothingParam, spS.smoothingMethod);
-      
-      
       % *******  Plot
       spS.figS.new;
       hold on;
@@ -109,7 +105,7 @@ methods
       if weighted
          % Marker size: proportional to sqrt of weight, but must be visible
          medianWt = median(wtV);
-         mkSizeV = max(1, min(1e3, (wtV ./ medianWt) .* 24));
+         mkSizeV = max(30, min(1e3, (wtV ./ medianWt) .* 80));
          % Does not set correct marker color +++
          scatter(gca, xV, yV, mkSizeV);
       else
@@ -117,10 +113,13 @@ methods
          spS.figS.plot_scatter(xV, yV, iLine);
       end
       
-
-      iLine = iLine + 1;
-      spS.figS.plot_line(xSmoothV, ySmoothV, iLine);
-
+      if spS.useSmoothing
+         iLine = iLine + 1;
+         [xSmoothV, ySmoothV] = spS.smooth_line(xV, yV);
+         spS.figS.plot_line(xSmoothV, ySmoothV, iLine);
+      end
+      
+      % 45 degree line
       hold off;
    end
 end

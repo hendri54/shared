@@ -1,5 +1,9 @@
 % Stats for weighted data that are divided into classes
 %{
+For data that are continuous but will be divided into classes.
+
+DiscreteData class handles data that are discrete from the outset
+
 For efficiency: data are not stored in the object
 
 NaN values lead to NaN outputs

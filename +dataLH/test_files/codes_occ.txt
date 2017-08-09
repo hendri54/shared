@@ -1,0 +1,583 @@
+0000	NIU (not in universe)	6,245,537
+MEMBERS OF THE ARMED FORCES, POLICEMEN AND MILITARY FIRE FIGHTERS	
+0100	Air force military personnel	1,812
+0200	Army military personnel	7,989
+0300	Navy military personnel	1,767
+0401	Military police colonels, lieutenant colonels and majors	180
+0402	Military police captains	136
+0403	Military police lieutenants	379
+0411	Military police praças	111
+0412	Military police sub-lieutenants and sergeants	1,684
+0413	Military police corporals and privates	13,528
+0501	Colonels, lieutenant colonels and majors in the military fire department	24
+0502	Fire department captains	32
+0503	Fire department lieutenants	56
+0511	Special fire department praças	19
+0512	Fire department sub-Lieutenants and sergeants	263
+0513	Fire department corporals and soldiers	1,817
+UPPER MEMBERS OF PUBLIC AUTHORITY, OFFICERS IN ORGANIZATIONS OF PUBLIC INTEREST, AND IN COMPANIES, MANAGERS	
+1111	Legislators	2,063
+1112	General officers in public administration	576
+1113	Higher judges	3
+1122	Managers of production and operations in public administration	1,061
+1123	Managers of support areas in public administration	4,959
+1130	Heads of small populations	4
+Code	Label	
+BR
+2000
+1140	Officers and administrators in organizations of public interest	1,337
+1210	General directors	1,088
+1219	Officers of companies - employers with more than 5 employees	18,642
+1220	Directors of production and operations areas (dpo)	7,088
+1230	Directors of support areas	2,141
+1310	Managers of production and operations	85,398
+1320	Managers of support areas	29,881
+PROFESSIONALS IN THE ARTS AND SCIENCES	
+2011	Professionals in bioengineering, biotechnology and genetic engineering	12
+2012	Professionals in metrology	5
+2021	Mechanical engineers (mechanics/electronics)	14
+2111	Mathematics professionals	36
+2112	Statistics professionals	85
+2121	Computing specialists	86
+2122	Computing engineers - software developers	74
+2123	Data-processing specialists	192
+2124	Systems analysts	6,968
+2125	Data-processing programmers	639
+2131	Physicists	58
+2132	Chemists	1,234
+2133	Space and atmosphere professionals	76
+2134	Geologists and geophysicists	179
+2140	Materials engineers	36
+2141	Architects	2,774
+2142	Civil engineers and the like	3,893
+Code	Label	
+BR
+2000
+2143	Electrical/electronic engineers and the like	1,729
+2144	Mechanical engineers	1,575
+2145	Chemical engineers	467
+2146	Metallurgical engineers	84
+2147	Mining engineers	80
+2148	Land-surveying and cartographic engineers	163
+2149	Other engineers, architects and the like	331
+2151	Deck officials	381
+2152	Machinery officials	66
+2153	Professionals in aerial navigation	309
+2211	Biologists and the like	757
+2221	Agronomists and the like	1,617
+2231	Physicians	10,076
+2232	Dental surgeons	7,993
+2233	Veterinarians	1,133
+2234	Pharmacists	2,429
+2235	College-trained nurses and the like	2,852
+2236	Physiotherapists and the like	2,614
+2237	Nutritionists	1,390
+2311	Teachers in children's education (college-trained)	402
+2312	Teachers of disciplines in general education from 1st to 4th grades of elementary education (college-trained)	8,925
+2313	Teachers of disciplines in general education from 5th to 8th grades of elementary education	5,349
+2321	Teachers of disciplines in general education on secondary level	24,144
+2330	Teachers and instructors of professional education	4,262
+2340	Teachers in higher education	6,208
+Code	Label	
+BR
+2000
+2391	Physical education teachers	4,312
+2392	Teachers of students with physical and mental handicaps	983
+2394	Programmers, evaluators and educational advisers	7,872
+2410	Lawyers	14,300
+2412	Attorneys in fact of companies and autonomous government agencies	524
+2419	Other self-employed and employed lawyers	14
+2421	Judges, including of courts of appeals	609
+2422	Prosecuting attorneys, public defenders and the like	511
+2423	Police delegates	532
+2511	Professionals in anthropological and sociological research and analysis	87
+2512	Professionals in economic research and analysis	2,735
+2513	Professionals in historical and geographical research and analysis	89
+2514	Philosophers and political scientists	29
+2515	Psychologists and psychoanalysts	3,103
+2516	Social workers and domestic economists	4,535
+2521	Administrators	4,436
+2522	Accountants and auditors	11,800
+2523	Executive and bilingual secretaries	2,044
+2524	Professionals in human resources	1,443
+2525	Professionals in economic and financial administration	237
+2531	Professionals in marketing, publicity and sales	3,837
+2611	Professionals in journalism	1,704
+2612	Professionals in information	1,855
+2613	Philologists and musicologists	63
+2614	Philologists, translators and interpreters	413
+Code	Label	
+BR
+2000
+2615	Writers and editors	814
+2616	Publishing specialists	356
+2617	Announcers and commentators	2,279
+2621	Producers of performances	2,111
+2622	Choreographers and dancers	325
+2623	Actors, actresses, directors of performances and the like	1,075
+2624	Composers, musicians and singers	5,817
+2625	Industrial designers, sculptors, painters and the like	13,751
+2627	Interior decorators and set designers	1,848
+2631	Ministers of religious groups, missionaries and the like	4,623
+MEDIUM LEVEL [HIGH SCHOOL] TECHNICIANS	
+3001	Mechanical technicians (mechanics/electronics)	49
+3003	Electronic and mechanical technicians	124
+3011	Industrial laboratory technicians	449
+3012	Bioengineering support technicians	4
+3111	Chemical technicians	1,830
+3112	Petrochemical technicians	66
+3113	Technicians in ceramics and glass materials	32
+3114	Technicians in plastic and rubber product manufacturing	42
+3115	Technicians in environmental control, utilities and waste treatment	596
+3116	Textile technicians	137
+3117	Colorists	146
+3121	Civil construction technicians - buildings	1,729
+3122	Civil construction technicians - infrastructure works	430
+3123	Technicians in land surveying and hydrography	1,484
+Code	Label	
+BR
+2000
+3131	Electricity and electronics technicians	4,873
+3132	Electronic technicians in machinery and equipment maintenance	561
+3134	Electronics technicians	9,118
+3135	Telecommunications and telephone technicians	3,452
+3136	Adjustments and instrumentation technicians	154
+3137	Photonics technicians	·
+3141	Mechanical technicians in manufacture and assembly of machinery, system and instrument	3,051
+3142	Mechanical technicians (tools)	22
+3143	Technicians in vehicle mechanics	271
+3144	Mechanical technicians in the maintenance of machinery, systems and instruments	883
+3146	Metallurgical technicians (metal structures)	4,761
+3147	Technicians in steel industry	190
+3161	Technicians in geology, geotechnology and geophysics	48
+3162	Technicians in geodesy and cartography	20
+3163	Mining technicians	235
+3171	Programming technicians	5,853
+3172	Computer operations technicians	4,974
+3189	Technical draftsman and modelers	6,234
+3191	Garment technicians	49
+3192	Furniture technicians and the like	3
+3201	Biology technicians	7
+3210	Technicians in agriculture and cattle raising	905
+3211	Technicians in agriculture	1,546
+3212	Technicians in cattle raising	498
+3213	Forestry technicians	70
+Code	Label	
+BR
+2000
+3214	Pisciculture technicians	29
+3221	Technicians in physiotherapy and the like	1,059
+3222	Technicians and nurses' aides	22,901
+3223	Orthoptists and opticists	359
+3224	Dental technicians	1,959
+3225	Technicians in the manufacture of apparatuses for locomotion	62
+3231	Technicians in veterinary medicine	35
+3232	Zootechnical technicians	91
+3241	Medical and dental equipment operators	1,130
+3242	Technicians in laboratories of clinical analyses	1,840
+3250	Sensorial testers	75
+3251	Pharmaceutical technicians	324
+3252	Technicians in food production and conservation	278
+3253	Technicians in biotechnology support	32
+3281	Embalmers and taxidermists	9
+3311	High-school level teachers in children's education	8,692
+3312	High-school level teachers in elementary education	65,026
+3313	High-school level teachers in vocational training	96
+3321	Lay teachers in elementary education	1,600
+3322	Lay teachers in vocational training	20
+3331	Instructors and teachers in free schools	8,908
+3341	Student inspectors and similar professions	7,309
+3411	Pilots in commercial aviation, navigators, flight mechanics and the like	385
+3412	Maritime, fluvial and regional deck technicians	531
+3413	Maritime, fluvial and regional machinery technicians	54
+Code	Label	
+BR
+2000
+3421	Technicians in intermodal transportation	100
+3422	Technicians in transportation (customs)	302
+3423	Technicians in highway transportation	619
+3424	Technicians in railway/subway transportation	310
+3425	Technicians in air transportation	457
+3426	Technicians in transportation on navigable waterways	25
+3511	Accounting technicians	4,369
+3512	Statistical technicians	1,379
+3513	Administrative technicians	2,256
+3514	Court clerks and the like	11,227
+3515	Revenue and tax collection inspectors	3,709
+3516	Labor safety technicians	1,642
+3517	Insurance technicians and analysts and the like	819
+3518	Police inspectors and detectives	1,850
+3522	Health and environmental agents	10,044
+3523	Weights and measurements inspection agents	78
+3524	Inspection agents of performances and media	13
+3525	Labor union and labor inspection agents	387
+3531	Stock market, exchange and other financial service agents	585
+3532	Technicians in banking operations and services	924
+3541	Sales representatives and technicians	33,175
+3542	Buyers	2,445
+3543	Export and import technicians	126
+3544	Auctioneers and appraisers	214
+3545	Insurance brokers	4,248
+Code	Label	
+BR
+2000
+3546	Real-estate brokers	5,719
+3547	Bond and security brokers	313
+3548	Tourism technicians	1,499
+3711	Library science technicians	28
+3712	Museology technicians	9
+3713	Graphic arts technicians	531
+3721	Film makers	756
+3722	Photographers	2,988
+3723	Technicians in the operation of data-transmission machinery	478
+3731	Technicians in the operation of radio stations	61
+3732	Technicians in the operation of television stations	297
+3741	Technicians in the operation of sound equipment	1,210
+3742	Technicians in the operation theatrical equipment	151
+3743	Technicians in the operation of projection equipment	14
+3751	High-school-level decorators and shop-window arrangers	129
+3761	Dancers in folk dances	69
+3762	Folk musicians and singers	187
+3763	Clowns, acrobats and the like	158
+3764	Presenters of performances	380
+3765	Models	169
+3771	Sports technicians	2,789
+3772	Professional athletes	1,199
+3773	Sports arbitrators, umpires, and similar professions	167
+3911	Technicians in production planning	1,104
+3912	Technicians in production control	4,349
+Code	Label	
+BR
+2000
+WORKERS IN ADMINISTRATIVE SERVICES	
+4101	Supervisors of administrative services (except accounting and control)	7,918
+4102	Supervisors of accounting, financial and control services	8,319
+4110	Clerks in general, agents, assistants and administrative assistants	81,424
+4121	Secretaries in offices and stenographers	44,304
+4122	Office machinery operators	9,076
+4123	Attendants	11,153
+4131	Accounting clerks	7,160
+4132	Finance clerks	9,586
+4141	Stock clerks	18,301
+4142	Production support clerks	1,554
+4151	Clerks in library and documentation services	2,737
+4152	Mailmen and the like	2,883
+4201	Supervisors of workers of public services	797
+4211	Cashiers and ticket sellers (except bank cashiers)	23,556
+4212	Bank cashiers and exchange operators	3,704
+4213	Betting and gambling collectors	1,975
+4214	Bill collectors and the like	7,041
+4221	Receptionists	27,547
+4222	Telephone operators	8,643
+4223	Telemarketing operators	4,683
+4231	Document agents	1,041
+4241	Interviewers, census takers and the like	2,476
+WORKERS IN SERVICES, SALES PERSONNEL IN COMMERCE, STORES AND MARKETS	
+5101	Supervisors of services in transportation, tourism, hotels and building administration	2,492
+Code	Label	
+BR
+2000
+5102	Supervisors of health and personal-care services	173
+5103	Supervisors of protection, security and other services	455
+5111	Workers in direct passenger services	371
+5112	Inspectors and drivers in public transportation	9,189
+5114	Tourist guides	731
+5121	Workers in domestic services in general	274,503
+5131	Butlers and governesses	907
+5132	Cooks	52,223
+5133	Cleaning personnel and the like	2,753
+5134	Waiters, barmen and busboys	61,072
+5141	Workers in building administration	18,498
+5142	Workers in services of maintenance and conservation of buildings and thoroughfares	76,037
+5151	Nurses' aides, midwives and the like	10,315
+5152	Laboratory assistants in the health area	1,694
+5161	Workers in beauty and hygiene services	39,315
+5162	Personnel in day-care centers and escorts of the elderly	22,385
+5165	Workers in funeral services	501
+5166	Auxiliary workers in funeral services	452
+5167	Astrologists and psychic readers	209
+5169	Dry cleaners, laundry personnel and the like, by machine and by hand	9,414
+5171	Fire fighters	455
+5172	Policemen and traffic guards	7,983
+5173	Security and other guards	39,465
+5174	Guards and watchmen	30,182
+5191	Delivery persons (except for post office)	11,542
+Code	Label	
+BR
+2000
+5192	Scrap collectors	3,592
+5198	Sex professionals	296
+5199	Other workers in services	62,483
+5201	Supervisors of sales and services in commerce	4,101
+5211	Sales persons and demonstrators in stores or markets	215,514
+5221	Shelf replacers and price taggers in commerce	6,413
+5231	Installers of products and accessories	757
+5241	Door-to-door salespersons	1,872
+5242	Vendors in booths and stands	14,142
+5243	Street peddlers	106,783
+WORKERS ON FARMS AND IN FORESTRY, HUNTING AND FISHING	
+6110	Producers in farming and cattle operations in general	5,116
+6129	Farm producers	214,265
+6139	Producers in cattle raising	42,607
+6201	Supervisors in farming operations	3,305
+6210	Workers in farming and cattle operations in general	20,011
+6229	Farm workers	446,756
+6239	Cattle raising workers	80,023
+6301	Supervisors in forest extraction, hunting and fishing	253
+6319	Fishermen and hunters	22,194
+6329	Forest extractors	26,094
+6410	Workers in farm and cattle a mechanization	15,266
+6420	Workers in forest mechanization	322
+6430	Workers in irrigation and draining	194
+WORKERS IN THE PRODUCTION OF INDUSTRIAL GOODS AND SERVICES	
+Code	Label	
+BR
+2000
+7101	Supervisors in mineral extraction	274
+7102	Supervisors in civil construction	7,513
+7111	Workers in the extraction the solid minerals - miners and the like	3,506
+7112	Workers in the extraction of solid minerals - machine operators	717
+7113	Workers in the extraction of liquid and gaseous minerals	974
+7114	Gold prospectors and saline operators	3,161
+7121	Workers in the processing of mineral ores	388
+7122	Workers in the processing of stones	2,035
+7151	Workers in earthwork and foundations	4,145
+7152	Workers in masonry structures	124,177
+7153	Workers in reinforced concrete structures	2,264
+7154	Workers in the operation of reinforced concrete machinery	280
+7155	Workers in the assembly of wooden, metal and composite structures (civil works and the like)	15,051
+7156	Workers in electrical installations	13,435
+7157	Workers in installations of insulation materials	406
+7161	Reinforced concrete liners (rigid linings)	100
+7162	Roofers (rigid linings)	277
+7163	Glaziers (rigid linings)	1,571
+7164	Plasterers	2,231
+7165	Appliers of ceramic, tile, stone and wooden linings	2,295
+7166	House and wall painters and interior liners (flexible linings)	21,585
+7170	Hod carriers	51,784
+7201	Supervisors in tooling, forming and treatment of metals	972
+7202	Supervisors in metal and mechanical assembly	874
+7211	Toolmakers and the like	2,004
+Code	Label	
+BR
+2000
+7212	Machine preparers and operators - conventional tools	18,730
+7213	Operators of conventional tooling (production line)	2,319
+7214	Sharpeners and metal polishers	1,254
+7215	Operators of machinery and tooling centers cnc	42
+7221	Workers in metal forging	1,122
+7222	Workers in foundries of metals and composites	1,099
+7223	Workers in molding of metals and composites	1,322
+7224	Workers of drawing, stretching and extrusion of metals and composites	387
+7231	Workers in thermal treatment of metal and composite surfaces	349
+7232	Workers in treatment of metals and composite surfaces (thermo chemical)	468
+7233	Workers in painting of equipment, vehicles, metal structures and composites	3,708
+7241	Plumbers and pipe installers	7,425
+7242	Workers in tracing and assembly of metals and composite structures	1,612
+7243	Workers in welding and cutting of metals and composites	10,300
+7244	Workers in boiler works and metalwork shops	19,067
+7245	Operators of metal forming machines	81
+7246	Cable preparers and splicers (except electric and telecommunications cables)	131
+7250	Multiskilled mechanical fitters	775
+7251	Assemblers of mechanical equipment and accessories in assembly lines	1,145
+7252	Assemblers of industrial machinery	1,327
+7253	Assemblers of heavy machinery	133
+7254	Assemblers of motors and turbines	149
+7255	Automobile assemblers (assembly line)	907
+7256	Assemblers of airplane systems and structures	33
+7257	Assemblers of ventilation and cooling installations	22
+Code	Label	
+BR
+2000
+7301	Supervisors in assembling and electrical/electronic installations	93
+7311	Assemblers of electrical/electronic equipment	4,531
+7312	Assemblers of telecommunications equipment	199
+7313	Installers of telecommunications equipment	1,893
+7321	Installers and repairmen of electric, telephone and data communications lines and cables	2,428
+7401	Supervisors in the mechanics of musical and precision instruments	6
+7411	Mechanics of precision instruments (except technicians)	789
+7421	Makers of musical instruments	78
+7501	Supervisors of jewelry and the like	10
+7502	Supervisors of glass blowers, ceramics and the like	14
+7519	Jewelers and artisans of precious and semi-precious metals	2,004
+7521	Glass blowers and molders and the like	90
+7522	Glass cutters, polishers, blasters, engravers and the like	364
+7523	Ceramists (preparation and manufacturing)	1,679
+7524	Glass and ceramic artists (finishing and decoration)	392
+7601	Supervisors in textile companies	831
+7602	Supervisors in tanneries	5
+7603	Supervisors in the garment industry	4
+7604	Supervisors in footwear manufacturing companies	241
+7605	Supervisors in the manufacture of cloth and leather objects and the like	17
+7606	Supervisors in the printing arts	159
+7610	Multiskilled workers in textile companies	475
+7611	Workers in the preparation of textiles	280
+7612	Operators in the preparation of textiles	1,935
+7613	Operators of looms and similar machinery	6,518
+Code	Label	
+BR
+2000
+7614	Workers in finishing, dyeing and printing in textile companies	4,061
+7618	Inspectors and examiners in textile production	663
+7620	Multiskilled workers in the tanning of leather and skins	82
+7621	Workers in the preparation of skins	469
+7622	Workers in tanning of leather and skins	401
+7623	Workers in the finishing of leather and skins	394
+7630	Multiskilled workers in garment manufacturing companies	2,184
+7631	Workers in preparing garment manufacturing	2,431
+7632	Operators of garment sewing machinery	59,135
+7633	Sewing machine operators - finishing of garments	2,942
+7640	Multiskilled workers in footwear manufacturing	548
+7641	Workers in preparing for footwear manufacturing	6,342
+7642	Operators of footwear sewing machinery	3,768
+7643	Operators of footwear finishing	1,100
+7650	Multiskilled workers in the manufacturing of cloth and leather objects	299
+7651	Workers in the preparation of cloth and leather objects	194
+7652	Workers in the manufacturing and installation of cloth and leather objects	3,952
+7653	Operators of machinery in the manufacturing of cloth and leather objects	828
+7654	Workers in the finishing of cloth and leather objects	75
+7660	Multiskilled workers in the printing arts	678
+7661	Workers in pre-printing	1,525
+7662	Workers in printing	3,511
+7663	Workers in finished printing	2,207
+7664	Workers in photographic laboratories	708
+7681	Craftsmen in cloth weaving	3,159
+Code	Label	
+BR
+2000
+7682	Craftsmen in the garment manufacturing	2,600
+7683	Craftsmen in the manufacturing of footwear, objects of leather, and skins	3,735
+7686	Typographic workers, linotypists and the like	4,304
+7687	Book binders and restorers (in small batches or per unit)	44
+7701	Supervisors in companies of wood, furniture and carpentry for vehicles	280
+7711	Cabinet makers and the like	22,833
+7721	Workers in wood and furniture preparation	434
+7731	Operators of machinery for breaking down wood	5,168
+7732	Operators of sheet metal rolling, agglomeration and pressing	688
+7733	Preparers and operators in tooling of conventional wood	2,221
+7734	Wood-working machinery operators (production line)	102
+7735	Operators of machinery and wood tooling centers cnc	91
+7741	Assemblers of furniture and wooden objects	2,764
+7751	Workers in wood and furniture finishing	1,009
+7764	Makers of wooden objects, wicker furniture and the like	1,049
+7771	Naval and airplane carpenters	170
+7772	Carpenters of car and truck bodies	58
+7801	Packaging and labeling supervisors	113
+7811	Operators of robots and special equipment	3
+7813	Operators of remotely operated and controlled vehicles (rov, rcv)	9
+7817	Underwater workers	151
+7820	Multiskilled drivers and operators	43,893
+7821	Operators of raising equipment	1,366
+7822	Operators of cargo moving equipment	3,493
+7823	Wheeled vehicle drivers (private transportation)	30,399
+Code	Label	
+BR
+2000
+7824	Wheeled vehicle drivers (public transportation)	15,719
+7825	Wheeled vehicle drivers (merchandise distribution)	50,745
+7826	Drivers of vehicles on rails	717
+7827	Workers in maritime, river and regional navigation	2,038
+7828	Drivers of vehicles of animal and pedaled traction	3,668
+7831	Workers in maneuvers of transportation on rails	165
+7832	Workers in merchandise loading and unloading	30,787
+7841	Workers in packaging and labeling	12,715
+7842	Production line suppliers	537
+WORKERS IN THE PRODUCTION OF INDUSTRIAL GOODS AND SERVICES	
+8101	Supervisors in chemical and petrochemical companies and the like	104
+8102	Supervisors in plastic and rubber companies	124
+8103	Supervisors in companies of pharmaceutical and cosmetic products and the like	11
+8110	Multiskilled operators of chemical and petrochemical installations and the like	426
+8111	Operators of grinding and mixing of materials (chemical treatment and the like)	398
+8112	Operators of thermochemical processing and the like	222
+8113	Filtering and separation operators	154
+8114	Distillation and reaction operators	409
+8115	Oil and gas production and refining operators	121
+8116	Coking operators	81
+8117	Operators of installations and machinery of plastic, rubber and paraffin products	5,007
+8118	Operators of machinery and installations of pharmaceutical and cosmetic products and the like	1,080
+8121	Workers in the manufacturing of ammunition and chemical explosives	377
+8131	Operators in other chemical and petrochemical installations and the like	3
+8181	Industrial laboratory assistants	649
+Code	Label	
+BR
+2000
+8201	Supervisors in steel production	105
+8202	Supervisors in construction materials (glass, ceramics and composites)	21
+8211	Operators in sintering installations	17
+8212	Operators of 1st fusion ovens and steelworks	665
+8213	Lamination operators	572
+8214	Sheet and metal finishing operators	867
+8221	metalworks furnacemen (2nd fusion and reheating	239
+8231	Operators in the preparation of paste for glass, ceramics, porcelain and construction materials	122
+8232	Operators in installations and equipment for manufacturing ceramics, glass and porcelain	1,077
+8233	Operators of installations and equipment for manufacturing construction materials	1,345
+8281	Craftsmen of construction materials	8,875
+8301	Supervisors in the manufacturing of paper and pulp	72
+8311	Preparers of paste for paper manufacturing	193
+8321	Operators of machinery for manufacturing paper and cardboard	1,368
+8339	Makers of paper and cardboard products	608
+8401	Supervisors in food, beverage and tobacco manufacturing	324
+8411	Millers	4,607
+8412	Workers in salt refining	89
+8413	Workers in sugar manufacturing and refining	1,575
+8416	Workers in the preparation of coffee, cocoa beans and similar products	471
+8417	Workers in the manufacturing of cane liquor, beer, red wines and other beverages	1,521
+8421	Tobacco preparers	261
+8423	Workers in cigarette factories	102
+8429	Cigar makers and craftsmen in the tobacco industry	30
+8484	Tasters	149
+Code	Label	
+BR
+2000
+8485	Butchers and the like	14,296
+8491	Workers in food manufacturing and conservation (including non-industrial)	4,658
+8492	Workers in milk pasteurization, dairy product manufacturing and the like (including non-industrial)	3,078
+8493	Bakers, confectioners and the like and operators in bread, dough and candy manufacturing	19,792
+8601	Supervisors in installations for energy production and distribution, utilities, and water catchment, treatment and distribution	173
+8611	Operators at installations for generating thermal, electric, and nuclear energy	357
+8612	Operators at installations for distributing thermal, electric, and nuclear energy	298
+8621	Steam and boiler machinery operators	1,653
+8622	Operators at water catchment, treatment and distribution installations	1,549
+8623	Operators at sewage collection and treatment installations	432
+8624	Operators at gas collecting, bottling and distributing installations	123
+8625	Operators at cooling and air-conditioning installations	191
+8711	Other elementary industrial workers	38,040
+REPAIR AND MAINTENANCE WORKERS	
+9101	Supervisors in the repairs and maintenance of industrial, commercial and residential machinery and equipment	484
+9102	Supervisors in repairs and maintenance	45
+9109	Supervisors of other workers in repairs, conservation and maintenance	102
+9111	Maintenance mechanics for pumps, motors, compressors and transmission equipment	534
+9112	Maintenance mechanics for thermal equipment, and climate control and cooling equipment (except technicians)	1,701
+9113	Industrial maintenance mechanics	9,705
+9131	Maintenance mechanics for heavy machinery and farming equipment	2,408
+9141	Aeronautic maintenance mechanics	479
+9142	Naval maintenance mechanics (on land)	74
+9143	Subway and railway maintenance mechanics	144
+9144	Motor vehicle maintenance mechanics	38,573
+Code	Label	
+BR
+2000
+9151	Repairmen for measuring instruments	92
+9152	Repairmen for musical instruments	65
+9153	Repairmen for medical and hospital equipment and instruments	80
+9154	Repairmen for photographic equipment	13
+9191	Lubricators	747
+9192	Workers in maintenance of small machinery	41
+9193	Maintenance mechanics for bicycles, and sports and gymnastics equipment	2,610
+9501	Supervisors in industrial, commercial and residential electrical/electronic maintenance	263
+9502	Supervisors in electrical/electronic maintenance for vehicles	10
+9503	Supervisors in electro-mechanical maintenance	130
+9511	Electronic electricians in industrial maintenance	6,163
+9513	Installers and maintenance personnel for security and fire alarm systems	299
+9531	Electronic electricians in vehicle maintenance (aerial, land and naval)	3,063
+9541	Maintenance personnel for elevators, stairways and automatic doors	621
+9542	Appliance repairmen	1,593
+9543	Office equipment repairmen	126
+9911	Repairmen of permanent tracks	247
+9912	Maintenance personnel for leisure equipment	97
+9913	Maintenance personnel for vehicle bodies	8,558
+9914	Maintenance personnel for buildings	48
+9921	Elementary workers in maintenance services	5,632
+9922	Elementary workers in the maintenance of permanent thoroughfares	514
+UNKNOWN	
+9999	Unknown	57,347
