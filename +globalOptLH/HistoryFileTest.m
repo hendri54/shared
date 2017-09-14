@@ -9,8 +9,8 @@ function oneTest(testCase)
 
 rng('default');
 
-lhS = const_lh;
-filePath = fullfile(lhS.dirS.testFileDir,  'HistoryFileTest.mat');
+compS = configLH.Computer([]);
+filePath = fullfile(compS.testFileDir,  'HistoryFileTest.mat');
 
 guessLen = 5;
 histS = globalOptLH.History(guessLen);

@@ -9,7 +9,7 @@ function unitTest(testCase)
 
 disp('Testing Project class');
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 nameStr = 'Test project';
 suffixStr = 'test';
 initFileName = 'init_test';
@@ -22,9 +22,9 @@ initFileName = 'init_test';
 %    sharedDirM{ir,2} = lhS.kureS.sharedDirV{ir};
 % end
 
-baseDir = lhS.dirS.sharedDirV{1};
-progDir = lhS.dirS.iniFileDir;
-sharedDirV = lhS.dirS.sharedDirV;
+baseDir = compS.sharedDirV{1};
+progDir = compS.sharedDirV{1};
+sharedDirV = compS.sharedDirV;
 
 pS = ProjectLH(nameStr, baseDir, progDir, sharedDirV, suffixStr, initFileName);
 

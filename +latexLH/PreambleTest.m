@@ -36,8 +36,8 @@ end
 
 %% Make preamble for testing
 function pS = make_preamble(fileNameIn, n1, n2)
-   lhS = const_lh;
-   fileName = fullfile(lhS.dirS.testFileDir, fileNameIn);
+   compS = configLH.Computer([]);
+   fileName = fullfile(compS.testFileDir, fileNameIn);
    pS = latexLH.Preamble(fileName);
    pS.initialize;
    

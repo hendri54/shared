@@ -4,7 +4,7 @@ function [idxV, betaV] = regressors_by_name(mdl, varNameStr, dbg)
 The match is limited for first N characters (the length of varNameStr)
 E.g., looking for 'exper' also returns 'exper^2'
 
-If regressors not found: return NaN
+If regressors not found: return []
 
 IN
    mdl
@@ -15,6 +15,8 @@ IN
 OUT
    idxV
       mdl.Coefficients.Estimate(idxV) holds coefficient estimates
+   betaV
+      point estimates
 %}
 
 assert(isa(varNameStr, 'char'));

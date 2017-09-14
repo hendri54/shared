@@ -6,8 +6,8 @@ end
 
 
 function zipTest(testCase)
-   lhS = const_lh;
-   zipFn = fullfile(lhS.dirS.testFileDir,  'ZipFileTest1.zip');
+   compS = configLH.Computer([]);
+   zipFn = fullfile(compS.testFileDir,  'ZipFileTest1.zip');
    zS = filesLH.ZipFile(zipFn);
    
    % Add files

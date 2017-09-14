@@ -9,13 +9,13 @@ Mostly obsolete
 Newer: in project_start
 %}
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 % No longer needed
-kureDir = lhS.dirS.baseDir;
+kureDir = compS.baseDir;
 
 % Define a few handy dirs
 dropBoxDir = '/Users/lutz/Dropbox';
-docuDir = fullfile(lhS.dirS.userDir, 'Documents');
+docuDir = fullfile(compS.userDir, 'Documents');
 dataDir = fullfile(docuDir, 'econ', 'data');
 
 % Use default project file
@@ -23,7 +23,7 @@ plS = ProjectListLH;
 
 
 % % Dummy project that just goes to shared dir
-% baseDirV = {lhS.dirS.sharedDirV{3}, kureDir};
+% baseDirV = {compS.sharedDirV{3}, kureDir};
 % progDirV = baseDirV;
 % pS = ProjectLH('Shared code', baseDirV, progDirV, [], 'shared', []);
 % plS.append(pS);
@@ -87,7 +87,7 @@ plS.append(pS);
 %% Immigration
 
 % Document immigrant earnings in low income countries
-baseDirV = {fullfile(lhS.dirS.baseDir, 'econ', 'migration', 'ipumsi'), kureDir};
+baseDirV = {fullfile(compS.baseDir, 'econ', 'migration', 'ipumsi'), kureDir};
 progDirV = {fullfile(baseDirV{1}, 'prog'),  kureDir};
 pS = ProjectLH('IPUMS migrants', baseDirV{1}, progDirV{1}, [], 'imig', []);
 plS.append(pS);
@@ -245,7 +245,7 @@ pS = ProjectLH('PWT8', baseDirV{1}, progDirV{1}, [], 'pwt8', []);
 plS.append(pS);
 
 % WDI
-baseDirV = {fullfile(lhS.dirS.baseDir, 'econ', 'data', 'worldbank', 'wdi2013'), kureDir};
+baseDirV = {fullfile(compS.baseDir, 'econ', 'data', 'worldbank', 'wdi2013'), kureDir};
 progDirV = {fullfile(baseDirV{1}, 'prog'), kureDir};
 pS = ProjectLH('WDI 2013', baseDirV{1}, progDirV{1}, [], 'wdi2013', []);
 plS.append(pS);
@@ -253,13 +253,13 @@ plS.append(pS);
 
 %% Optimization
 
-baseDir = fullfile(lhS.dirS.sharedBaseDir, 'imfil');
+baseDir = fullfile(compS.sharedBaseDir, 'imfil');
 progDir = baseDir;
 pS = ProjectLH('imfil', baseDir, progDir, [], 'imfil', []);
 plS.append(pS);
 
 % NLOPT requires additional startup using optim_lh.nloptinit
-baseDir = fullfile(lhS.dirS.sharedBaseDir, 'nlopt', 'nlopt-2.4.2', 'octave');
+baseDir = fullfile(compS.sharedBaseDir, 'nlopt', 'nlopt-2.4.2', 'octave');
 progDir = baseDir;
 pS = ProjectLH('nlopt', baseDir, progDir, [], 'nlopt', []);
 plS.append(pS);

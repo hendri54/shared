@@ -7,8 +7,8 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
-testDir = lhS.dirS.testFileDir;
+compS = configLH.Computer([]);
+testDir = compS.testFileDir;
 
 filePath0 = fullfile(testDir, 'replace_text_in_file_test0.txt');
 filePath1 = fullfile(testDir, 'replace_text_in_file_test1.txt');

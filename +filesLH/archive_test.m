@@ -6,8 +6,8 @@ end
 
 
 function oneTest(testCase)
-   lhS = const_lh;
-   dir1 = lhS.dirS.testFileDir;
+   compS = configLH.Computer([]);
+   dir1 = compS.testFileDir;
    
    testDir = 'test1';
    fListV = cell(2, 1);

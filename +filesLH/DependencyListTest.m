@@ -1,6 +1,6 @@
 function DependencyListTest
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 
 % Initialize with directory
 inPath = lhS.dirS.sharedDirV{1};
@@ -14,7 +14,7 @@ listV = dl.dependencies;
 
 
 % Back up to zip file
-zipFile = fullfile(lhS.dirS.testFileDir,  'DependencyListTest.zip');
+zipFile = fullfile(compS.testFileDir,  'DependencyListTest.zip');
 dl.back_up_zip(zipFile,  true);
 
 end

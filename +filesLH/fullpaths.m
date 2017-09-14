@@ -15,15 +15,17 @@ IN
       cell array or single string
    runLocal  ::  logical
       may be [] or missing
+
+Change: cluster name is hard wired +++++
 %}
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 
 if nargin < 2
-   runLocal = lhS.runLocal;
+   runLocal = compS.runLocal;
 end
 if isempty(runLocal)
-   runLocal = lhS.runLocal;
+   runLocal = compS.runLocal;
 end
 
 if runLocal
@@ -32,12 +34,13 @@ if runLocal
    
 else
    % Remote
+   comp2S = configLH.Computer('longleaf');
    if isa(dirInV, 'char')
-      dirOutV = modify_dir(dirInV, lhS.remoteBaseDir);
+      dirOutV = modify_dir(dirInV, comp2S.baseDir);
    else
       dirOutV = cell(size(dirInV));
       for i1 = 1 : length(dirInV)
-         dirOutV{i1} = modify_dir(dirInV{i1}, lhS.remoteBaseDir);
+         dirOutV{i1} = modify_dir(dirInV{i1}, comp2S.baseDir);
       end
    end
 end

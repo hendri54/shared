@@ -7,7 +7,7 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 %rng('default');
 
 n = 5;
@@ -15,7 +15,7 @@ guessV = linspace(4, 1.5, n);
 guessLbV = ones(1, n);
 guessUbV = 5 * ones(1, n);
 fHandle = @globalOptLH.objective1;
-historyFn = fullfile(lhS.dirS.tempDir, 'ProblemTestHistory.mat');
+historyFn = fullfile(compS.tempDir, 'ProblemTestHistory.mat');
 
 % why does this not produce a reproducible result? +++++
 

@@ -1,7 +1,7 @@
 function MatlabEditorTest
 
-lhS = const_lh;
-fileName = fullfile(lhS.dirS.testFileDir, 'editor_state');
+compS = configLH.Computer([]);
+fileName = fullfile(compS.testFileDir, 'editor_state');
 
 meS = configLH.MatlabEditor;
 

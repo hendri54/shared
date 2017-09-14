@@ -6,8 +6,8 @@ end
 
 
 function oneTest(testCase)
-   lhS = const_lh;
-   dir1 = lhS.dirS.testFileDir;
+   compS = configLH.Computer([]);
+   dir1 = compS.testFileDir;
    preambleFn = fullfile(dir1, 'paper_format_preamble.tex');
    
    %%  Make a preamble for testing

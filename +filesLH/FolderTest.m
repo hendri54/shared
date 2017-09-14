@@ -7,8 +7,8 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
-fPath = lhS.dirS.sharedDirV{1};
+compS = configLH.Computer([]);
+fPath = compS.sharedDirV{1};
 
 f = filesLH.Folder(fPath);
 

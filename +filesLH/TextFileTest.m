@@ -7,8 +7,8 @@ end
 
 function runTest(testCase)
 
-lhS = const_lh;
-testFn = fullfile(lhS.dirS.testFileDir, 'TextFileTest.txt');
+compS = configLH.Computer([]);
+testFn = fullfile(compS.testFileDir, 'TextFileTest.txt');
 tS = filesLH.TextFile(testFn);
 tS.open('w');
 tS.close;
@@ -25,8 +25,8 @@ end
 %% Strip formatting
 function stripFormattingTest(testCase)
 
-lhS = const_lh;
-testFn = fullfile(lhS.dirS.testFileDir, 'TextFileTest.txt');
+compS = configLH.Computer([]);
+testFn = fullfile(compS.testFileDir, 'TextFileTest.txt');
 tS = filesLH.TextFile(testFn);
 tS.open('w');
 tS.close;

@@ -18,7 +18,7 @@ disp('Processing startup.m');
 %% Directories
 % Location of shared dirs depends on whether we are running local or not
 
-lhS = const_lh;
+% lhS = const_lh;
 
 % Add dir for startup routines
 % addpath(filesLH.fullpaths(lhS.dirS.iniFileDir));

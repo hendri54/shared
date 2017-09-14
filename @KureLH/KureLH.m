@@ -173,9 +173,9 @@ methods
    %% Upload shared code
    % Including startup files
    function upload_shared_code(kS)
-      lhS = const_lh;
+      compS = configLH.Computer([]);
       % Just sync entire matlab code dir
-      kS.updownload(lhS.dirS.sharedBaseDir,  [],  'up');
+      kS.updownload(compS.sharedBaseDir,  [],  'up');
 %       for i1 = 1 : length(lhS.localS.sharedDirV)
 %          kS.updownload(lhS.localS.sharedDirV{i1},  lhS.kureS.sharedDirV{i1},  'up');
 %       end

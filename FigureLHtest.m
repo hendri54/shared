@@ -19,7 +19,7 @@ function groupedBarTest(testCase)
    end
    yLabelV = stringLH.vector_to_string_array(1 : ny, 'y%i');
 
-   lhS = const_lh;
+   compS = configLH.Computer([]);
    isVisible = false;
    % isVisible = true;
 
@@ -29,13 +29,13 @@ function groupedBarTest(testCase)
    % Grouped by y, for which we provide labels
    fS.bar_graph(data_xyM, yLabelV)
    fS.format;
-   fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHGroupedBarTest'), true);
+   fS.save(fullfile(compS.testFileDir, 'FigureLHGroupedBarTest'), true);
 end
 
 
 %% Bar graph
 function barTest(testCase)
-   lhS = const_lh;
+   compS = configLH.Computer([]);
    isVisible = false;
    % isVisible = true;
 
@@ -47,7 +47,7 @@ function barTest(testCase)
    if isVisible
       pause;
    end
-   fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHBartest'), true);
+   fS.save(fullfile(compS.testFileDir, 'FigureLHBartest'), true);
    fS.close;
 end
 
@@ -55,7 +55,7 @@ end
 %% Line graph
 function lineTest(testCase)
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 isVisible = false;
 % isVisible = true;
 
@@ -80,7 +80,7 @@ fS.format;
 if isVisible
    pause;
 end
-fS.save(fullfile(lhS.dirS.testFileDir, 'FigureLHtest'), true);
+fS.save(fullfile(compS.testFileDir, 'FigureLHtest'), true);
 fS.close;
 
 

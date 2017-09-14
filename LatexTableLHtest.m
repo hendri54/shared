@@ -1,13 +1,13 @@
 function LatexTableLHtest
 
 disp('Testing LatexTableLH');
-lhS = const_lh;
+compS = configLH.Computer([]);
 
 nr = 4;
 nc = 3;
 rowHeaderV = stringLH.vector_to_string_array(1 : nr, 'Row%i');
 colHeaderV = stringLH.vector_to_string_array(1 : nc, 'Var%i');
-filePath = fullfile(lhS.dirS.testFileDir,  'LatexTableLHtest.tex');
+filePath = fullfile(compS.testFileDir,  'LatexTableLHtest.tex');
 
 tS = LatexTableLH(nr, nc, 'filePath', filePath, 'rowHeaderV', rowHeaderV, 'colHeaderV', colHeaderV);
 

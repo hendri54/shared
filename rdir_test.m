@@ -10,8 +10,8 @@ function oneTest(testCase)
 
 disp('Testing rdir');
 
-lhS = const_lh;
-sharedDir = lhS.dirS.sharedDirV{1};
+compS = configLH.Computer([]);
+sharedDir = compS.sharedDirV{1};
 
 outV = rdir(fullfile(sharedDir, '**/c*.m'));
 

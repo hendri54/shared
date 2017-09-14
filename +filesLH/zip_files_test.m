@@ -7,8 +7,8 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
-zipFile = fullfile(lhS.dirS.testFileDir,  'zip_files_test.zip');
+compS = configLH.Computer([]);
+zipFile = fullfile(compS.testFileDir,  'zip_files_test.zip');
 fileListV = {which('EnumLH.m'),  which('statsLH.std_w')};
 
 % Need inspect file by hand to verify contents (not ideal)

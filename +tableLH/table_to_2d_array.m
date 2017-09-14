@@ -5,6 +5,8 @@ function [outS, id1V, id2V] = table_to_2d_array(tbM, id1, id2, varNameV)
 %{
 If a single char is provided in varNameV, output is a single matrix
 
+Not required that all [id1, id2] combinations occur
+
 IN
    tbM  ::  table
       contains variables given in id1, id2, varNameV

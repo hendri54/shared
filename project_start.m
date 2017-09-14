@@ -77,7 +77,7 @@ switch suffixStr
    %% Data projects      
    case 'bl2013'
       % Barro Lee 2013
-      progDir = {fullfile(compS.docuDir, 'econ', 'data', 'BarroLee', 'bl2013', 'prog'), kureDir};
+      progDir = fullfile(compS.docuDir, 'econ', 'data', 'BarroLee', 'bl2013', 'prog');
       standard_startup(suffixStr, progDir);
    
    case 'cps'
@@ -111,6 +111,7 @@ switch suffixStr
       % Code for honors class Econ691H
       % Must be self-contained
       progDir = fullfile(compS.dropBoxDir, 'classes', 'honors', 'code');
+      cd(progDir);
       init_hon;
       %standard_startup(suffixStr, progDir);
       
@@ -155,7 +156,8 @@ function onPath = shared_dir_on_path
    % Try to find a file in shared
    x = which('const_lh');
    % If not found, `which` returns 'Not on path' message
-   onPath = ~strncmpi(x, 'not', 3);
+   % But sometimes [] is returned (why?)
+   onPath = ~strncmpi(x, 'not', 3)  &&  ~isempty(x);
    % Restore previous dir
    cd(currDir);
 end
@@ -175,6 +177,7 @@ function standard_startup(suffixStr, progDir)
    % Shared dirs, unless they are already on path
    % sharedDir1 = fileparts(which('const_lh'));
    if ~shared_dir_on_path
+      disp('Adding shared dirs to path');
       compS = configLH.Computer([]);
       for i1 = 1 : length(compS.sharedDirV)
          addpath(compS.sharedDirV{i1});

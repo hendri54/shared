@@ -1,4 +1,5 @@
 % Constants to be shared across projects
+% Basically obsolete. Directories in 'configLH.Computer'
 classdef const_lh < handle
    
 properties (Constant)
@@ -20,19 +21,6 @@ end
 methods
    %% Constructor
    function cS = const_lh
-%{
-Largely obsolete, except for shared code directories
-%}
-
-
-% cS.raceWhite = 93;
-
-
-% 
-% %% Demographics
-% 
-% % How old is a person in year of birth?
-% cS.demogS.ageInBirthYear = 1;
    end
 
 end

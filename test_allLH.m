@@ -3,13 +3,11 @@ function test_allLH
 % Also serves as a brief overview of the code
 %
 
-lhS = const_lh;
-
 
 
 
 %% Config
-if lhS.runLocal  &&  false
+if false
    % Editor not available on server. Generally not run because of screen display annoyance
    configLH.MatlabEditorStateTest;
    configLH.MatlabEditorTest;

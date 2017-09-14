@@ -8,8 +8,8 @@ end
 methods
    %% Constructor
    function meS = MatlabEditor
-      lhS = const_lh;
-      meS.stateFileName = fullfile(lhS.dirS.sharedDirV{1}, 'editor_state.mat');
+      compS = configLH.Computer([]);
+      meS.stateFileName = fullfile(compS.sharedDirV{1}, 'editor_state.mat');
    end
    
       

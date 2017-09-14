@@ -30,8 +30,8 @@ methods
    
    %% Default project file
    function fnStr = default_project_file(plS)
-      lhS = const_lh;
-      fnStr = fullfile(lhS.dirS.sharedDirV{1}, 'project_list.mat');
+      compS = configLH.Computer([]);
+      fnStr = fullfile(compS.sharedDirV{1}, 'project_list.mat');
    end
    
    

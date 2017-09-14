@@ -7,7 +7,7 @@ end
 
 function oneTest(testCase)
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 isVisible = false;
 saveFigures = true;
 
@@ -22,8 +22,8 @@ bS.dbg = 111;
 if isVisible
    pause(3);
 end
-bS.text_table(fullfile(lhS.dirS.testFileDir,  'Bar3D.txt'), '%.2f');
+bS.text_table(fullfile(compS.testFileDir,  'Bar3D.txt'), '%.2f');
 bS.format;
-bS.save(fullfile(lhS.dirS.testFileDir, 'Bar3DTest'), saveFigures);
+bS.save(fullfile(compS.testFileDir, 'Bar3DTest'), saveFigures);
 
 end

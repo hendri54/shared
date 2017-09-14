@@ -5,8 +5,8 @@ tests = functiontests(localfunctions);
 end
 
 function oneTest(testCase)
-   lhS = const_lh;
-   fn = fullfile(lhS.dirS.testFileDir, 'DiaryFileTest.txt');
+   compS = configLH.Computer([]);
+   fn = fullfile(compS.testFileDir, 'DiaryFileTest.txt');
    dS = filesLH.DiaryFile(fn);
    dS.close;
    dS.clear;
@@ -28,7 +28,7 @@ function oneTest(testCase)
    
    
    % Switch to another diary file
-   fn2 = fullfile(lhS.dirS.testFileDir, 'DiaryFileTest2.txt');
+   fn2 = fullfile(compS.testFileDir, 'DiaryFileTest2.txt');
    dS = filesLH.DiaryFile(fn, 'new');
    for i1 = 1 : length(lineV)
       disp(lineV{i1});

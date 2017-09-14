@@ -23,11 +23,15 @@ function v = recode(vIn, searchV, replaceV, otherVal, replaceOther, dbg)
 %  Then v = [999 222 333 999]
 
 % AUTHOR: Lutz Hendricks, 1996
+
+Note:
+Built-in function 'changem' does something similar, except it does not touch values that are not in
+replaceV
 %}
 
 %% Input check
 if dbg > 10
-   validateattributes(searchV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(replaceV)})
+   validateattributes(searchV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(replaceV)})
 end
 
 

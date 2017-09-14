@@ -6,6 +6,8 @@ classdef Computer < handle
 
 properties
    compName  char = []
+   % Base directory that everything hangs off
+   % Local: user home dir. Remote: prepend .../lhendri/
    baseDir  char = []
    % Are we on the local machine?
    runLocal  logical

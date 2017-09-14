@@ -8,8 +8,8 @@ end
 function oneTest(testCase)
 % Just syntax test. Without creating a test directory full of files, this is hard to test.
 
-lhS = const_lh;
-baseDir = lhS.dirS.sharedDirV{1};
+compS = configLH.Computer([]);
+baseDir = compS.sharedDirV{1};
 fileMaskIn = '*.m';
 inclSubDirs = true;
 

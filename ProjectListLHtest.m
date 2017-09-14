@@ -2,8 +2,8 @@ function ProjectListLHtest
 
 disp('Testing ProjectListLH');
 
-lhS = const_lh;
-fileNameStr = fullfile(lhS.dirS.testFileDir, 'ProjectListLHtest');
+compS = configLH.Computer([]);
+fileNameStr = fullfile(compS.testFileDir, 'ProjectListLHtest');
 
 plS = ProjectListLH(fileNameStr);
 

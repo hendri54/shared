@@ -89,7 +89,7 @@ methods
          weights; optional
    %}
    function plot(spS, xV, yV, wtV)
-      if nargin < 3
+      if nargin < 4
          weighted = false;
       else
          weighted = true;

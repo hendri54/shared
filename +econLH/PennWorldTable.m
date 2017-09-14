@@ -48,8 +48,9 @@ methods
       pS.verNum = verNum;
       pS.verStr = sprintf('pwt%.0f', 10 * pS.verNum);
       
-      lhS = const_lh;
-      pS.pwtDir = fullfile(lhS.dirS.baseDir, 'econ', 'data', 'Pwt', pS.verStr);
+      compS = configLH.Computer([]);
+      
+      pS.pwtDir = fullfile(compS.docuDir, 'econ', 'data', 'Pwt', pS.verStr);
       pS.dataDir = fullfile(pS.pwtDir, 'data');
       pS.matDir  = fullfile(pS.pwtDir, 'mat');
       pS.dataFile = fullfile(pS.dataDir, [pS.verStr, '.xlsx']);
