@@ -183,7 +183,20 @@ methods
       
       plot(xV, yV, markerStr, 'color', fS.line_color(iLine));
    end
+
    
+   %% Add regression line and display it
+   function add_regression_line(fS, xV, yV, wtV)
+      [lineHandle, outStr] = figuresLH.regression_line(xV, yV, wtV);
+      set(lineHandle, 'Color', 'k');
+      
+      % show the string (positioning is crude)
+      axisV = axis;
+      x1 = axisV(1) + 0.1 * (axisV(2) - axisV(1));
+      y1 = axisV(3) + 0.1 * (axisV(4) - axisV(3));
+      text(x1, y1, outStr);
+   end
+
    
 %    %% Format
 %    function format(fS)

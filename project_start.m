@@ -86,6 +86,9 @@ switch suffixStr
    case 'cpsearn'
       progDir = fullfile(compS.docuDir, 'econ', 'data', 'Cps', 'earn_profiles', 'progs');
       standard_startup(suffixStr, progDir);      
+   case 'ipumsi'
+      progDir = fullfile(compS.docuDir, 'econ', 'data', 'ipumsi', 'prog');
+      standard_startup(suffixStr, progDir);            
    case 'pu'
       progDir = fullfile(compS.docuDir, 'econ', 'data', 'MicAnalyst', 'prog2017');
       standard_startup(suffixStr, progDir);

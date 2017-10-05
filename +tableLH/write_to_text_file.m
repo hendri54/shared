@@ -1,4 +1,4 @@
-function write_to_text_file(tbM, tbDir, tbFn)
+function write_to_text_file(tbM, tbFn)
 % Write table to text file
 %{
 Uses diary mechanism
@@ -6,9 +6,12 @@ Uses diary mechanism
 needs testing +++++
 %}
 
-filesLH.mkdir(tbDir);
+fDir = fileparts(tbFn);
+if ~isempty(fDir)
+   filesLH.mkdir(fDir);
+end
 
-diaryS = filesLH.DiaryFile(fullfile(tbDir,  tbFn), 'new');
+diaryS = filesLH.DiaryFile(tbFn, 'new');
 disp(tbM);
 diaryS.close;
 diaryS.strip_formatting;

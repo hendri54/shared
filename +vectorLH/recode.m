@@ -5,14 +5,17 @@ function v = recode(vIn, searchV, replaceV, otherVal, replaceOther, dbg)
 %  Does not do nested replacements (1->2  then 2->3)
 %  It only replaces the values in the original vector vIn
 
-% IN:
-%  searchV     values to be searched
-%  replaceV    values to replace those in searchV
-%  replaceOther   replace all other values with otherVal or keep them?
-%  otherVal
+IN:
+   searchV  ::  numeric
+      values to be searched
+   replaceV ::  numeric or cell
+      values to replace those in searchV
+   replaceOther  ::  logical
+      replace all other values with otherVal or keep them?
+   otherVal
 
-% OUT:
-%  vector with replace values
+OUT:
+   vector with replace values
 
 % EXAMPLE:
 %  vIn = [1 2 3 4];
@@ -26,25 +29,39 @@ function v = recode(vIn, searchV, replaceV, otherVal, replaceOther, dbg)
 
 Note:
 Built-in function 'changem' does something similar, except it does not touch values that are not in
-replaceV
+replaceV. Part of mapping toolbox
 %}
 
 %% Input check
 if dbg > 10
    validateattributes(searchV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(replaceV)})
+   assert(isa(replaceOther, 'logical'));
 end
 
 
 %% Main
+if isnumeric(replaceV)
+   if replaceOther
+      v = repmat(otherVal, size(vIn));
+   else
+      v = vIn;
+   end
 
-if replaceOther == 1
-   v = repmat(otherVal, size(vIn));
+   for i1 = 1 : length(searchV)
+      v(vIn == searchV(i1)) = replaceV(i1);
+   end
+   
 else
-   v = vIn;
-end
+   % Replace with cell values
+   assert(isa(replaceV, 'cell'));
+   
+   % Must replace values that are not found (b/c type changes)
+   v = repmat({otherVal}, size(vIn));
 
-for i1 = 1 : length(searchV)
-   v(vIn == searchV(i1)) = replaceV(i1);
+   for i1 = 1 : length(searchV)
+      v(vIn == searchV(i1)) = replaceV(i1);
+   end
 end
+   
 
 end

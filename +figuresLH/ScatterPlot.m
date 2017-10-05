@@ -64,6 +64,9 @@ methods
    
    %% Produce smooth line through scatter
    function [xOutV, yOutV] = smooth_line(spS, xV, yV)
+      validateattributes(xV, {'numeric'}, {'nonempty', 'real'})
+      validateattributes(yV, {'numeric'}, {'nonempty', 'real'})
+      
       xV = xV(:);
       yV = yV(:);
       if spS.ignoreNan
@@ -80,6 +83,19 @@ methods
    end
    
    
+   %% Add regression line and display it
+   function add_regression_line(spS, xV, yV, wtV)
+      [lineHandle, outStr] = figuresLH.regression_line(xV, yV, wtV);
+      set(lineHandle, 'Color', 'k');
+      
+      % show the string (positioning is crude)
+      axisV = axis;
+      x1 = axisV(1) + 0.1 * (axisV(2) - axisV(1));
+      y1 = axisV(3) + 0.1 * (axisV(4) - axisV(3));
+      text(x1, y1, outStr);
+   end
+   
+   
    %% Scatter and smooth line
    %{
    Leaves plot open
@@ -89,6 +105,9 @@ methods
          weights; optional
    %}
    function plot(spS, xV, yV, wtV)
+      validateattributes(xV, {'numeric'}, {'nonempty', 'real'})
+      validateattributes(yV, {'numeric'}, {'nonempty', 'real'})
+
       if nargin < 4
          weighted = false;
       else
