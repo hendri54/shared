@@ -258,11 +258,11 @@ progDir = baseDir;
 pS = ProjectLH('imfil', baseDir, progDir, [], 'imfil', []);
 plS.append(pS);
 
-% NLOPT requires additional startup using optim_lh.nloptinit
-baseDir = fullfile(compS.sharedBaseDir, 'nlopt', 'nlopt-2.4.2', 'octave');
-progDir = baseDir;
-pS = ProjectLH('nlopt', baseDir, progDir, [], 'nlopt', []);
-plS.append(pS);
+% % NLOPT requires additional startup using optim_lh.nloptinit
+% baseDir = fullfile(compS.sharedBaseDir, 'nlopt', 'nlopt-2.4.2', 'octave');
+% progDir = baseDir;
+% pS = ProjectLH('nlopt', baseDir, progDir, [], 'nlopt', []);
+% plS.append(pS);
 
 
 % Save

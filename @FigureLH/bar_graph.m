@@ -11,8 +11,11 @@ IN
       label for each group of bars
 %}
 
-ny = size(data_xyM, 2);
+[nx, ny] = size(data_xyM);
+assert(nx >= 2);
+assert(ny >= 2);
 assert(isequal(length(groupLabelV), ny),  'Group labels do not have correct length');
+
 
 fS.figType = 'bar';
 bar(1 : ny, data_xyM', 1);

@@ -1,6 +1,8 @@
 function outM = apply_scalar_function(inM, fHandle, iDim, dbg)
 % Apply a scalar function to one dimension of an array of arbitrary size
 %{
+Example
+   apply_scalar_function(inM, @sum, 3, dbg) == sum(inM, 3)
 IN
    inM
       n dimensional array, n >= 3

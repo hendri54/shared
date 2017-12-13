@@ -34,6 +34,7 @@ if ~ischar(dirName)
 end
 
 if dirName(1) ~= fs
+   disp(dirName);
    error('Must be a full path');
 end
 

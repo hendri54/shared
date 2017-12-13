@@ -39,13 +39,13 @@ end
 % This needs to be nicely scaled to avoid overflow
 vMax_iV = max(value_ixM ./ prefScale, [], 2) - 4;
 % The following line is expensive
-exp_ixM = exp(value_ixM ./ prefScale - vMax_iV(:) * ones([1, nx]));
+exp_ixM = exp(value_ixM ./ prefScale - repmat(vMax_iV(:), [1, nx]));
 
 % For each type: sum over alternatives
 expSum_iV = sum(exp_ixM, 2);
 
 % Prob of each choice
-prob_ixM = exp_ixM ./ (expSum_iV(:) * ones([1, nx]));
+prob_ixM = exp_ixM ./ repmat(expSum_iV(:), [1, nx]);
 
 % Expected value
 eVal_iV = prefScale * (vMax_iV(:) + log(expSum_iV(:)) + 0.5772);

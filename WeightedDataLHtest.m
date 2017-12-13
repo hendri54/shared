@@ -6,50 +6,48 @@ end
 
 
 function oneTest(testCase)
+   rng(450)
+   n = 3000;
+   dataV = randn(n, 1) .* 10;
+   wtV   = rand(n, 1) .* 10;
+   wtV(wtV > 9) = 0;
+   dataV(wtV > 8  &  wtV < 9.5) = nan;
 
-rng(450)
-n = 3000;
-dataV = randn(n, 1) .* 10;
-wtV   = rand(n, 1) .* 10;
-wtV(wtV > 9) = 0;
-dataV(wtV > 8  &  wtV < 9.5) = nan;
+   vIdxV = find(~isnan(dataV)  &  (wtV > 0));
 
-vIdxV = find(~isnan(dataV)  &  (wtV > 0));
+   wS = WeightedDataLH(dataV, wtV);
 
-wS = WeightedDataLH(dataV, wtV);
+   validateattributes(wS.dataV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
+   validateattributes(wS.wtV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
 
-validateattributes(wS.dataV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
-validateattributes(wS.wtV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
+   % Sorted data must be increasing
+   validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+      'increasing'})
 
-% Sorted data must be increasing
-validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-   'increasing'})
+   pctV = wS.percentile_positions;
 
-pctV = wS.percentile_positions;
+   % pct_positions_repeated_test
+   % values_weights_test;
 
-% pct_positions_repeated_test
-% values_weights_test;
+   % Median
+   xMedian = wS.median;
+   massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= xMedian));
+   massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > xMedian));
+   checkLH.approx_equal(massBelow ./ (massAbove + massBelow), 0.5, 1e-3, []);
 
-% Median
-xMedian = wS.median;
-massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= xMedian));
-massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > xMedian));
-checkLH.approx_equal(massBelow ./ (massAbove + massBelow), 0.5, 1e-3, []);
+   % Quantiles
+   pctUbV = 0.1 : 0.1 : 0.9;
+   qV = wS.quantiles(pctUbV);
+   for i1 = 1 : length(pctUbV)
+      massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= qV(i1)));
+      massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > qV(i1)));
+      checkLH.approx_equal(massBelow ./ (massAbove + massBelow), pctUbV(i1), 1e-3, []);   
+   end
 
-% Quantiles
-pctUbV = 0.1 : 0.1 : 0.9;
-qV = wS.quantiles(pctUbV);
-for i1 = 1 : length(pctUbV)
-   massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= qV(i1)));
-   massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > qV(i1)));
-   checkLH.approx_equal(massBelow ./ (massAbove + massBelow), pctUbV(i1), 1e-3, []);   
-end
-
-% Std dev
-xStd = wS.var .^ 0.5;
-trueStd = statsLH.std_w(dataV(vIdxV), wtV(vIdxV), 111);
-checkLH.approx_equal(xStd, trueStd, 1e-3, []);
-
+   % Std dev
+   xStd = wS.var .^ 0.5;
+   trueStd = statsLH.std_w(dataV(vIdxV), wtV(vIdxV), 111);
+   checkLH.approx_equal(xStd, trueStd, 1e-3, []);
 end
 
 
@@ -131,4 +129,32 @@ function values_weights_test(testCase)
    checkLH.approx_equal(valueList2V, valueListV, 1e-5, []);
    checkLH.approx_equal(valueFrac2V, valueFracV, 1e-5, []);
 
+end
+
+
+%% Quantile positions
+function qPosTest(testCase)
+   rng('default');
+   n = 100;
+   dataV = randn(n, 1) .* 10;
+   wtV = rand(n, 1) .* 10;
+   wtV(wtV > 9) = 0;
+   dataV(wtV > 8  &  wtV < 9.5) = nan;
+   
+   wS = WeightedDataLH(dataV, wtV);
+   
+   pctV = [0.33 : 0.1 : 0.99, 1];
+   qIdxV = wS.quantile_indices(pctV);
+   
+   testCase.verifyTrue(all(diff(dataV(qIdxV)) > 0));
+   
+   validV = (wtV > 0)  &  ~isnan(dataV);
+   totalWt = sum(wtV(validV));
+   for i1 = 1 : length(pctV)
+      x = dataV(qIdxV(i1));
+      % Weight of points below x must be less than pctV(i1)
+      assert(sum(wtV(validV) .* (dataV(validV) < x)) < pctV(i1) * totalWt);
+      % Weight of points weakly below x must be weakly greater than pctV(i1)
+      assert(sum(wtV(validV) .* (dataV(validV) <= x)) >= pctV(i1) * totalWt);
+   end
 end

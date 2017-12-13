@@ -4,6 +4,15 @@ Example:
    A model with a capital grid between kMin and kMax
    Calibrate the grid points 
    Calibrated parameters are
+
+   updated grid construction; make new function for this +++++
+   benefit: can control the grid end points with 2 parameters
+      dxV(1) is the first grid point
+      dxV(N):  k(N) = k(1) + dxV(N) * (1 - k1)
+      dxV(n):  k(n) = k(n-1) + (k(N) - k(n-1)) * dxV(n)
+      Then scale everything to lie in [kMin, kMax]
+
+   original grid construction:
       k1Ratio = (k1 - kMin) / (kMax - kMin) 
          in [0, 1)
       dkV(1 : (n-1))

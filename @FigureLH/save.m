@@ -10,7 +10,6 @@ IN
       format with larger fonts etc
 %}
 
-dbg = 111;
 
 % ****  Output settings for the type
 
@@ -36,7 +35,7 @@ end
 
 % Create fig dir if necessary
 if ~exist(figDir, 'dir')
-   filesLH.mkdir(figDir, dbg);
+   filesLH.mkdir(figDir, figS.dbg);
 end
 
 
@@ -54,8 +53,14 @@ if saveFigures
       % Which dir?
       figFileDir = figS.figFileDir;
       % Is path relative to current dir?
-      if ~contains(figFileDir, filesep)
+      if figFileDir(1) ~= filesep
          figFileDir = fullfile(figDir, figFileDir);
+      end
+      
+      % Check that we have a full path
+      if figFileDir(1) ~= filesep
+         disp(figFileDir);
+         error('Absolute path required');
       end
       
       if ~exist(figFileDir, 'dir')

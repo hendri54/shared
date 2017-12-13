@@ -1,7 +1,7 @@
 function [countV, midV] = hist_weighted(xV, wtV, binEdgesV, dbg)
 % Histogram with weighted data
 %{
-Result can be shown as `bar(xV, wtV)`
+Result can be shown as `bar(midV, countV)`
 
 Observations outside of binEdgesV are ignored
 

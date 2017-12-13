@@ -10,6 +10,10 @@ For discrete data, it is typically better to use DiscreteData class
 classdef WeightedDataLH < handle
    
 properties
+   dbg = 1;
+end
+   
+properties (SetAccess = private)
    dataV    double
    % Weights
    wtV      double
@@ -153,23 +157,55 @@ methods
    
    
    %% Quantiles
-   % Uses interpolation
+   %{
+   Uses interpolation
+   Built in QUANTILE command cannot handle weighted data
+   %}
    function qV = quantiles(wS, pctUbV)
       qV = interp1(min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt),  wS.dataV(wS.sortIdxV),  pctUbV,  'linear');
    end
    
    
+   %% Quantile indices
+   %{
+   IN
+      pctV  ::  double
+         percentiles to look for
+   OUT
+      idxV  ::  double
+         index values into dataV 
+         dataV(idxV(i1)) is the smallest dataV point with percentile position >= pctV(i1)
+   %}
+   function qIdxV = quantile_indices(wS, pctV)
+      dPctV = wS.percentile_positions;
+      qIdxV = zeros(size(pctV));
+      
+      for i1 = 1 : length(pctV)
+         % All points above desired percentile (never [])
+         idxV = find(dPctV >= pctV(i1));
+         [~, idx1] = min(dPctV(idxV));
+         qIdxV(i1) = idxV(idx1);
+      end
+   end
+   
+   
    %% Assign each data point its percentile position in the cdf
    %{
-   First data point gets its own weight
-   NaN for invalid obs
    This produces odd results for data with repeated values (not the same percentile positions for
    the same values)
+   
+   OUT
+      pctV  ::  double
+         pctV(i1)  = cumulative weight of all dataV <= dataV(i1)
+         First data point gets its own weight
+         NaN for invalid obs
    %}
    function pctV = percentile_positions(wS)
       pctV = nan(size(wS.dataV));
       if wS.totalWt > 0
          pctV(wS.sortIdxV) = min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt);
+         % Avoid rounding errors for top point
+         pctV(wS.sortIdxV(end)) = 1;
 
          validateattributes(pctV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
          validateattributes(pctV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing', 'positive'})

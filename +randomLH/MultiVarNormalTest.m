@@ -175,6 +175,10 @@ function conditional_distrib_test(testCase)
       [condMeanM(i1,:), condStdM(i1,:)] = mS.conditional_distrib(idx2V, value2V, covM, dbg);
    end
    
+   % Test with multiple inputs (tests matrix expansion)
+   condMean2M = mS.conditional_distrib(idx2V, drawM(:, idx2V), covM, dbg);
+   testCase.verifyEqual(condMean2M, condMeanM,  'AbsTol', 1e-5);
+   
    for iVar = 1 : n1
       % Regress y against its conditional mean
       idx1 = idx1V(iVar);

@@ -45,6 +45,7 @@ methods
          % Check that wtM is lower triangular
          for i1 = 1 : n
             if wtM(i1,i1) ~= 1
+               disp(wtM);
                error('Diagonal should be 1');
             end
             if i1 < n
@@ -114,28 +115,34 @@ methods
    
    %% Compute conditional distribution of a set of variables, given the others
    %{
+   For Multiple sets of conditioning observations
+   
    IN:
       covM
          covariance matrix
       idx2V
          indices of variables on which we condition
-      value2V
+      value2M(observation, variable)
          their values
    OUT:
-      condMeanV, condStdV
+      condMeanM(observation, variable)
+      condStdV(variable)
          conditional means and std of each variable, given all others
+         for those not in idx2V
+      condCovM(variable, variable)
+         conditional covariance; for those not in idx2
    %}
-   function [condMeanV, condStdV, condCovM] = conditional_distrib(mS, idx2V, value2V, covM, dbg)
+   function [condMeanM, condStdV, condCovM] = conditional_distrib(mS, idx2V, value2M, covM, dbg)
       
       % ******* Input check
       nVars = length(mS.meanV);
+      nObs = size(value2M, 1);
+      nCond = length(idx2V);
+      
       if dbg > 10
          validateattributes(idx2V, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, ...
             '<=', nVars})
-         validateattributes(value2V, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
-         if ~isequal(size(idx2V), size(value2V))
-            error('Size mismatch');
-         end
+         validateattributes(value2M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nObs, nCond]})
          validateattributes(covM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nVars, nVars]})
          std2V = sqrt(diag(covM));
          checkLH.approx_equal(std2V(:), mS.stdV, 1e-6, []);
@@ -155,17 +162,24 @@ methods
       mu1V = mS.meanV(idx1V);
       mu2V = mS.meanV(idx2V);
       
-      condMeanV = (mu1V(:)' + ((value2V(:)' - mu2V(:)') / sigma22) * sigma21)';
       condCovM  = sigma11 - (sigma12 / sigma22) * sigma21;
       condStdV  = sqrt(diag(condCovM));
       condStdV  = condStdV(:);
+
+      condMeanM = repmat(mu1V(:)', [nObs,1]) + ((value2M - repmat(mu2V(:)', [nObs,1])) / sigma22) * sigma21;
       
+%       % Testing against the original formula; tests matrix expansion
+%       % This is directly tested by simulation in the test function
+%       for i1 = 1 : nObs
+%          condMeanV = (mu1V(:)' + ((value2M(i1,:) - mu2V(:)') / sigma22) * sigma21)';
+%          assert(all(abs(condMeanV(:)' - condMeanM(i1,:)) < 1e-5));   
+%       end
       
       % ******* Output check
       if dbg > 10
          n1 = length(idx1V);
-         validateattributes(condMeanV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
-            'size', [n1, 1]})
+         validateattributes(condMeanM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
+            'size', [nObs, n1]})
          validateattributes(condStdV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
             '>=', 0,  'size', [n1, 1]})
          validateattributes(condCovM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...

@@ -36,6 +36,14 @@ switch suffixStr
       baseDir = fullfile(compS.dropBoxDir, 'hc', 'borrow_constraints', 'model3', 'prog');
       cd(baseDir);
       init_bc3;    
+   case 'bc4'
+      baseDir = fullfile(compS.dropBoxDir, 'hc', 'borrow_constraints', 'model4', 'github_bc4', 'prog');
+      cd(baseDir);
+      init_bc4;          
+   case 'cc2006'
+      % Caselli/Coleman 2006 AER code
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'cc2006', 'github', 'prog');
+      standard_startup(suffixStr, progDir);
    case 'icps'
       % Will typically be called from 'mmp' (and therefore not put shared dirs on path)
       progDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'cps', 'github', 'prog');
@@ -126,6 +134,12 @@ switch suffixStr
          progDir = fullfile(compS.repoDir, 'export_fig');
          addpath(progDir);
       end
+      
+   case 'nlopt'
+      % NLOPT requires additional startup using optim_lh.nloptinit
+      progDir = fullfile(compS.sharedBaseDir, 'nlopt', 'nlopt-2.4.2', 'octave');
+      addpath(progDir);
+      optimLH.nlopt_initialize('local');
       
    otherwise
       error('Invalid');
