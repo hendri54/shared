@@ -1,4 +1,4 @@
-function tbM = struct2table(inV, onlyCommonFields)
+function tbM = struct2table(inV, nDigits, onlyCommonFields)
 % Make table out of cell array of struct (or user defined objects)
 %{
 Only keep "small" fields
@@ -6,6 +6,9 @@ All structs must contain the same class for each field
 
 IN
    inV  ::  cell array of struct
+   nDigits  ::  integer
+      number of digits to display
+      e.g. with nDigits = 4, 12.34567 becomes '12.34'
    onlyCommonFields  ::  logical
       keep only fields common to all struct?
 OUT
@@ -41,61 +44,31 @@ end
 % end
 
 
-%% Make a table from each struct
+%% Make a cell array from each struct
 
 n = length(inV);
-tbM = table;
+nf = length(fnV);
+cellM = cell(nf, n + 1);
+% tbM = table;
 
 % Structure name (just its sequence number)
-tbM.Structure = stringLH.vector_to_string_array((1 : n)',  'S%i');
+varNameV = stringLH.vector_to_string_array((0 : n)',  'S%i');
+varNameV{1} = 'Variable';
 
 % Add each variable
 for i1 = 1 : length(fnV)
    fName = fnV{i1};
-   found = false;
+   cellM{i1, 1} = fName;
+   
    % Loop over each table
    for i_t = 1 : n
-      valueOut = one_field(inV{i_t}, fName);
-      if ~isempty(valueOut)
-         if ~found
-            found = true;
-            if isnumeric(valueOut)
-               tbM.(fName) = nan(n, 1);
-            elseif ischar(valueOut)
-               tbM.(fName) = cell(n, 1);
-            end
-         end
-         
-         if isnumeric(valueOut)
-            tbM.(fName)(i1) = valueOut;
-         elseif ischar(valueOut)
-            tbM.(fName){i1} = valueOut;
-         else
-            error('Invalid');
-         end
-      end
-      
-%       fName
-%       valueOut
-%       keyboard;
+      valueOut = one_field(inV{i_t}, fName, nDigits);
+      cellM{i1, i_t + 1} = valueOut;
    end
 end
 
-% 
-% for i1 = 1 : n
-%    tb2M = one_struct(inV{i1}, fnV);
-%    tb2M.name = sprintf('Tb%i', i1);
-%    tbM = join(tbM, tb2M, 'Keys', 'Name');
-% end
-% 
-% % Join the tables
-% tbM = tbV{i1};
-% for i1 = 2 : n
-%    if onlyCommonFields
-%       tbM = innerjoin(tbM, tbV{i1}
-%    else
-%    end
-% end
+tbM = cell2table(cellM, 'VariableNames', varNameV);
+
 
 end
 
@@ -122,7 +95,7 @@ end
 Values that are too large in dimension get codes
 [] means value is not numeric or char
 %}
-function valueOut = one_field(inS, nameStr)
+function valueOut = one_field(inS, nameStr, nDigits)
    if ~ismember(nameStr, fieldnames(inS))
       valueOut = [];
       return;
@@ -132,6 +105,10 @@ function valueOut = one_field(inS, nameStr)
    if isnumeric(valueOut)
       if numel(valueOut) > 3
          valueOut = [];
+      else
+         fmtStr = ['%.', sprintf('%ig, ', nDigits)];
+         valueOut = sprintf(fmtStr, valueOut);
+         valueOut(end-1 : end) = [];
       end
    elseif ischar(valueOut)
       if length(valueOut) > 10

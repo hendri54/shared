@@ -94,6 +94,9 @@ methods
    %}
    function randM = draw_given_weights(mS, nObs, wtM, dbg)
       nVar = length(mS.meanV);
+      if dbg > 10
+         validateattributes(wtM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nVar, nVar]})
+      end
       
       % Make cov matrix
       covMatM = mS.cov_from_weights(wtM, dbg);
