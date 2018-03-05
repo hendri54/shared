@@ -7,6 +7,8 @@ Other methods:
    write_table
       write to latex file
 
+Note: `siunitx` package creates Lyx problems. Therefore omit alignment on decimal points
+
 Change:
    add method that constructs table body from a `table`
    table without row headers
@@ -68,8 +70,10 @@ methods
       ir = 0;
       
       ir = ir + 1;
-      % Assume package siunitx is installed for alignment
-      alignDefaultV = repmat({'S'},  [1, tS.nc]);
+      % Assume package siunitx is installed for alignment (when using S to align on decimal point)
+      % But this cannot be default. Otherwise mixed text/number columns create errors.
+      alignDefaultV = repmat({'c'},  [1, tS.nc]);
+      alignDefaultV{1} = 'l';
       defaultM(ir,:) = {'alignV',  alignDefaultV};
       ir = ir + 1;
       defaultM(ir, :) = {'alignHeader', 'r'};

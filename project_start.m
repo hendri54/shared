@@ -42,24 +42,37 @@ switch suffixStr
       init_bc4;          
    case 'cc2006'
       % Caselli/Coleman 2006 AER code
-      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'cc2006', 'github', 'prog');
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'github_jcc', 'cc2006', 'prog');
       standard_startup(suffixStr, progDir);
+   case 'cpsbc'
+      % CPS data for borrowing constraints project (with Todd and Chris)
+      progDir = fullfile(compS.dropBoxDir, 'hc', 'borrow_constraints', 'cps', 'progs');
+      standard_startup(suffixStr, progDir);
+%       addpath(progDir);
+%       init_cpsbc;
    case 'icps'
       % Will typically be called from 'mmp' (and therefore not put shared dirs on path)
       progDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'cps', 'github', 'prog');
       %cd(progDir);
       %init_icps;
       standard_startup(suffixStr, progDir);
+   case 'khcomp'
+      % Capital skill complementarity; part of jones_cc
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'github_jcc', 'khcomp', 'prog');
+      standard_startup(suffixStr, progDir);
    case 'mmp'
-      % Self contained (has its own copy of `shared` code)
+      % Self contained (has its own copy of `shared` code)      
       baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'mmp', 'github', 'prog');
       cd(baseDir);
       init_mmp;
    case 'nisimp'
       % NIS project. Solve model with imperfect substitution
-      baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'imperfect_substitution', 'nisimp', 'prog');
-      cd(baseDir);
-      init_nisimp;
+      progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'github_jcc', 'nisimp', 'prog');
+      standard_startup(suffixStr, progDir);
+      % Was previously used for QJE (with the location below)
+      %baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'imperfect_substitution', 'nisimp', 'prog');
+      %cd(baseDir);
+      %init_nisimp;
       
       
    %% Single authored

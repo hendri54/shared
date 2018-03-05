@@ -2,14 +2,17 @@ classdef PaperFigures < handle
 % Maintain a list of figures / tables that need to be copied to a directory (to be included in a
 % paper)
    
-properties
+properties (SetAccess = private)
    % Default directories for source and target files
-   tgDefaultDir
-   srcDefaultDir
+   tgDefaultDir  char
+   srcDefaultDir  char
    % List of objects
-   fileListV
+   fileListV  cell
    % No of objects stored
-   n
+   n  uint16
+   
+   % Also copy underlying data tables with these extensions
+   dataExtV = {'csv'};
 end
 
 
@@ -51,7 +54,7 @@ methods
    
    
    
-   %% Make a complete source path
+   %% Make a complete source path, including extension
    function outPath = make_src_path(pS, srcPath)
       [fDir, fName, fExt] = fileparts(srcPath);
       if ~isempty(fDir)
@@ -130,6 +133,20 @@ methods
             end
 
             copyfile(srcPath, tgPath);
+            
+            % Copy the underlying data table, if desired
+            if ~isempty(pS.dataExtV)
+               for ix = 1 : length(pS.dataExtV)
+                  dataExt = pS.dataExtV{ix};
+                  [sDir, sName] = fileparts(srcPath);
+                  srcPath2 = fullfile(sDir, [sName, '.', dataExt]);
+                  if exist(srcPath2, 'file') > 0
+                     [tDir, tName] = fileparts(tgPath);
+                     tgPath2 = fullfile(tDir, [tName, '.', dataExt]);
+                     copyfile(srcPath2, tgPath2);
+                  end
+               end
+            end
          end
       end
    end

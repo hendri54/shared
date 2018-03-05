@@ -32,7 +32,7 @@ function [scriptStr, sourceDir, tgDir] = updownload_command(kS, localDir, remote
 
    % Input check
    if ~exist(localDir, 'dir')
-      error('Local dir does not exist');
+      error('Local dir does not exist \n  %s',  localDir);
    end
    if ~(strcmp(upDownStr, 'up')  ||  strcmp(upDownStr, 'down'))
       error('Invalid upDownStr');

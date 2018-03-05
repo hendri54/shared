@@ -33,8 +33,6 @@ if nx == 1
    return;
 end
 
-% Could use logsumexp here
-
 % Decision probability is log(sum(exp(V / prefScale)))
 % This needs to be nicely scaled to avoid overflow
 vMax_iV = max(value_ixM ./ prefScale, [], 2) - 4;

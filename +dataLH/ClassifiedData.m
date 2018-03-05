@@ -35,7 +35,6 @@ methods
    
    %% Assign classes
    % Matrices are flattened
-   % needs testing +++++
    function classV = assign_classes(cdS, xV, wtV, ubV)
       if any(isnan(xV(:)))  ||  any(isnan(wtV(:)))
          % Handle NaN values
@@ -79,6 +78,54 @@ methods
    end
    
    
+   %% Class std deviations, given classes
+   %{
+   OUT
+      stdV  ::  double
+         weighted std dev in each x class
+      meanV  ::  double
+         weighted mean in each x class
+      Both are NaN for empty classes
+   %}
+   function [xStdV, xMeanV] = class_std(cdS, xV, wtV, classV)
+      xMeanV = nan(cdS.nClasses, 1);
+      xStdV  = nan(cdS.nClasses, 1);
+%       yMeanV = nan(cdS.nClasses, 1);
+%       yStdV  = nan(cdS.nClasses, 1);
+      
+      for ic = 1 : cdS.nClasses
+         % Observations in class
+         cIdxV = find(classV == ic);
+         if ~isempty(cIdxV)
+            % Drop Nan x's (should not exist, really)
+            if any(isnan(xV(cIdxV)))
+               if cdS.omitNaN
+                  cIdxV(isnan(xV(cIdxV))) = [];
+               else
+                  cIdxV = [];
+               end
+            end
+            if ~isempty(cIdxV)
+               [xStdV(ic), xMeanV(ic)] = statsLH.std_w(xV(cIdxV), wtV(cIdxV), cdS.dbg);
+               
+%                % Now the same for y
+%                if any(isnan(yV(cIdxV)))
+%                   % Drop Nan y's
+%                   if cdS.omitNan
+%                      cIdxV(isnan(yV(cIdxV))) = [];
+%                   else
+%                      cIdxV = [];
+%                   end
+%                   if ~isempty(cIdxV)
+%                      [yStdV(ic), yMeanV(ic)] = statsLH.std_w(yV(cIdxV), wtV(cIdxV), cdS.dbg);
+%                   end
+%                end
+            end
+         end
+      end      
+   end
+   
+   
    %% Class means, given bounds
    %{
    Assign observations into classes given percentile upper bounds
@@ -87,6 +134,13 @@ methods
    If there are any NaN in xV or wtV: return all NaN (unless omitNaN)
    
    Example: Wish to plot mean(y) against mean(x) where data are grouped into x classes
+   
+   IN
+      yV  ::  double
+      xV  ::  double
+         means are computed for x classes for x and y
+      wtV  ::  double
+         weights; required
    %}
    function [yMeanV, xMeanV] = means_from_bounds(cdS, yV, xV, wtV, ubV)
       assert(isequal(length(ubV), cdS.nClasses));

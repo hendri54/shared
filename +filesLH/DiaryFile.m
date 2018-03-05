@@ -70,6 +70,7 @@ methods
    Removes strings such as <strong>
    %}
    function strip_formatting(dS)
+      dS.close;
       tS = filesLH.TextFile(dS.fileName);
       tS.strip_formatting;
    end

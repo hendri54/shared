@@ -31,7 +31,10 @@ end
 
 methods
    %% Constructor
-   function wS = WeightedDataLH(dataV, wtV)
+   function wS = WeightedDataLH(dataV, wtV, dbg)
+      if nargin >= 3
+         wS.dbg = dbg;
+      end
       wS.dataV = dataV(:);
       wS.wtV = wtV(:);
       wS.implied;
@@ -94,6 +97,21 @@ methods
 %          fracMiss = 1 - sum(wS.wtV(wS.wtV >= 0)) ./ wS.totalWt;
 %       end
 %    end
+
+
+   %% Min
+   %{
+   OUT
+      xMin  ::  double
+         NaN if no valid data
+   %}
+   function xMin = min(wS)
+      if wS.totalWt > 0
+         xMin = wS.dataV(wS.sortIdxV(1));
+      else
+         xMin = NaN;
+      end
+   end
    
    
    %% Mean
@@ -156,13 +174,14 @@ methods
    end
    
    
-   %% Quantiles
+   %% Quantiles (cdf)
    %{
    Uses interpolation
    Built in QUANTILE command cannot handle weighted data
    %}
    function qV = quantiles(wS, pctUbV)
-      qV = interp1(min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt),  wS.dataV(wS.sortIdxV),  pctUbV,  'linear');
+      qV = interp1(min(1, cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt),  wS.dataV(wS.sortIdxV),  ...
+         pctUbV,  'linear');
    end
    
    
@@ -209,6 +228,44 @@ methods
 
          validateattributes(pctV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
          validateattributes(pctV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing', 'positive'})
+      end
+   end
+   
+   
+   
+   %% Inverse cdf of the unweighted data in dataV
+   %{
+   Inverse of quantiles
+   Repeated observations: add a tiny amount of noise
+
+   IN
+      pointV  ::  double
+         data points to look up
+
+   OUT
+      pctV  ::  double
+         percentile position of each point in the cdf
+         NaN if out of range
+   %}
+   function pctV = cdf_inverse(wS, pointV)
+      if all(wS.dataV(wS.sortIdxV) > eps)
+         % Values are unique
+         pctV = interp1(wS.dataV(wS.sortIdxV),  cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt,  pointV(:));
+      else
+         % Need to add "noise"
+         pctV = interp1(wS.dataV(wS.sortIdxV) + (1 : length(wS.sortIdxV))' .* (5 * eps),  ...
+            cumsum(wS.wtV(wS.sortIdxV)) ./ wS.totalWt,  pointV(:));
+      end
+      
+      % If a point is very close to lowest data point, avoid numerical issues
+      idxV = abs(pointV - wS.dataV(wS.sortIdxV(1))) < 1e-12;
+      if ~isempty(idxV)
+         pctV(idxV) = wS.wtV(wS.sortIdxV(1)) ./ wS.totalWt;
+      end
+      
+      if wS.dbg > 10
+         validateattributes(pctV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'nonnegative', ...
+            '<=', 1})
       end
    end
    

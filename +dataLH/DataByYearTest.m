@@ -9,8 +9,8 @@ function oneTest(testCase)
 
 % Make a table
 yearV = 1950 : 2 : 2000;
-x1V = linspace(1, 2, length(yearV));
-x2V = linspace(4, 2, length(yearV));
+x1V = linspace(1, 2, length(yearV))';
+x2V = linspace(4, 2, length(yearV))';
 
 tbM = table(yearV(:), x1V(:), x2V(:), 'VariableNames', {'year', 'x1', 'x2'});
 
@@ -29,14 +29,13 @@ end
 
 
 % Retrieve
-yrIdxV = 2 : 2 : 10;
+% With repeated years
+yrIdxV = [2 : 2 : 10, 2 : 2 : 10];
 outYearV = yearV(yrIdxV);
 outM = dS.retrieve('x1', outYearV);
+testCase.verifyEqual(outM,  x1V(yrIdxV))
 
-if ~isequal(outM,  x1V(yrIdxV)')
-   error('Invalid');
-end
-
-
+outM = dS.retrieve({'x2', 'x1'}, outYearV);
+testCase.verifyEqual(outM,  [x2V(yrIdxV), x1V(yrIdxV)]);
 
 end

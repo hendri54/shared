@@ -61,23 +61,33 @@ methods
    Invalid years: NaN
    %}
    function outM = retrieve(dS, varNameV, yearV)
-      validateattributes(yearV, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>', 1500, ...
+      validateattributes(yearV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>', 1500, ...
          '<', 2100})
       if ischar(varNameV)
          varNameV = {varNameV};
       end
-      % Find years and variables
-      yrIdxV = dS.year_range(yearV);
+      
+      % Unique years
+      yearValueV = unique(yearV(yearV > 0));
+      assert(~isempty(yearValueV));
+      % Indices for unique years; may be NaN for years out of range
+      yrIdxV = dS.year_range(yearValueV);
+      
+      % Find variables
       varIdxV = dS.var_columns(varNameV);
       if any(isnan(varIdxV))
          error('Variables not found');
       end
       
       % Extract data
-      outM = nan(length(yrIdxV), length(varNameV));
-      vIdxV = find(~isnan(yrIdxV));
-      if ~isempty(vIdxV)
-         outM(vIdxV, :) = dS.tbM{yrIdxV(vIdxV), varIdxV};
+      % The loop ensures reasonable speed when there are many repeated years
+      outM = nan(length(yearV), length(varNameV));
+      % Loop over years in data table (that have nonNan yrIdxV)
+      for iy = find(yrIdxV(:)' > 0)
+         rIdxV = find(yearV == yearValueV(iy));
+         if ~isempty(rIdxV)
+            outM(rIdxV, :) = repmat(dS.tbM{yrIdxV(iy), varIdxV}, [length(rIdxV), 1]);
+         end
       end
    end
 end

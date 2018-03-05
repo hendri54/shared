@@ -188,7 +188,7 @@ end
 
 %%  Legend
 
-lHandle = legend(axes_handle);
+lHandle = axes_handle.Legend;  
 if ~isempty(lHandle)
    set(lHandle, 'FontUnits', 'points', 'FontSize', fS.legendFontSize, 'FontName', fS.figFontName);
 

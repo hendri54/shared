@@ -209,8 +209,12 @@ classdef pvectorLH < handle
                idxV = idx1 + (1 : numel(ps.valueV));
                % Take the value out of the paramS struct
                %  Flatten matrices. This can be undone using reshape
-               assert(isequal(length(idxV),  length(paramS.(ps.name)(:))),  ...
-                  sprintf('Size of %s in paramS does not match size in pvector',  ps.name));
+               pvLength = length(idxV);
+               paramLength = length(paramS.(ps.name)(:));
+               assert(isequal(pvLength,  paramLength), ...
+                  sprintf('Size of %s in paramS does not match size in pvector \n  %i ~= %i',  ...
+                  ps.name, pvLength, paramLength));
+
                guessV(idxV) = paramS.(ps.name)(:);
                lbV(idxV) = ps.lbV(:);
                ubV(idxV) = ps.ubV(:);

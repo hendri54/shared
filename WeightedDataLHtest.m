@@ -34,6 +34,10 @@ function oneTest(testCase)
    massBelow = sum(wtV(vIdxV) .* (dataV(vIdxV) <= xMedian));
    massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > xMedian));
    checkLH.approx_equal(massBelow ./ (massAbove + massBelow), 0.5, 1e-3, []);
+   
+   % Min
+   xMin = wS.min;
+   checkLH.approx_equal(xMin,  min(dataV(vIdxV)),  1e-8);
 
    % Quantiles
    pctUbV = 0.1 : 0.1 : 0.9;
@@ -43,6 +47,10 @@ function oneTest(testCase)
       massAbove = sum(wtV(vIdxV) .* (dataV(vIdxV) > qV(i1)));
       checkLH.approx_equal(massBelow ./ (massAbove + massBelow), pctUbV(i1), 1e-3, []);   
    end
+   
+   pctUb2V = wS.cdf_inverse(qV);
+   testCase.verifyEqual(pctUb2V, pctUbV(:), 'AbsTol', 1e-4);
+
 
    % Std dev
    xStd = wS.var .^ 0.5;
@@ -158,3 +166,22 @@ function qPosTest(testCase)
       assert(sum(wtV(validV) .* (dataV(validV) <= x)) >= pctV(i1) * totalWt);
    end
 end
+
+
+% %% CDF and inverse CDF
+% function cdfTest(testCase)
+%    rng('default');
+%    n = 100;
+%    dataV = randn(n, 1) .* 10;
+%    wtV = rand(n, 1) .* 10;
+%    wtV(wtV > 9) = 0;
+%    dataV(wtV > 8  &  wtV < 9.5) = nan;
+%    
+%    wS = WeightedDataLH(dataV, wtV);
+%    
+%    pctV = [0.33 : 0.1 : 0.99, 1];
+%    pointV = wS.cdf(pctV);
+%    pct2V = wS.cdf_inverse(pointV);
+%    
+%    keyboard;
+% end
