@@ -1,18 +1,21 @@
-function EnumLHtest
+function tests = EnumLHtest
+   tests = functiontests(localfunctions);
+end
 
-disp('Testing EnumLH');
 
-valueList = {'v1', 'v2', 'v3'};
-value1 = 'v2';
+function oneTest(tS)
 
-x = EnumLH(value1, valueList);
+   valueList = {'v1', 'v2', 'v3'};
+   value1 = 'v2';
 
-assert(x.equals(value1));
-assert(~x.equals(valueList{1}));
+   x = EnumLH(value1, valueList);
 
-x.set(valueList{1});
+   assert(x.equals(value1));
+   assert(~x.equals(valueList{1}));
 
-assert(x.is_valid(valueList{3}));
-assert(~x.is_valid('v9'));
+   x.set(valueList{1});
+
+   assert(x.is_valid(valueList{3}));
+   assert(~x.is_valid('v9'));
 
 end

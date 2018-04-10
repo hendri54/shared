@@ -6,6 +6,13 @@ function [xV, yM] = xy_to_common_base(xyV, dbg)
 IN
    xyV :: cell vector
       each contains fields xV, yV
+      xV are integer vectors with unique elements
+
+OUT
+   xV  ::  integer
+      vector that ranges from min to max of all x vectors
+   yM  ::  double
+      yM(j,k) is the element in the k-th y vector that goes with xV(j)
 %}
 
 
@@ -16,6 +23,7 @@ n = length(xyV);
 if dbg > 10
    for i1 = 1 : n
       validateattributes(xyV{i1}.xV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer'})
+      assert(length(unique(xyV{i1}.xV)) == length(xyV{i1}.xV),  'Values in x vectors must be unique');
    end
 end
 

@@ -52,4 +52,10 @@ set(0, 'defaultfigureposition',rect);
 format short
 
 
+%% Matlab editor extensions
+
+% at.mep.Start.start('/Users/lutz/Documents/econ/matlab/github/matlab_editor/CustomProps.properties', ...
+%    '/Users/lutz/Documents/econ/matlab/github/matlab_editor/DefaultProps.properties');
+
+
 % *** end function ***

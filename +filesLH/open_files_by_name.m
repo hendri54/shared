@@ -4,6 +4,8 @@ function open_files_by_name(baseDir, findStr)
 Displays a list of matching files. Asks user to pick one.
 If unique: file is directly opened
 
+No unit testing b/c of user interaction
+
 IN
    baseDir
       search this dir and sub-dirs
@@ -52,15 +54,20 @@ else
    disp('Multiple matching files');
    for i1 = 1 : nFound
       [~, fNameStr, fExtStr] = fileparts(outV(i1).name);
-      fprintf('  %i    %s%s \n',  i1,  fNameStr, fExtStr);
-      
+      fprintf('  %i    %s%s \n',  i1,  fNameStr, fExtStr);      
    end
+   fprintf('  %i    %s \n',  0,  'Open all');      
    
    % Pick a file to open
    ans1 = input('Pick a file to open  ');
    if ~isempty(ans1)  &&  isnumeric(ans1)
       if any(ans1 == (1 : nFound))
          open(outV(ans1).name);
+      elseif ans1 == 0
+         % Open all
+         for i1 = 1 : nFound
+            open(outV(i1).name);
+         end
       end
    end
 end

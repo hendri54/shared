@@ -15,7 +15,11 @@ IN
    useRegEx
       interpret findStrV as regex?
 
+OUT
+   outV  ::  vector of struct, as returned by `rdir`
+
 Notes: lightspeed `glob` does something similar
+Requires: `rdir`
 %}
 
 if ~exist(baseDir, 'dir')

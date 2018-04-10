@@ -18,7 +18,9 @@ if ~isempty(axisV)
    end
 end
 
-if ~isa(fhV(1), 'matlab.ui.Figure')
+% Must be figure or axis handle
+if ~isa(fhV(1), 'matlab.ui.Figure')  && ~isa(fhV(1), 'matlab.graphics.axis.Axes')
+   fhV
    error('Invalid');
 end
 
@@ -42,7 +44,11 @@ validateattributes(axisValV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'
 for i1 = 1 : length(fhV)
    %figure(fhV(i1));
    %axis(gca, axisValV);
-   ah = get(fhV(i1), 'CurrentAxes');
+   if isa(fhV(i1), 'matlab.ui.Figure')
+      ah = get(fhV(i1), 'CurrentAxes');
+   else
+      ah = fhV(i1);
+   end
    xlim(ah, axisValV(1:2));
    ylim(ah, axisValV(3:4));
 end

@@ -1,11 +1,11 @@
-function tests = test_all
+function tests = fullpaths_test
 
 tests = functiontests(localfunctions);
 
 end
 
 
-function fullpathsTest(testCase)
+function oneTest(testCase)
 
 % compS = configLH.Computer([]);
 
