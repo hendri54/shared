@@ -1,10 +1,14 @@
 function outV = table_row(dataV)
-% Take a cell array and make it into a table row
+% Take a cell or string array and make it into a table row
 %{
 Includes the terminal \\ (NOT escaped)
 Can be written to file using fprintf('%s', outV)
 but NOT fprintf(outV)
 %}
+
+if isa(dataV, 'string')
+   dataV = cellstr(dataV);
+end
 
 nr = length(dataV);
 

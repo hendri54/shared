@@ -14,7 +14,7 @@ else
 end
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(xM, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', xMin, '<=', xMax, ...
       'size', sizeV})
 end

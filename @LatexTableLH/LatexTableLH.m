@@ -1,3 +1,4 @@
+% Latex Table class
 %{
 Assumes that the dimensions of the table are known when the table is allocated
    
@@ -60,11 +61,17 @@ methods
       tS.nc = nc;
       tS.tbM = cell(nr, nc);
       defaultM = tS.default_values;
-      tS = functionLH.input_parse(varargin, tS, defaultM(:,1), defaultM(:,2));
+      % This modifies tS in place
+      functionLH.input_parse(varargin{:}, tS, defaultM(:,1), defaultM(:,2));
    end
    
    
    %% Default options
+   %{
+   OUT
+      defaultM  ::  cell
+         Cell array with columns [name, value]
+   %}
    function defaultM = default_values(tS)
       defaultM = cell(10, 2);
       ir = 0;

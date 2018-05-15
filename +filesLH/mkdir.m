@@ -16,6 +16,8 @@ OUT:
       1: created
       0: exists
       -1: failed
+
+Change: accept vectors of directory names
 %}
 
 % For testing: show but do not do anything

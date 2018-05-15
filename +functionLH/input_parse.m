@@ -5,9 +5,10 @@ All inputs in argListV must be valid fields for paramS
 
 IN
    argListV :: cell array
-      this will usually be varargin from a function call
+      this will usually be varargin{:} from a function call
       odd numbers are names, even elements are values
-   paramInS :: struct
+      length must be even
+   paramInS :: struct  OR  handle object
       structure into which params are to be copied
       can also be an object
       if it is a handle object, it will be modified in place
@@ -44,6 +45,7 @@ end
 %% Copy provided inputs into paramS
 
 nInputs = length(argListV);
+assert(mod(nInputs, 2) == 0,  'Number of name-value inputs must be even');
 
 % Loop over odd entries (parameter names)
 for i1 = 1 : 2 : (nInputs-1)

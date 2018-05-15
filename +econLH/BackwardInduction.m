@@ -38,7 +38,7 @@ Change
 
 [nk, nj] = size(vPrime_kjM);
 
-if dbg > 10
+if dbg
    checkLH.prob_check(prob_jV, 1e-6);
    assert(length(prob_jV) == nj);
    validateattributes(kGridV(:), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing', ...
@@ -56,14 +56,14 @@ end
 
 % Compute EV' on a grid
 eVPrime_kV = sum(vPrime_kjM .* repmat(prob_jV(:)', [nk, 1]), 2);
-if dbg > 10
+if dbg
    validateattributes(eVPrime_kV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nk, 1]})
 end
 
 % Make EV'(k') as a continuous function
 EVPrime = griddedInterpolant(kGridV, eVPrime_kV, 'pchip', 'linear');
-if dbg > 10
+if dbg
    evPrimeV = EVPrime(linspace(kGridV(1), kGridV(end), 100));
    validateattributes(evPrimeV, {'double'}, ...
       {'finite', 'nonnan', 'nonempty', 'real', 'increasing'})
@@ -87,7 +87,7 @@ end
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(v_kV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing'})
    validateattributes(kPrime_kV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'increasing'})
 end
@@ -118,7 +118,7 @@ function [c, kPrime, vOut] = find_solution(k,  EVPrime,  uFct,  bConstraint, opt
 [v, c] = objective(kPrime);
 vOut = -v;
 
-if dbg > 10
+if dbg
    validateattributes([c, kPrime, vOut], {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [1, 3]})
 end
 

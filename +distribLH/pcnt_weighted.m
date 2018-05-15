@@ -31,7 +31,7 @@ OUT: (row vectors)
 
 clUbV = clUbV(:)';
 
-if dbg > 10
+if dbg
    if length(wIn) ~= 1
       if ~isequal(size(xIn), size(wIn))
          disp( size(xIn) );
@@ -81,7 +81,7 @@ pMeanV = pTotalV ./ pMassV;
 
 
 %%  Self test
-if dbg > 10
+if dbg
    validateattributes(pUpperV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(clUbV)})
    validateattributes(pMeanV,  {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(clUbV)})
 end

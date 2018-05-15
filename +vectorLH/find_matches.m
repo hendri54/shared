@@ -15,7 +15,7 @@ OUT
 %}
 
 %% Input check
-if dbg > 10
+if dbg
    assert(isequal(length(unique(yV)), length(yV)));
 end
 
@@ -32,7 +32,7 @@ end
 
 
 %% Output check
-if dbg > 10
+if dbg
    xV = xV(:);
    yV = yV(:);
    

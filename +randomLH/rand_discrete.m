@@ -72,7 +72,7 @@ idxM = reshape(idxV, size(uniRandM));
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(idxM, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', ...
       '>=', 1,  '<=', n, 'size', sizeV})
 end

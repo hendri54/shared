@@ -16,7 +16,7 @@ properties
    substElast  % substitution elasticity
    
    % For each group (sub-nest)
-   nV       % no of inputs
+   nV  uint16       % no of inputs
    substElastV
    
    % *****  Derived properties
@@ -64,7 +64,7 @@ methods
       
       validateattributes(fS.substElastV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
          'size', [fS.ng, 1]})
-      validateattributes(fS.nV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+      validateattributes(fS.nV, {'uint16'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
          'size', [fS.ng, 1]})
    end
    

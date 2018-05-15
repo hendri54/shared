@@ -4,7 +4,7 @@ end
 
 function oneTest(testCase)
    % Settings
-   dbg = 111;
+   dbg = true;
    rng('default');
    
    % Make many random test cases
@@ -36,7 +36,7 @@ function oneTest(testCase)
             idxV(vDim) = i1;
 
             % Get that element
-            idx1 = sub2ind_lh2(tgSizeV, idxV, dbg);
+            idx1 = matrixLH.sub2ind(tgSizeV, idxV, dbg);
             assert(isequal(outM(idx1),  v(i1)));
          end
       end   

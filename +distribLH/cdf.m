@@ -14,7 +14,7 @@ IN
       out of range produces NaN
 %}
 
-if dbg > 10
+if dbg
    validateattributes(pctV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
 end
 

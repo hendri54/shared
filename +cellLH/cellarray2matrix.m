@@ -56,7 +56,7 @@ end
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(outM, {'double'}, {'real', 'size', [mV, nV]})
 end
 

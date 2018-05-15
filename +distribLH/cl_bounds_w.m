@@ -31,9 +31,9 @@ OUT
 
 assert(nargin >= 3);
 if nargin < 4
-   dbg = 0;
+   dbg = false;
 end
-if dbg > 10
+if dbg
    validateattributes(diff(pctUbV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>', 1e-8})
 end
 

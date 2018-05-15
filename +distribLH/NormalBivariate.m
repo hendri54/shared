@@ -45,7 +45,7 @@ methods
    function outV = cond_expect(nbS, x2V, dbg)
       outV = nbS.meanV(1) + nbS.corr .* nbS.stdV(1) ./ nbS.stdV(2) .* (x2V - nbS.meanV(2));
 
-      if dbg > 10
+      if dbg
          validateattributes(outV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(x2V)})
       end
    end
@@ -63,7 +63,7 @@ methods
    function outV = cond_density(nbS, x1V, x2V, dbg)
       outV = normpdf(x1V,  nbS.cond_expect(x2V, dbg),  nbS.cond_var .^ 0.5);
       
-      if dbg > 10
+      if dbg
          validateattributes(outV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(x1V)})
       end
    end
@@ -111,7 +111,7 @@ methods
          end
       end
       
-%       if dbg > 10
+%       if dbg
 %          validateattributes(outV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(x2LbV)})
 %       end
       

@@ -3,7 +3,7 @@ classdef SBatch
    
 properties
    % Number of days of runtime
-   nDays = 7
+   nDays = 3
    % GB of ram to request
    memoryGb = 16;
    % Email at end of job
@@ -24,9 +24,15 @@ methods
       logStr
          log file name, e.g. set1.out
    %}
-   function cmdStr = command(lS, jobNameStr, mFileStr, logStr, nCpus)
+   function cmdStr = command(lS, jobNameStr, mFileStr, logStr, nCpus, nDays)
       assert(ischar(logStr));
       validateattributes(nCpus, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', 'positive', 'scalar'})
+      
+      if ~isempty(nDays)
+         lS.nDays = nDays;
+      end
+      validateattributes(lS.nDays, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', 'positive', ...
+         '<', 14, 'scalar'})
       
       % logStr = ' -o out.%J.n24 ';
       matlabStr = [' --wrap="matlab -nodesktop -nosplash -singleCompThread -r ',  mFileStr, '" '];

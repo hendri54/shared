@@ -12,9 +12,9 @@ Inputs can be stored in the object or provided each time a method is called.
 %}
 classdef ces_lh
    properties
-      substElast
-      rho
-      N
+      substElast  double
+      rho  double
+      N  uint16
       % Optional inputs
       AV          % productivities, Tx1
       alphaM      % relative weights, TxN
@@ -42,7 +42,7 @@ classdef ces_lh
       % ******  Validation
       function validate(fS)
          validateattributes(fS.substElast, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', 'positive'})
-         validateattributes(fS.N, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1})
+         validateattributes(fS.N, {'uint16'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1})
          TV = [length(fS.AV), size(fS.alphaM, 1), size(fS.xM, 1)];
          T  = max(TV);
          % Optional inputs
@@ -183,7 +183,7 @@ classdef ces_lh
                alphaM = (incomeM ./ (incomeM(:,1) * ones(1, fS.N))) .^ (1 / fS.rho)  .*  ...
                   (xM(:,1) * ones(1, fS.N)) ./ xM;
                % Make sure they sum to 1
-               alphaM = alphaM ./ (sum(alphaM,2) * ones(1, fS.N)) .* alphaSum;
+               alphaM = alphaM ./ (sum(alphaM,2) * ones(1, fS.N)) .* double(alphaSum);
 
             else
                % Cobb Douglas
@@ -199,8 +199,8 @@ classdef ces_lh
             
          else
             % 1 input: y = A * alpha * X
-            alphaM = ones(T, 1) .* alphaSum;
-            AV = incomeM ./ xM ./ alphaSum;
+            alphaM = ones(T, 1) .* double(alphaSum);
+            AV = incomeM ./ xM ./ double(alphaSum);
          end
          
          validateattributes(alphaM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...

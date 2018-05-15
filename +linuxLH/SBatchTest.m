@@ -8,5 +8,6 @@ end
 function commandTest(testCase)
    lS = linuxLH.SBatch;
    nCpus = 8;
-   lS.command('jobName', 'mFileStr', 'logStr', nCpus)
+   nDays = 4;
+   lS.command('jobName', 'mFileStr', 'logStr', nCpus, nDays)
 end

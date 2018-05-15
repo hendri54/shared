@@ -1,4 +1,17 @@
 % Figure class
+%{
+Produces formatted figures that can be saved to PDF (requires `export_fig`)
+
+Flow
+1. Constructor: figS = FigureLH(...)
+2. Plot: figS.plot_line(...)
+3. Add xlabel, title, etc using standard commands
+4. Format: figS.format
+5. Save: figS.save
+
+Working with subplots:
+Works just like regular plotting. Each subplot requires its own `format` command.
+%}
 classdef FigureLH < handle
    
    
@@ -9,6 +22,8 @@ properties
    axesHandle
    % Figure type: 'line', 'bar'
    figType  char
+   % Background color (for area surrounding plot)
+   backGroundColor = 'w'
    % Color scheme :: string
    colorScheme
 %    % Color map where this can be used
@@ -29,6 +44,7 @@ properties
    figFontName  char
    figFontSize  double
    legendFontSize  double
+   titleFontSize  double
    
    % Figure file info
    % Extension, such as '.pdf'
@@ -78,10 +94,10 @@ methods
    % Use default if not provided
    function set_options(fS, argListV)      
       propertyV = {'colorScheme', 'height', 'width', 'visible', 'lineWidth', 'figFontName', 'figFontSize', ...
-         'legendFontSize', 'figType', 'saveFigFile', 'figFileDir', 'figNoteV', 'dbg', ...
+         'legendFontSize', 'titleFontSize', 'figType', 'saveFigFile', 'figFileDir', 'figNoteV', 'dbg', ...
           'screenHeight',  'screenWidth'};
-      defaultV  = {'default',       3,       3 * 1.61,   true,    2,          'Times',       10, ...
-         10,                'line',       true,       'figData',  [],  111, ...
+      defaultV  = {'default',       3,       3 * 1.61,   true,    2,          'Latex',       10, ...
+         10,                12,              'line',       true,       'figData',  [],  111, ...
          800, 800 * 1.61};
 
       % Parse the input args
@@ -124,7 +140,8 @@ methods
       fS.fh = figure('Units','pixels',...
          'Position',[1, 1, fS.screenWidth, fS.screenHeight],...
          'PaperPositionMode','auto',  'visible', visStr);
-      fS.axesHandle = gca;
+      fS.axesHandle = gca;      
+      
       hold on;
    end
    
@@ -165,6 +182,18 @@ methods
       x2 = max(axisV([2,4]));
       xV = linspace(x1, x2, 50);
       fS.plot_line(xV, xV,  iLine);
+   end
+   
+   
+   %% Plot a vertical line
+   function plot_vertical(fS, xV, iLineV)
+      yV = ylim;
+%       axisV = axis;
+%       y1 = min(axisV([2, 4]));
+%       y2 = max(axisV([2, 4]));
+      for ix = 1 : length(xV)
+         fS.plot_line([xV(ix), xV(ix)], yV,  iLineV(ix));      
+      end
    end
    
    
@@ -218,6 +247,122 @@ methods
    end   
    
    
+   %%  Format axes
+   function format_axes(fS)
+      axes_handle = gca;
+      
+      set(axes_handle,  'Units', 'normalized', ...
+         'FontUnits','points', 'FontWeight','normal', 'Box', 'off', ...
+         'FontSize',  fS.figFontSize,  'FontName', fS.figFontName);
+
+      axes_handle.TickLabelInterpreter = 'LaTeX';
+      axes_handle.LineWidth = 1;
+
+      grid(axes_handle, 'on');
+      % Light grey
+      axes_handle.GridColor = ones(1, 3) .* 0.75;
+
+      xl = get(axes_handle, 'XLabel');
+      if ~isempty(xl)
+         axes_handle.XLabel.Interpreter = 'LaTeX';
+         set(xl, 'Fontsize', fS.figFontSize, 'FontName', fS.figFontName);
+      end
+      
+      yl = get(axes_handle, 'yLabel');
+      if ~isempty(yl)
+         axes_handle.YLabel.Interpreter = 'LaTeX';
+         set(yl, 'Fontsize', fS.figFontSize, 'FontName', fS.figFontName);
+      end
+   end
+   
+   
+   %% Format lines (if any)
+   function format_lines(fS)
+      % Get line handles. May be []
+      ax = gca;
+      lineHandleV = findobj(ax, 'Type', 'Line');
+
+      if ~isempty(lineHandleV)
+         for i1 = 1 : length(lineHandleV)
+            mk = get(lineHandleV(i1), 'Marker');
+            if ~isempty(mk)
+               lColor = get(lineHandleV(i1), 'Color');
+               set(lineHandleV(i1), 'MarkerFaceColor', lColor);
+               lineHandleV(i1).LineWidth = fS.lineWidth;
+
+               % Set marker size
+               %  Odd: if no line, the marker disappears. Why?
+               lStyle = get(lineHandleV(i1), 'LineStyle');
+               if ~strcmp(lStyle, 'none')
+                  set(lineHandleV(i1), 'MarkerSize', 4);
+               end
+            end
+         end
+      end      
+   end
+
+   
+   %% Format bars in bar graph (if any)
+   function format_bars(fS)
+      % Set color map for bar graphs
+      %  seems to have no effect on line graphs
+      %colormap(fS.colorMap);
+      axes_handle = gca;
+
+      % Get handles to bar objects
+      barV = get(axes_handle, 'Children');
+      if ~isempty(barV)
+         if length(barV) > length(fS.colorM) / 2 
+            % Not enough colors to set individually in fS.colorM
+            colormap(fS.colorM);
+         else
+            % Set each color, skipping 1 color to get more contrast
+            for i1 = 1 : length(barV)
+               if strcmp(get(barV(i1), 'type'), 'bar')
+                  % This is a bar, not text
+                  set(barV(i1), 'Facecolor', fS.colorM(1 + (i1-1) * 2, :));
+               end
+            end
+         end      
+      end
+   end
+   
+   
+   %% Format title
+   function format_title(fS)
+      ax = gca;
+      ax.Title.Interpreter = 'LaTeX';
+      ax.Title.FontSize = fS.titleFontSize;
+   end
+   
+   
+   %% Format legend
+   function format_legend(fS)
+      ax = gca;
+      lHandle = ax.Legend;  
+      if ~isempty(lHandle)
+         set(lHandle, 'FontUnits', 'points', 'FontSize', fS.legendFontSize, 'FontName', fS.figFontName);
+         ax.Legend.Interpreter= 'Latex';
+         
+         % Get position of legend: [x, y, w, h]
+         %  w,h are width and height
+         %  x,y is x,y position of legend
+         % lPosV = get(lHandle, 'Position');
+
+         % Turn off box around legend
+         %legend(axes_handle, 'boxoff');
+
+         % 
+         % disp('More robust way of showing subset of legend objects');
+         % % Plot entire legend
+         % [legend_h, object_h, plot_h, textV] = legend(legendV);
+         % % Now redraw with just the desired objects
+         % legend(plot_h(1), legendV(1));
+         % pause;
+      end
+   end
+
+   
    %% Get info for a line
    function colorV = line_color(fS, iLine)
       n = size(fS.colorM, 1);
@@ -249,6 +394,9 @@ methods
    
    
    %% Text objects
+   %{
+   Writes to fS.axesHandle, which is set during `new`. Could fail with subplots.
+   %}
    function text(fS,  x, y, str)
       validateattributes(y, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
       assert(isa(str, 'char'));

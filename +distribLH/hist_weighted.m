@@ -30,7 +30,7 @@ end
 % if min(xV) <= binEdgesV(1)  ||  max(xV) > binEdgesV(end)
 %    error('xV must be within bins');
 % end
-if dbg > 10
+if dbg
    validateattributes(xV,  {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
    validateattributes(wtV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(xV)})
    validateattributes(binEdgesV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})

@@ -27,7 +27,7 @@ methods
       nk = length(ubV);
       probM = normcdf((repmat(ubV(:)', [nj, 1]) - repmat(meanV(:), [1, nk])) ./ repmat(stdV(:), [1, nk]));
       
-      if nS.dbg > 10
+      if nS.dbg
          validateattributes(probM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, '<=', 1, ...
             'size', [nj, nk]})
       end
@@ -52,7 +52,7 @@ methods
       probM = nS.cdf(ubV, meanV, stdV);
       probM = [probM(:,1), diff(probM, 1, 2)];
       
-      if nS.dbg > 10
+      if nS.dbg
          nj = length(meanV);
          nk = length(ubV);
          validateattributes(probM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, '<=', 1, ...

@@ -20,7 +20,7 @@ OUT
 
 n = length(xyV);
 
-if dbg > 10
+if dbg
    for i1 = 1 : n
       validateattributes(xyV{i1}.xV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer'})
       assert(length(unique(xyV{i1}.xV)) == length(xyV{i1}.xV),  'Values in x vectors must be unique');

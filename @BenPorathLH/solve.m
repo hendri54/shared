@@ -50,7 +50,7 @@ T = length(bpS.wageV);
 ddh = bpS.ddh;
 pAlpha = bpS.pAlpha;
 
-if dbg > 10
+if dbg
    % Check BP parameters
    bpS.validate;
 end
@@ -112,7 +112,7 @@ wageM = earnM ./ tEndowM;
 
 
 %% *****  Self-test
-if dbg > 10
+if dbg
    validateattributes(hM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
       'size', [n, T]})
    validateattributes(lM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, ...

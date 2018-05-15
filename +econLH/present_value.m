@@ -25,7 +25,7 @@ discFactorV = (1 + discRate) .^ (discDate - (1:T));
 
 prValueV = sum(xM .* (ones(nInd,1) * discFactorV), 2);
 
-if dbg > 10
+if dbg
    validateattributes(prValueV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nInd, 1]})
 end

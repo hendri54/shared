@@ -51,7 +51,7 @@ classdef UtilCrraLH
             end
          end
          
-         if dbg > 10
+         if dbg
             validateattributes(util_itM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
                'size', size(c_itM)})
             if computeMu
@@ -65,7 +65,7 @@ classdef UtilCrraLH
       %% Inverse marginal utility
       function c_itM = mu_inverse(uS, mu_itM, dbg)
          c_itM = (mu_itM ./ uS.pFactor) .^ (-1 ./ uS.pSigma);
-         if dbg > 10
+         if dbg
             validateattributes(c_itM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
          end
       end
@@ -75,7 +75,7 @@ classdef UtilCrraLH
       function pvUtilV = lifetime_util(uS, c_itM, dbg)
          discRate = 1 / uS.pBeta - 1;
          pvUtilV = econLH.present_value(uS.util(c_itM, dbg), discRate, 1, dbg);
-         if dbg > 10
+         if dbg
             nInd = size(c_itM, 1);
             validateattributes(pvUtilV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
                'size', [nInd, 1]})
@@ -86,7 +86,7 @@ classdef UtilCrraLH
       %% Consumption growth rate for given R
       function cGrowth = c_growth(uS, R, dbg)
          cGrowth = (uS.pBeta * R) .^ (1 / uS.pSigma) - 1;
-         if dbg > 10
+         if dbg
             if R < 0.5
                warning('Implausible R');
             end
@@ -130,7 +130,7 @@ classdef UtilCrraLH
             pvUtilV = uS.pFactor .* (u1V .* fac1 - fac2);            
          end
          
-         if dbg > 10
+         if dbg
             validateattributes(pvUtilV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
                'size', size(c1V)})
          end

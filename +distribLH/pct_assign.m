@@ -36,7 +36,7 @@ else
    pctV(m(n,3)) = 1;
 end
 
-if dbg > 10
+if dbg
    validateattributes(pctV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', '<=', 1})
    assert(max(pctV) == 1);
 end

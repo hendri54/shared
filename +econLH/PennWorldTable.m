@@ -116,7 +116,7 @@ methods
    end
    
    
-   %% Load data table
+   %% Load data table made by make_table
    function m = load_table(pS)
       m = pS.var_load(pS.matFile);
    end
@@ -124,12 +124,15 @@ methods
    
    %% List all country codes
    function wbCodeV = country_list(pS)
-      m = pS.var_load(pS.matFile);
+      m = pS.load_table;
       wbCodeV = unique(m.(pS.vnCountry));
    end
    
    
    %% Variable saving / loading
+   %{
+   For matrix files
+   %}
    function fn = var_fn(pS, varName)
       fn = fullfile(pS.matDir, [varName, '.mat']);
    end
@@ -191,6 +194,7 @@ methods
    
    %% Load a variable by country / year
    function outM = load_var_yc(pS, varName, wbCodeV, yearV)
+      validateattributes(yearV, {'numeric'}, {'nonempty', 'integer', '>', 1900})
       % Make sure all years are valid
       assert(all(ismember(yearV, pS.year1 : pS.year2)));
       % For a given country: year indices requested

@@ -16,7 +16,7 @@ No problem to set lb or ub to []
 
 
 %% Input check
-if dbg > 10
+if dbg
    validateattributes(muL, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
    validateattributes(sigmaL, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', 'positive'})
    if ~isempty(lbV)

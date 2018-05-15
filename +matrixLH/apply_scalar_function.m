@@ -53,7 +53,7 @@ end
 
 
 %% Output check
-if dbg > 10
+if dbg
    outSizeV = sizeInV;
    outSizeV(iDim) = [];
    validateattributes(outM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', outSizeV})

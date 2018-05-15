@@ -21,7 +21,7 @@ end
 %    inV = {inV};
 % end
 
-if dbg > 10
+if dbg
    assert(isa(changeExisting, 'logical'));
    assert(isa(inV, 'cell')  ||  isa(inV, 'char'));
    assert(~isempty(inV));

@@ -21,7 +21,7 @@ if nargin < 3
    dbg = 1;
 end
 
-if dbg > 10
+if dbg
    n = length(xV);
    validateattributes(xV(:),  {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,1]})
    validateattributes(wtV(:), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,1], ...
@@ -55,7 +55,7 @@ md = xV(mdIdx);
 % Cannot use interp1 here (x may have duplicate values)
 % md = intrp_1( cumsum(sortM(:,2)), sortM(:,1), 0.5, dbg );
 
-if dbg > 10
+if dbg
    validateattributes(md, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
 end
 

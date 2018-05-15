@@ -13,7 +13,7 @@ end
 
 
 %% Input check
-if dbg > 10
+if dbg
    validateattributes(yV(:),     {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,1]})
    validateattributes(yPredV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(yV)})
    validateattributes(wtV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, 'size', size(yV)})

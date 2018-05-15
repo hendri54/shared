@@ -132,6 +132,12 @@ methods
 
    end
 
+   
+   %% Project dir for a given year
+   function outDir = projectDir(cS, year1)
+      validateattributes(year1, {'numeric'}, {'integer', 'scalar', '>', 2000})
+      outDir = fullfile(cS.docuDir, 'projects', sprintf('p%i', year1));
+   end
 end
 
 end

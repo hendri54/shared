@@ -13,7 +13,7 @@ properties
    % Lower bound of lowest grid interval
    lb1  double
    
-   dbg = 1
+   dbg = false
 end
 
 properties (Dependent)
@@ -86,7 +86,7 @@ methods
       ngS.lb1 = -Inf;
 
       % Output check
-      if ngS.dbg > 10
+      if ngS.dbg
          ngS.validate;
          % Check that mass is indeed uniform
          massV = ngS.grid_mass(xMean, xStd);
@@ -105,7 +105,7 @@ methods
       % Lightspeed normcdf is an order of magnitude faster than the built in (2017)
       cdfV = lightspeed.normcdf(ngS.edgeV, xMean, xStd);
       massV = diff(cdfV);
-      if ngS.dbg > 10
+      if ngS.dbg
          validateattributes(massV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, ...
             'size', [ngS.ng,1]})
       end

@@ -32,7 +32,7 @@ if nargin ~= 6
 end
 
 n = length(xV);
-if dbg > 10
+if dbg
    if any( xV(2:n) < xV(1:n-1) )
       warnmsg([ mfilename, ':  xV not increasing' ]);
       keyboard;
@@ -64,7 +64,7 @@ massV = massV(:) ./ sum(massV);
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(massV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,1], ...
       '>=', 0, '<=', 1})
    validateattributes(lbV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,1], ...

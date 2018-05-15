@@ -11,6 +11,9 @@ Flow:
 4. guess_make: make a vector of all calibrated guesses
 5. run the vector of guesses into optimization routine
 6. in objective function: guess_extract copies guesses into parameter struct
+
+To fix a parameter, set its default value in the pvectorLH. Otherwise, loading parameters and
+running `struct_update` keeps the loaded value.
 %}
 
 classdef pvectorLH < handle
@@ -281,6 +284,8 @@ classdef pvectorLH < handle
          paramS
             struct with parameter values
             can also be a class
+         doCalV  ::  double
+            show parameters with `doCal` in `doCalV`
       OUT
          outV :: string array
             each entry is a formatted parameter

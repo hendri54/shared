@@ -5,6 +5,28 @@ tests = functiontests(localfunctions);
 end
 
 
+%% Subplots
+function subPlotTest(tS)
+   figS = FigureLH('visible', false);
+   figS.new;
+   
+   subplot(2,1,1);
+   figS.plot_line(1:20, sqrt(1:20), 1);
+   xlabel('x label');
+   ylabel('$y$ variable');
+   figS.format;
+   
+   subplot(2,1,2);
+   figS.plot_line(1:20, exp(2 - (1 : 20) ./ 10), 1);
+   xlabel('x label');
+   ylabel('$y$ variable');
+   figS.format;
+   
+   compS = configLH.Computer([]);
+   figS.save(fullfile(compS.testFileDir, 'FigureLHSubPlotTest'), true);
+end
+
+
 %% Grouped bar graph
 function groupedBarTest(testCase)
    nx = 4;
@@ -71,11 +93,14 @@ for i1 = 1 : 20
 end
 clear fS;
 
-fS = FigureLH('visible', isVisible, 'figNoteV', {'Line 1', 'Line 2'});
+fS = FigureLH('visible', isVisible, 'figNoteV', {'Line 1', 'Line 2'}, 'titleFontSize', 18);
 fS.new;
 fS.plot_line(1:10, sqrt(1:10), 1);
 fS.plot_line(1:10, 0.5 .* sqrt(1:10), 2);
 fS.text(2, 3, 'Test text');
+xlabel('$\phi(x)$');
+ylabel('Normal text');
+title('$e^{-x/2} \phi(x)$');
 fS.format;
 if isVisible
    pause;

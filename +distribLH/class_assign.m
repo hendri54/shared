@@ -38,7 +38,7 @@ Was previously called just class_assign
 %% Input check
 
 if nargin < 4
-   dbg = 1;
+   dbg = true;
 end
 if nargin < 3
    error('Invalid nargin');
@@ -60,7 +60,7 @@ if max(clUbV) > 1
 end
 
 
-if dbg > 10
+if dbg
    validateattributes(xV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'real'})
    validateattributes(clUbV(:), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nc, 1], ...
       '>=', 0, '<=', 1})
@@ -136,7 +136,7 @@ xClV = discretize(double(xV(:)), [min(xV(:))-1; xUbV + 1e-8], 'IncludedEdge', 'l
 
 
 %%  SELF-TEST
-if dbg > 10
+if dbg
    % Some may have class 0 (not in any bin)
    validateattributes(xClV, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 0, ...
       '<=', nc,  'size', [n,1]})

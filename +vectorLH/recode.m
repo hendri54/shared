@@ -33,7 +33,7 @@ replaceV. Part of mapping toolbox
 %}
 
 %% Input check
-if dbg > 10
+if dbg
    validateattributes(searchV, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(replaceV)})
    assert(isa(replaceOther, 'logical'));
 end

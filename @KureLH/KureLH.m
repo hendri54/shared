@@ -17,6 +17,8 @@ properties
    clusterName  char
    % Job submission method ('lsf', 'sbatch')
    jobSubmitMethod  char
+   % Number of days to run at most
+   nDays = 3
    % Only show commands, but don't run them
    testMode  logical  =  false;   
 end
@@ -243,10 +245,16 @@ methods
       nCpus
          no of cpus (1 if not parallel)
    %}
-   function cmdStr = command(kS, mFileName, argV, jobNameStr, logStr, nCpus)
+   function cmdStr = command(kS, mFileName, argV, jobNameStr, logStr, nCpus, nDays)
+      if ~isempty(nDays)
+         kS.nDays = nDays;
+      end
+      
       % ******  Input check
       validateattributes(nCpus, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', 'scalar', ...
          '>=', 1, '<=', 16})
+      validateattributes(kS.nDays, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', 'scalar', ...
+         '>=', 1, '<=', 15})
       assert(isa(logStr, 'char'));
       
       argStr = kS.make_arg_string(argV);
@@ -258,7 +266,7 @@ methods
             cmdStr = lS.command(mFileStr, logStr, nCpus);
          case 'sbatch'
             lS = linuxLH.SBatch;
-            cmdStr = lS.command(jobNameStr, mFileStr, logStr, nCpus);
+            cmdStr = lS.command(jobNameStr, mFileStr, logStr, nCpus, kS.nDays);
          otherwise
             error('Invalid');
       end

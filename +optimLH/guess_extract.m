@@ -22,7 +22,7 @@ else
 end
 
 % *****  Input check
-if dbg > 10
+if dbg
    if any(ubV <= lbV)
       error('bounds invalid');
    end

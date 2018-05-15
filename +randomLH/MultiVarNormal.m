@@ -32,6 +32,7 @@ methods
    IN
       wtM
          lower triangular weight matrix
+         entry (i,j) gives variable i's weight on j's random draw
    OUT
       covMatM
          cov matrix implied by wtM and stdV
@@ -40,7 +41,7 @@ methods
       n = length(mS.meanV);
       
       % *****  Input check
-      if dbg > 10
+      if dbg
          validateattributes(wtM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,n]})
          % Check that wtM is lower triangular
          for i1 = 1 : n
@@ -79,7 +80,7 @@ methods
 %       covMatM = covMatM .* (stdRatioV * ones(1, n)) ./ (ones(n,1) * stdRatioV');
       
       % *******  Output check
-      if dbg > 10
+      if dbg
          validateattributes(covMatM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [n,n]});
          % Diagonal should be variances
          std2V = sqrt(diag(covMatM));
@@ -94,7 +95,7 @@ methods
    %}
    function randM = draw_given_weights(mS, nObs, wtM, dbg)
       nVar = length(mS.meanV);
-      if dbg > 10
+      if dbg
          validateattributes(wtM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nVar, nVar]})
       end
       
@@ -110,7 +111,7 @@ methods
 %       end
       
       % Output check
-      if dbg > 10
+      if dbg
          validateattributes(randM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nObs, nVar]})
       end
    end
@@ -142,7 +143,7 @@ methods
       nObs = size(value2M, 1);
       nCond = length(idx2V);
       
-      if dbg > 10
+      if dbg
          validateattributes(idx2V, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, ...
             '<=', nVars})
          validateattributes(value2M, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nObs, nCond]})
@@ -179,7 +180,7 @@ methods
 %       end
       
       % ******* Output check
-      if dbg > 10
+      if dbg
          n1 = length(idx1V);
          validateattributes(condMeanM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
             'size', [nObs, n1]})

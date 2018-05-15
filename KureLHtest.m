@@ -27,7 +27,8 @@ function commandTest(testCase)
       jobNameStr = 'jobName';
       logStr = 'test_log.out';
       nCpus = 8;
-      cmdStr = kS.command(suffixStr, argV, jobNameStr, logStr, nCpus)
+      nDays = 7;
+      cmdStr = kS.command(suffixStr, argV, jobNameStr, logStr, nCpus, nDays)
    end
 end
 

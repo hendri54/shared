@@ -16,7 +16,7 @@ OUT:
 %}
 
 % Input check
-if dbg > 10
+if dbg
 	validateattributes(capShare, {'double'}, {'real', 'positive', ...
 		'nonnan', 'finite', '<', 1, 'scalar'})
 end
@@ -27,7 +27,7 @@ mpkM = capShare .* yM ./ kM;
 mplM = (1-capShare) .* yM ./ lM;
 
 % Output check
-if dbg > 10
+if dbg
 	validateattributes(mpkM, {'double'}, {'real', 'positive', ...
 		'nonnan', 'finite', 'size', size(kM)})
 end

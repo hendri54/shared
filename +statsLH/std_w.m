@@ -28,7 +28,7 @@ if ~isequal(size(xM), size(wtInM))
    error('Size mismatch');
 end
 
-if dbg > 10
+if dbg
    if any(wtInM(:) < 0)
       error('Negative weights');
    end
@@ -67,7 +67,7 @@ end
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(xMeanV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
    validateattributes(sdV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0})
 end

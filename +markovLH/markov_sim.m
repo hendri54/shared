@@ -29,7 +29,7 @@ if nargin ~= 6
    error('Invalid nargin');
 end
 
-if dbg > 10
+if dbg
    validateattributes(trProbM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, '<=', 1, ...
       'size', [ns, ns]})
    % Make sure probabilities sum to one

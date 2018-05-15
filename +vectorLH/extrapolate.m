@@ -13,7 +13,7 @@ else
    outV = xV;
 end
 
-if dbg > 10
+if dbg
    validateattributes(outV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(xV(:))})
 end
 

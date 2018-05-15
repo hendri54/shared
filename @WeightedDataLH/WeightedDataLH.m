@@ -10,7 +10,7 @@ For discrete data, it is typically better to use DiscreteData class
 classdef WeightedDataLH < handle
    
 properties
-   dbg = 1;
+   dbg  logical = true;
 end
    
 properties (SetAccess = private)
@@ -33,7 +33,7 @@ methods
    %% Constructor
    function wS = WeightedDataLH(dataV, wtV, dbg)
       if nargin >= 3
-         wS.dbg = dbg;
+         wS.dbg = logical(dbg);
       end
       wS.dataV = dataV(:);
       wS.wtV = wtV(:);
@@ -233,7 +233,7 @@ methods
    
    
    
-   %% Inverse cdf of the unweighted data in dataV
+   %% Inverse cdf of the data in dataV
    %{
    Inverse of quantiles
    Repeated observations: add a tiny amount of noise
@@ -263,7 +263,7 @@ methods
          pctV(idxV) = wS.wtV(wS.sortIdxV(1)) ./ wS.totalWt;
       end
       
-      if wS.dbg > 10
+      if wS.dbg
          validateattributes(pctV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'nonnegative', ...
             '<=', 1})
       end

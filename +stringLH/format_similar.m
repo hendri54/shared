@@ -10,7 +10,7 @@ IN
 %}
 
 %% Input check
-if dbg > 10
+if dbg
    assert(isa(inStr, 'char'));
    assert(isa(inNumber, 'numeric'));
    assert(isequal(length(inNumber), 1));

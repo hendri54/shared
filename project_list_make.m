@@ -47,11 +47,11 @@ pS = ProjectLH('Collprem', baseDirV{1}, progDirV{1}, [], 'cp', []);
 plS.append(pS);
 
 
-% Jones: bounding role of H for income gaps
-baseDirV = {fullfile(dropBoxDir, 'cross_country', 'jones'),  kureDir};
-progDirV = {fullfile(baseDirV{1}, 'progs'),  kureDir};
-pS = ProjectLH('Jones generalize approach', baseDirV{1}, progDirV{1}, [], 'jones', []);
-plS.append(pS);
+% % Jones: bounding role of H for income gaps
+% baseDirV = {fullfile(dropBoxDir, 'cross_country', 'jones'),  kureDir};
+% progDirV = {fullfile(baseDirV{1}, 'progs'),  kureDir};
+% pS = ProjectLH('Jones generalize approach', baseDirV{1}, progDirV{1}, [], 'jones', []);
+% plS.append(pS);
 
 
 % % Manuelli / Seshadri (2014 AER)

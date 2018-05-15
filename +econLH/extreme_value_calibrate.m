@@ -32,7 +32,7 @@ nInd = size(value_ixM, 1);
 nx = length(choiceFracV);
 
 %% Input check
-if dbg > 10
+if dbg
    validateattributes(value_ixM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nInd, nx]})
    checkLH.prob_check(choiceFracV, 1e-6);
@@ -91,7 +91,7 @@ prefMeanV = [0; solnV(:)];
 
 
 %% Output check
-if dbg > 10
+if dbg
    validateattributes(prefMeanV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nx, 1]})
 end
@@ -132,7 +132,7 @@ function meanPref = pairwise_calibration(value_ixM, choiceFracV, prefScale, optS
 nInd = size(value_ixM, 1);
 
 % ******  Input check
-if dbg > 10
+if dbg
    validateattributes(value_ixM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
       'size', [nInd, 2]})
    if length(choiceFracV) ~= 2
@@ -155,7 +155,7 @@ end
 
 % *******  Output check
 
-if dbg > 10
+if dbg
    validateattributes(meanPref, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
 end
 

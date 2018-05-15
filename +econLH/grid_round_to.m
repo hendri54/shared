@@ -22,7 +22,7 @@ end
 
 
 % Output test
-if dbg > 10
+if dbg
    validateattributes(xIdxV, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', 'positive', '<=', ng})
 end
 

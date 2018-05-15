@@ -49,7 +49,7 @@ if ~isempty(wtM)
    mdl = fitlm(trueM(idxV), simM(idxV), 'linear', 'Weights', wtM(idxV));
 else
    idxV = find(~isnan(trueM(:)) & ~isnan(simM(:)));
-   assert(length(idxV) > 4);
+   assert(length(idxV) > 4,  'Not enough valid observations');
    mdl = fitlm(trueM(idxV), simM(idxV), 'linear');
 end
 

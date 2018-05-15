@@ -10,7 +10,7 @@ outV = inV;
 T = length(inV);
 
 %% Input check
-if dbg > 10
+if dbg
    validateattributes(g1, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
    validateattributes(g2, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar'})
 end
@@ -37,7 +37,7 @@ end
 
 
 %% Self-test
-if dbg > 10
+if dbg
    validateattributes(outV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(inV)})
 end
 

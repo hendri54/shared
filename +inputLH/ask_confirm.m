@@ -7,6 +7,10 @@ OUT
    result  ::  logical
 %}
 
+if nargin < 2
+   noConfirm = 'confirm';
+end
+
 % Bypass confirmation
 if ischar(noConfirm)
    if strcmpi(noConfirm, 'noConfirm')

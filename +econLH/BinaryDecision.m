@@ -31,7 +31,7 @@ methods
    %% Expected utility before pref shock is revealed
    function [eUtilV, prob1V] = expected_utility(bS, v1V, v2V)
       % Input check
-      if bS.dbg > 10
+      if bS.dbg
          validateattributes(v1V, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', size(v2V)})
          validateattributes(v2V, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
       end

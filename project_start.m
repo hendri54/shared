@@ -80,6 +80,10 @@ switch suffixStr
       % College stratification in IPEDS data
       progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'college_stratification', 'github', 'prog');
       standard_startup(suffixStr, progDir);
+   case 'jones'
+      % Jones: bounding role of H for income gaps
+      progDir = fullfile(compS.projectDir(2015), 'jones', 'progs');
+      standard_startup(suffixStr, progDir);      
    case 'ms'
       % Manuelli/Seshadri (2014 AER)
       progDir = fullfile(compS.docuDir, 'projects', 'p2016', 'ms2014', 'prog');
@@ -201,7 +205,7 @@ function standard_startup(suffixStr, progDir)
    disp(['Startup ', suffixStr]);
 
    % Prog dir on path
-   assert(exist(progDir, 'dir') > 0,  'Prog dir does not exist');
+   assert(exist(progDir, 'dir') > 0,  'Prog dir does not exist:\n  %s', progDir);
    addpath(progDir);
    
    % Shared dirs, unless they are already on path

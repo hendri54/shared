@@ -50,7 +50,7 @@ eVal_iV = prefScale * (vMax_iV(:) + log(expSum_iV(:)) + 0.5772);
 
 
 %% Test
-if dbg > 10
+if dbg
    validateattributes(exp_ixM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
 end
 
