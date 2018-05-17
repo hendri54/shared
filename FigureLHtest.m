@@ -97,6 +97,9 @@ fS = FigureLH('visible', isVisible, 'figNoteV', {'Line 1', 'Line 2'}, 'titleFont
 fS.new;
 fS.plot_line(1:10, sqrt(1:10), 1);
 fS.plot_line(1:10, 0.5 .* sqrt(1:10), 2);
+fS.plot_line(1:10, (1:10) .^ 0.3, 3);
+fS.plot_line(1:10, (1:10) .^ 0.7, 4);
+fS.plot_line(1:10, (1:10) .^ 0.2, 5);
 fS.text(2, 3, 'Test text');
 xlabel('$\phi(x)$');
 ylabel('Normal text');

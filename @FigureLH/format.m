@@ -52,7 +52,7 @@ if isempty(iFigType)
 end
 
 
-%%  Format figure area
+%%  Format
 
 if ~isempty(fS.backGroundColor)
    set(fS.fh, 'color', fS.backGroundColor);

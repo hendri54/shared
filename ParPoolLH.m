@@ -12,7 +12,7 @@ end
 methods
    function pS = ParPoolLH(varargin)
       if ~isempty(varargin)
-         functionLH.input_parse(varargin{:}, pS);
+         functionLH.input_parse(varargin, pS);
       end
    end
    

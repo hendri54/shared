@@ -5,13 +5,13 @@ tests = functiontests(localfunctions);
 end
 
 function oneTest(tS)
-   n = 2;
+   nFig = 3;
    xMin = 1e8;
    xMax = -1e8;
    yMin = 1e8;
    yMax = -1e8;
    
-   for iFig = 1 : n
+   for iFig = 1 : nFig
       xV = iFig + (1 : 5);
       fV(iFig) = figure('visible', 'off');
       plot(xV);
@@ -21,13 +21,15 @@ function oneTest(tS)
       xMin = min([ax.XLim, xMin]);
       xMax = max([ax.XLim, xMax]);
       yMin = min([ax.YLim, yMin]);
-      yMax = max([ax.YLim, yMax]);
-      
-      close;
+      yMax = max([ax.YLim, yMax]);      
    end
    
    [x1V, y1V] = figuresLH.common_axis_limits(fV, []);
    [x2V, y2V] = figuresLH.common_axis_limits(axV, []);
+   
+   for iFig = 1 : nFig
+      close(fV(iFig));
+   end
    
    tS.verifyEqual(x1V, x2V);
    tS.verifyEqual(y1V, y2V);

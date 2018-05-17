@@ -12,7 +12,7 @@ function structTest(testCase)
    x1 = 27;
    paramInS = struct;
    paramInS.x1 = x1;
-   paramS = to_be_called(paramInS,  argListV);
+   paramS = to_be_called(paramInS,  argListV{:});
 
    assert(isequal(paramS.x1, paramInS.x1));
    
@@ -63,7 +63,7 @@ end
 function paramS = to_be_called(paramInS, varargin)
    [nameV, valueV] = get_defaults;
    
-   paramS = functionLH.input_parse(varargin{:},  paramInS,  nameV,  valueV);
+   paramS = functionLH.input_parse(varargin,  paramInS,  nameV,  valueV);
 
 end
 

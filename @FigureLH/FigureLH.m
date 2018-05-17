@@ -24,10 +24,8 @@ properties
    figType  char
    % Background color (for area surrounding plot)
    backGroundColor = 'w'
-   % Color scheme :: string
-   colorScheme
-%    % Color map where this can be used
-%    colorMap  char = 'autumn'
+   % Color map; determines color palette for line and bar graphs
+   colorMap  char = 'bone'
    % Color matrix
    colorM  double
    
@@ -93,10 +91,10 @@ methods
    %% Set options based on inputs
    % Use default if not provided
    function set_options(fS, argListV)      
-      propertyV = {'colorScheme', 'height', 'width', 'visible', 'lineWidth', 'figFontName', 'figFontSize', ...
+      propertyV = {'height', 'width', 'visible', 'lineWidth', 'figFontName', 'figFontSize', ...
          'legendFontSize', 'titleFontSize', 'figType', 'saveFigFile', 'figFileDir', 'figNoteV', 'dbg', ...
           'screenHeight',  'screenWidth'};
-      defaultV  = {'default',       3,       3 * 1.61,   true,    2,          'Latex',       10, ...
+      defaultV  = {3,       3 * 1.61,   true,    2,          'Latex',       10, ...
          10,                12,              'line',       true,       'figData',  [],  111, ...
          800, 800 * 1.61};
 
@@ -277,6 +275,9 @@ methods
    
    
    %% Format lines (if any)
+   %{
+   Line colors were set during plotting. Here just set markers
+   %}
    function format_lines(fS)
       % Get line handles. May be []
       ax = gca;
@@ -300,30 +301,42 @@ methods
          end
       end      
    end
+   
+   
+   %% Get bar handles
+   function barV = bar_handles(fS)
+      barV = get(gca, 'Children');      
+      if ~isempty(barV)
+         isBarV = false(size(barV));
+         for i1 = 1 : length(barV)
+            if strcmp(get(barV(i1), 'type'), 'bar')
+               isBarV(i1) = true;
+            end
+         end
+         barV = barV(isBarV);
+      end
+   end
 
    
    %% Format bars in bar graph (if any)
    function format_bars(fS)
-      % Set color map for bar graphs
-      %  seems to have no effect on line graphs
-      %colormap(fS.colorMap);
-      axes_handle = gca;
-
       % Get handles to bar objects
-      barV = get(axes_handle, 'Children');
+      barV = fS.bar_handles;
+      
       if ~isempty(barV)
-         if length(barV) > length(fS.colorM) / 2 
-            % Not enough colors to set individually in fS.colorM
-            colormap(fS.colorM);
-         else
-            % Set each color, skipping 1 color to get more contrast
-            for i1 = 1 : length(barV)
-               if strcmp(get(barV(i1), 'type'), 'bar')
-                  % This is a bar, not text
-                  set(barV(i1), 'Facecolor', fS.colorM(1 + (i1-1) * 2, :));
-               end
-            end
-         end      
+         nBars = length(barV);
+         nColors = size(fS.colorM, 1);
+         % Try a fixed interval
+         icV = 10 + (1 : nBars) .* 10;
+         if icV(end) > nColors
+            icV = round(linspace(1, nColors, nBars));
+         end
+
+         for i1 = 1 : nBars
+            faceColor = fS.colorM(icV(i1), :);
+            barV(i1).FaceColor = faceColor;
+            barV(i1).EdgeColor = faceColor;  % [1, 1, 1];
+         end
       end
    end
    
@@ -366,7 +379,7 @@ methods
    %% Get info for a line
    function colorV = line_color(fS, iLine)
       n = size(fS.colorM, 1);
-      i1 = integerLH.sequential_bounded(iLine, n);
+      i1 = integerLH.sequential_bounded(1 + iLine * 8, n);
       colorV = fS.colorM(i1, :);
    end
    
@@ -408,15 +421,19 @@ methods
    %% Set color matrix
    % This works for line graphs, but not well for 3d bar graphs
    function outM = default_colors(fS)
-      % Set default colors muted
-      xV = 0.2 : 0.15 : 0.96;
-      ncol = length(xV);
-      outM = zeros([2 * ncol, 3]);
-      for ix = 1 : length(xV)
-         x = xV(ix);
-         outM(ix,:) = [1-x, 0.4, x];
-         outM(ncol + ix, :) = [1-x, x, 0.4];
-      end
+      % Get the color map without opening a new figure
+      outM = feval(fS.colorMap);
+      % Drop the brightest colors
+      outM = outM(1 : 50, :);
+%       % Set default colors muted
+%       xV = 0.2 : 0.15 : 0.96;
+%       ncol = length(xV);
+%       outM = zeros([2 * ncol, 3]);
+%       for ix = 1 : length(xV)
+%          x = xV(ix);
+%          outM(ix,:) = [1-x, 0.4, x];
+%          outM(ncol + ix, :) = [1-x, x, 0.4];
+%       end
    end
    
    

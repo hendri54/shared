@@ -62,7 +62,7 @@ methods
       tS.tbM = cell(nr, nc);
       defaultM = tS.default_values;
       % This modifies tS in place
-      functionLH.input_parse(varargin{:}, tS, defaultM(:,1), defaultM(:,2));
+      functionLH.input_parse(varargin, tS, defaultM(:,1), defaultM(:,2));
    end
    
    

@@ -5,7 +5,7 @@ All inputs in argListV must be valid fields for paramS
 
 IN
    argListV :: cell array
-      this will usually be varargin{:} from a function call
+      this will usually be varargin from a function call
       odd numbers are names, even elements are values
       length must be even
    paramInS :: struct  OR  handle object
@@ -23,6 +23,9 @@ OUT
       can be ignored if paramInS is handle object
 %}
 
+if ~isempty(argListV)
+   assert(isa(argListV, 'cell'),  'Expecting name value pairs as cell array');
+end
 
 if nargin < 4
    defaultValueV = [];
@@ -43,14 +46,14 @@ if ~isempty(paramNameV)
 end
 
 %% Copy provided inputs into paramS
+if ~isempty(argListV)
+   nInputs = length(argListV);
+   assert(mod(nInputs, 2) == 0,  'Number of name-value inputs must be even');
 
-nInputs = length(argListV);
-assert(mod(nInputs, 2) == 0,  'Number of name-value inputs must be even');
-
-% Loop over odd entries (parameter names)
-for i1 = 1 : 2 : (nInputs-1)
-   paramS.(argListV{i1}) = argListV{i1+1};
+   % Loop over odd entries (parameter names)
+   for i1 = 1 : 2 : (nInputs-1)
+      paramS.(argListV{i1}) = argListV{i1+1};
+   end
 end
-
 
 end
