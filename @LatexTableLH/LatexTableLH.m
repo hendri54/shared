@@ -17,7 +17,7 @@ Change:
 classdef LatexTableLH < handle
    
 properties
-   filePath
+   filePath  char
    % Size, excluding headers
    nr
    nc

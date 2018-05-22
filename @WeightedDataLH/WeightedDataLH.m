@@ -2,10 +2,13 @@
 %{
 NaN observations are ignored
 Zero weights are ignored
+NaN  weights are treated like zero weights
 
 NaN if there are no valid observations
 
 For discrete data, it is typically better to use DiscreteData class
+
+#todo: switch that governs how NaN are handled
 %}
 classdef WeightedDataLH < handle
    
@@ -17,11 +20,12 @@ properties (SetAccess = private)
    dataV    double
    % Weights
    wtV      double
+   % Indicates which observations are valid
    validV   logical
    % Total weight of all valid observations
    totalWt  double
    % Sort indices; for valid obs only
-   % Shorter than dataV
+   % Shorter than dataV. [] is no valid data
    sortIdxV double 
    
    % Fraction missing (weight of observations that are NaN)
@@ -36,67 +40,84 @@ methods
          wS.dbg = logical(dbg);
       end
       wS.dataV = dataV(:);
-      wS.wtV = wtV(:);
-      wS.implied;
+      % This implies that NaN weights are set to 0
+      wS.wtV = max(0, wtV(:));
+
+      % Fraction missing (data = NaN)
+      wS.fracMiss = wS.weight_missing ./ sum(wS.wtV);
+      
+      wS.validV = ~isnan(wS.dataV)  &  (wS.wtV > 0);
+      
+      % Zero weight observations are ignored
+      wS.wtV(~wS.validV) = 0;
+      
+      wS.totalWt = sum(wS.wtV);
+      
+      wS.sortIdxV = wS.sort_valid_observations;
+      
+      wS.validate;
    end
 
    
-   %% Implied properties
+   %% Sort valid observations
    %{
    Should be dependent, but that is inefficient
    %}
-   function implied(wS)
-      n = length(wS.dataV);
-      % Total weight before dropping missing values
-      % wtSum = sum(max(0, wS.wtV));
-      % Weight of missing observations
-      if any(isnan(wS.dataV))
-         missWt = sum(max(0, wS.wtV) .* isnan(wS.dataV));
-         wtSum  = sum(max(0, wS.wtV));
-         wS.fracMiss = missWt ./ wtSum;
+   function sortedIdxV = sort_valid_observations(wS)
+      nValid = sum(wS.validV);
+      
+      if nValid == 0
+         sortedIdxV = [];
+         
+      elseif nValid == 1
+         sortedIdxV = find(wS.validV, 1, 'first');
+         
       else
-         %missWt = 0;
-         wS.fracMiss = 0;
+         vIdxV = find(wS.validV);
+         sortM = sortrows([wS.dataV(vIdxV), vIdxV]);
+         sortedIdxV = sortM(:, 2);
       end
-      
-      wS.validV = ~isnan(wS.dataV)  &  (wS.wtV > 0);
-      vIdxV = find(wS.validV);
-      % assert(length(vIdxV) > 2,  'Too few observations');
-      
-      if length(vIdxV) >= 2
-         wS.totalWt = sum(wS.wtV(vIdxV));
-
-         % Zero weights for missing values
-         wS.wtV(~wS.validV) = 0;
-         wS.dataV(~wS.validV) = nan;
-
-         % Sort order
-         % Nan values are placed last
-         sortM = sortrows([wS.dataV, (1 : n)', wS.validV]);
-         % Keep the valid obs (sortM(:,3) = true)
-         wS.sortIdxV = sortM(find(sortM(:,3)), 2);
-
-
-         % Output check
+   end
+   
+   
+   %% Validate
+   function validate(wS)
+      nValid = sum(wS.validV);
+      if nValid > 0
          validateattributes(wS.dataV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real'})
          validateattributes(wS.wtV(wS.validV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive'})
          % Sorted data must be increasing
          validateattributes(wS.dataV(wS.sortIdxV), {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
             'nondecreasing'})
-      else
-         wS.totalWt = 0;
       end
    end
    
    
-%    %% Fraction missing
-%    function fracMiss = frac_missing(wS)
-%       if all(wS.wtV > 0)
-%          fracMiss = 0;
-%       else
-%          fracMiss = 1 - sum(wS.wtV(wS.wtV >= 0)) ./ wS.totalWt;
-%       end
-%    end
+
+   %% Weight of missing observations
+   %{
+   Missing: dataV = NaN
+   %}
+   function wtMissing = weight_missing(wS)
+      if any(isnan(wS.dataV))
+         wtMissing = sum(wS.wtV .* isnan(wS.dataV));
+      else
+         wtMissing = 0;
+      end
+   end
+
+
+   %% Weight of valid and missing observations
+   function [wtSum, wtMissing] = weight_valid_missing(wS)
+      if any(isnan(wS.dataV))
+         missWt = sum(max(0, wS.wtV) .* isnan(wS.dataV));
+         wtSum  = sum(max(0, wS.wtV));
+         wS.fracMiss = missWt ./ wtSum;
+      else
+         wtSum = sum(wS.wtV);
+         wtMissing = 0;
+      end
+   end
 
 
    %% Min

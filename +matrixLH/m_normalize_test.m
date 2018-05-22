@@ -18,20 +18,14 @@ function twoDTest(tS)
 
       % check that sums are correct
       sumV = sum(m, sumDim);
-      if max(abs( sumV - sumValue )) > 1e-5
-         warnmsg([ mfilename, ':  Invalid sums' ]);
-         keyboard
-      end
+      tS.verifyEqual(sumV(:), repmat(sumValue, size(sumV(:))), 'AbsTol', 1e-6);
 
       % Check that ratios are correct
       if sumDim == 1
          colRatioInM = mIn(2:end,:) ./ mIn(1:end-1,:);
          colRatioM   = m(2:end,:)   ./ m(1:end-1,:);
          devM = colRatioInM ./ colRatioM - 1;
-         if max(abs(devM(:) > 1e-5))
-            warnmsg([ mfilename, ':  Invalid ratios' ]);
-            keyboard
-         end
+         tS.verifyTrue(all(abs(devM(:)) < 1e-5));
       end
    end
 end
@@ -48,12 +42,14 @@ function threeDTest(tS)
    for sumDim = 1 : 3
       m = matrixLH.m_normalize(mIn, sumValue, sumDim, dbg);
 
+      valid = true;
       for i2 = 1 : mSizeV(2)
          for i3 = 1 : mSizeV(3)
             % Check that the sums match
             vSum = sum( m, sumDim );
             if abs(vSum - sumValue) > 1e-7
                fprintf('Error:  %i %i   %f  %f \n', i2, i3, vSum, sumValue);
+               valid = false;
             end
 
             % Check that the ratios are all equal
@@ -62,11 +58,12 @@ function threeDTest(tS)
                vDiff  = vRatio ./ vRatio(1) - 1;
                if max(abs(vDiff)) > 1e-5
                   fprintf('Error 2:  %i %i   %f \n', i2, i3, vRatio);
-                  %keyboard
+                  valid = false;
                end
             end
          end
       end
+      tS.verifyTrue(valid);
    end
 end
 
