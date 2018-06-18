@@ -13,6 +13,7 @@ Note: `siunitx` package creates Lyx problems. Therefore omit alignment on decima
 Change:
    add method that constructs table body from a `table`
    table without row headers
+   multiple col headers
 %}
 classdef LatexTableLH < handle
    

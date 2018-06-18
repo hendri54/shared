@@ -1,6 +1,7 @@
-classdef PaperFigures < handle
 % Maintain a list of figures / tables that need to be copied to a directory (to be included in a
 % paper)
+classdef PaperFigures < handle
+
    
 properties (SetAccess = private)
    % Default directories for source and target files
@@ -24,6 +25,7 @@ methods
       pS.fileListV = cell(n, 1);
       pS.n = 0;
    end
+
    
    %% Add a file
    %{

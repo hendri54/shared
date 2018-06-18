@@ -77,7 +77,7 @@ end
 
 
 %% Output check
-if dbg
+if dbg 
    validateattributes(cumPctV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', '>=', 0, ...
       '<=', 1, 'size', [n, 1], 'increasing'})
    validateattributes(xSortV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', ...
