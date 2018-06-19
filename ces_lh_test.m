@@ -6,8 +6,6 @@ end
 
 
 function oneTest(testCase)
-   fprintf('Testing ces_lh \n');
-
    for N = [1, 3]
       for substElast = [2.5, 1, 0.5] 
          if abs(substElast - 1) < 0.05
@@ -33,9 +31,7 @@ function oneTest(testCase)
          % Output
          yV = fS.output;
          y2V = fS.output(AV, alphaM, xM);
-         if ~checkLH.approx_equal(y2V, yV, 1e-7, [])
-            error('Outputs do not match');
-         end
+         testCase.verifyEqual(y2V, yV, 'AbsTol', 1e-7)
          clear y2V;
          
 %          % Scaling: multiply all alphas by a factor. Divide AV by the same factor.
