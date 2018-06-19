@@ -1,5 +1,6 @@
 % Constants to be shared across projects
 % Basically obsolete. Directories in 'configLH.Computer'
+% No longer used in new code
 classdef const_lh < handle
    
 properties (Constant)
