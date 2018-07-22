@@ -4,7 +4,7 @@ function write_table(tS)
 % Open file
 fid = fopen(tS.filePath, 'w');
 if fid < 0
-   errorLH('Cannot open file');
+   error('Cannot open file: \n  %s', tS.filePath);
 end
 
 

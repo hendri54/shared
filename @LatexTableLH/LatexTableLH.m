@@ -111,11 +111,11 @@ methods
    
    % ir is a row number (not counting header)
    function validate_row(tS, ir)
-      validateattributes(ir, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, '<=', tS.nr})
+      validateattributes(ir, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, '<=', tS.nr})
    end
    
    function validate_col(tS, ic)
-      validateattributes(ic, {'double'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, '<=', tS.nc})
+      validateattributes(ic, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, '<=', tS.nc})
    end
    
    

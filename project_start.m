@@ -83,7 +83,11 @@ switch suffixStr
    case 'jones'
       % Jones: bounding role of H for income gaps
       progDir = fullfile(compS.projectDir(2015), 'jones', 'progs');
-      standard_startup(suffixStr, progDir);      
+      standard_startup(suffixStr, progDir);    
+   case 'mocc'
+      % Immigration occupational downgrading in the census
+      progDir = fullfile(compS.projectDir(2018), 'migrant_occupations', 'prog');
+      standard_startup(suffixStr, progDir);    
    case 'ms'
       % Manuelli/Seshadri (2014 AER)
       progDir = fullfile(compS.docuDir, 'projects', 'p2016', 'ms2014', 'prog');

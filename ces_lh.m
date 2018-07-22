@@ -145,7 +145,7 @@ classdef ces_lh
                % Cobb Douglas
                % Now alphas must sum to 1
                alphaSumV = sum(alphaM, 2);
-               assert(all(abs(alphaSumV - 1) < 1e-6));
+               assert(all(abs(alphaSumV - 1) < 1e-6),  'Alphas must sum to 1');
                n = size(xM, 2);
                yV = AV .* prod(xM .^ alphaM, 2);
                mpM = alphaM .* (yV * ones(1, n)) ./ xM;

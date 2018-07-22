@@ -14,7 +14,8 @@ disp('Test SymbolTableLH');
 nameV = {'pAlpha', 'pBeta'};
 symbolV = {'\alpha', '\beta_{x}'};
 
-tS = SymbolTableLH(nameV, symbolV);
+fPath = fullfile(filesLH.fullpaths(compS.testFileDir), 'SymbolTableLH_preamble.tex');
+tS = SymbolTableLH(nameV, symbolV, fPath);
 
 % Add 1 element
 tS.add('pGamma', '\gamma');
@@ -24,12 +25,10 @@ tS.add({'pZeta', 'pMu'},  {'\zeta', '\mu'});
 
 % Retrieve
 symbolStr = tS.retrieve('pGamma');
-if ~strcmp(symbolStr, '\gamma')
-   error('Retrieve failed');
-end
+testCase.verifyEqual(symbolStr, '\gamma')
 
 % Write preamble
-fPath = fullfile(filesLH.fullpaths(compS.sharedDirV{1}), 'SymbolTableLH_preamble.tex');
 tS.preamble_write(fPath);
+tS.preamble_write;
 
 end

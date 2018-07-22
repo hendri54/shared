@@ -8,20 +8,24 @@ Their output is simply alpha * x
 
 Handles Cobb-Douglas as special case
 
+Substitution elasticity code is not efficient, but checks all constraints
+For unknown reasons, computing the elasticities numerically does not yield the right answers (using
+econLH.elasticity_substition)
+
 Check: when all nests have 1 input, this should be the same as CES
 %}
 
-properties
+properties (SetAccess = private)
    % Top level
-   substElast  % substitution elasticity
+   substElast  double  % substitution elasticity
    
    % For each group (sub-nest)
    nV  uint16       % no of inputs
-   substElastV
+   substElastV  double
    
    % *****  Derived properties
    % no of "groups" (sub-nests)
-   ng       
+   ng  uint16       
    % First and last input of each group
    gLbV
    gUbV
@@ -29,6 +33,15 @@ properties
    cesV
    % CES object for top level
    cesTop
+end
+
+properties
+   dbg logical = true
+end
+
+
+properties (Dependent)
+   nInputs  uint16
 end
    
    
@@ -45,7 +58,7 @@ methods
    end
    
    
-   % ******  Derived properties
+   %% Derived properties
    function derived(fS)
       fS.ng = length(fS.nV);
       fS.gUbV = cumsum(fS.nV);
@@ -55,6 +68,11 @@ methods
          fS.cesV{ig} = ces_lh(fS.substElastV(ig), fS.nV(ig), [], [], []);
       end
       fS.cesTop = ces_lh(fS.substElast, fS.ng, [], [], []);
+   end
+   
+   
+   function n = get.nInputs(this)
+      n = sum(this.nV);
    end
    
    
@@ -69,11 +87,31 @@ methods
    end
    
    
-   % ******  Sub-outputs
+   % ******  Groups from inputs
+   function groupV = groups_from_inputs(this, inputV)
+      groupV = zeros(size(inputV), 'uint16');
+      for i1 = 1 : length(inputV)
+         groupV(i1) = find(inputV(i1) >= this.gLbV  &  inputV(i1) <= this.gUbV);
+      end
+      
+      assert(all(groupV >= 1));
+   end
+   
+   function inputV = inputs_from_group(this, ig)
+      inputV = this.gLbV(ig) : this.gUbV(ig);
+   end
+   
+   
+   %%  Sub-outputs
    %{
    IN
       alphaM ::  T x no of inputs
+         skill weights
       xM :: T x no of inputs
+         inputs
+   OUT
+      yM  ::  T x no of groups
+         output of each nested CES
    %}
    function yM = sub_outputs(fS, alphaM, xM)      
       T = size(xM, 1);
@@ -96,7 +134,7 @@ methods
    end
    
    
-   % ******  Output
+   %%  Output
    function yV = output(fS, AV, alphaTopM, alphaM, xM) 
       T = size(xM, 1);
       nInputs = sum(fS.nV);
@@ -112,6 +150,12 @@ methods
       
       validateattributes(yV, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
          'size', [T, 1]})
+   end
+   
+   
+   %% Output from sub-outputs
+   function yV = output_from_sub_outputs(this, AV, alphaTopM, yGroupM)
+      yV = this.cesTop.output(AV, alphaTopM, yGroupM);
    end
    
    
@@ -206,6 +250,216 @@ methods
 %    skillWeight_stM(1 : cS.iCD, :) = modelS.skillWeight_tlM(:, 1 : cS.iCD)';
 %    skillWeight_stM = skillWeight_stM ./ (ones(T, 1) * skillWeight_stM(iRef, :));
 %    end
+
+
+   %% Income shares
+   %{
+   OUT
+      incomeShareM  ::  double
+         by (t, input)   
+   %}
+   function incomeShareM = income_shares(this, AV, alphaTopM, alphaM, xM)
+      mpM = this.mproducts(AV, alphaTopM, alphaM, xM);
+      incomeM = mpM .* xM;
+      incomeShareM = incomeM ./ sum(incomeM, 2);
+      
+      if this.dbg
+         assert(isequal(size(incomeShareM), size(incomeM)));
+      end
+   end
+   
+   
+   % Group shares = sum of income shares in each group
+   function groupShareM = group_shares(this, incomeShareM)
+      T = size(incomeShareM, 1);
+      groupShareM = zeros([T, this.ng]);
+      for ig = 1 : this.ng
+         gIdxV = this.inputs_from_group(ig);
+         groupShareM(:, ig) = sum(incomeShareM(:, gIdxV), 2);
+      end
+   end
+
+
+
+   %% Elasticity of substitution from inputs
+   %{
+   OUT
+      elast_ijtM  ::  double
+         elasticity(i,j) for date t
+   %}
+   function elast_ijtM = elast_subst_from_inputs(this, AV, alphaTopM, alphaM, xM)
+      incomeShareM = this.income_shares(AV, alphaTopM, alphaM, xM);
+      groupShareM = this.group_shares(incomeShareM);
+      
+      T = size(xM, 1);
+      elast_ijtM = zeros(this.nInputs, this.nInputs, T);
+      for t = 1 : T
+         for i1 = 1 : this.nInputs
+            for i2 = 1 : this.nInputs
+               elast_ijtM(i1,i2,t) = this.elast_substitution(i1, i2, incomeShareM(t,:), groupShareM(t,:));
+            end
+         end
+      end
+   end
+
+
+   %% Elasticity of substitution (analytical)
+   %{
+   Sato (1967) REStud
+   For perturbing inputs i1, i2 in nests g1, g2
+   
+   IN
+      incomeShareV  ::  double
+         marginal product * x / y  for all x
+      groupShareV  ::  double
+         share of each group in y
+   %}
+   function elast = elast_substitution(this, i1, i2, incomeShareV, groupShareV)
+      if this.dbg
+         assert(abs(sum(incomeShareV) - 1) < 1e-5);
+         assert(abs(sum(groupShareV) - 1) < 1e-5);
+      end
+      
+      if i1 == i2
+         elast = NaN;
+         return;
+      end
+      
+      g1 = this.groups_from_inputs(i1);
+      g2 = this.groups_from_inputs(i2);
+      
+      if g1 == g2
+         elast = this.substElastV(g1);
+         return
+      end
+      
+      a = 1 / incomeShareV(i1) - 1 / groupShareV(g1);
+      b = 1 / incomeShareV(i2) - 1 / groupShareV(g2);
+      c = 1 / groupShareV(g1) + 1 / groupShareV(g2);
+      rhs = (a / this.substElastV(g1) + b / this.substElastV(g2) + c / this.substElast);
+      elast = (a + b + c) / rhs;
+      
+      if this.dbg
+         assert(all([a,b,c,elast] >= 0));
+      end
+   end
+   
+   
+   %% Range of elasticities for each group pair
+   %{
+   OUT
+      min_ggtM, max_ggtM  ::  double
+         min and max elasticity for each pair of groups (nests)
+         by [group 1, group 2, t]
+   %}
+   function [min_ggtM, max_ggtM] = elasticity_ranges(this, elast_ijtM)
+      T = size(elast_ijtM, 3);
+      min_ggtM = zeros(this.ng, this.ng, T);
+      max_ggtM = zeros(this.ng, this.ng, T);
+      
+      for t = 1 : T
+         for g1 = 1 : this.ng
+            i1V = this.inputs_from_group(g1);
+            
+            % Within
+            if length(i1V) > 1
+               elastM = elast_ijtM(i1V, i1V, t);
+               elastM = matrixLH.set_diagonal(elastM, elastM(1,2));
+               min_ggtM(g1,g1,t) = min(elastM(:));
+               max_ggtM(g1,g1,t) = max(elastM(:));
+            else
+               min_ggtM(g1,g1,t) = this.substElastV(g1);
+               max_ggtM(g1,g1,t) = this.substElastV(g1);
+            end
+            
+            % Between
+            g2V = 1 : this.ng;
+            g2V(g1) = [];
+            for g2 = g2V
+               i2V = this.inputs_from_group(g2);
+               elastM = elast_ijtM(i1V, i2V, t);
+               min_ggtM(g1,g2,t) = min(elastM(:));
+               max_ggtM(g1,g2,t) = max(elastM(:));
+            end
+         end      
+      end
+      
+      if this.dbg
+         validateattributes(min_ggtM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+            'size', [this.ng, this.ng, T]})
+         validateattributes(max_ggtM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'positive', ...
+            'size', [this.ng, this.ng, T]})
+      end
+   end
+   
+   
+   %% Check that elasticity matrix satisfies restrictions implied by Sato (1967)
+   function [withinCorrect, betweenCorrect, isSymmetric] = check_elastity_matrix(this, elast_ijtM)
+      withinCorrect = this.check_elasticities_within(elast_ijtM);
+      betweenCorrect = this.check_elasticities_between(elast_ijtM);
+      isSymmetric = this.check_elast_symmetry(elast_ijtM, 1e-4);
+   end
+      
+   
+   % *****  Check that within elasticities match nested elasticities
+   function withinCorrect = check_elasticities_within(this, elast_ijtM)
+      withinCorrect = true;
+      T = size(elast_ijtM, 3);
+      for t = 1 : T
+         for ig = 1 : this.ng
+            inputV = this.inputs_from_group(ig);            
+            elastM = elast_ijtM(inputV, inputV, t);
+            
+            % within a nest
+            if length(inputV) > 1
+               diffM = elastM - repmat(this.substElastV(ig), size(elastM));
+               diffM = matrixLH.set_diagonal(diffM, 0);
+               if any(abs(diffM(:)) > 1e-5)
+                  withinCorrect = false;
+               end
+            end
+         end
+      end
+   end
+   
+   
+   % Check that between elasticities lie between top and nested elasticities
+   function betweenCorrect = check_elasticities_between(this, elast_ijtM)
+      betweenCorrect = true;
+      
+      for g1 = 1 : this.ng
+         i1V = this.inputs_from_group(g1);
+         g2V = 1 : this.ng;
+         g2V(g1) = [];
+         for g2 = g2V
+            rangeV = [this.substElast; this.substElastV(g1); this.substElastV(g2)];
+
+            i2V = this.inputs_from_group(g2);
+            elastM = elast_ijtM(i1V, i2V, :);
+
+            valid = all(elastM(:) >= min(rangeV))  &&  all(elastM(:) <= max(rangeV));
+            if ~valid
+               betweenCorrect = false;
+            end
+         end
+      end      
+   end   
+end
+
+
+methods (Static)
+      function isSymmetric = check_elast_symmetry(elast_ijtM, toler)
+      isSymmetric = true;
+      T = size(elast_ijtM, 3);
+      for t = 1 : T
+         diffM = elast_ijtM(:,:,t) - elast_ijtM(:,:,t)';
+         diffM = matrixLH.set_diagonal(diffM, 0);
+         maxDiff = max(abs(diffM(:)));
+         if maxDiff > toler
+            isSymmetric = false;
+         end
+      end
+   end
 end
    
 end

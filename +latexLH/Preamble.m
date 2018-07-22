@@ -11,7 +11,7 @@ The approach is therefore:
 This is really just a TextFile object with the ability to write latex newcommands
 %}
 classdef Preamble < handle
-   properties
+   properties (SetAccess = private)
       tFile  filesLH.TextFile
    end
    

@@ -5,24 +5,32 @@ Purpose is to write a file with newcommands
 
 classdef SymbolTableLH < handle
    
-   properties
+   properties (SetAccess = private)
       % No of symbols stored
       n
       % Names. Must be valid latex commands
       nameV
       % Latex symbols
       symbolV
+      % Path for latex newcommand file
+      preamblePath  char
    end
    
    
    methods
       %% Constructor
-      function tS = SymbolTableLH(nameV, symbolV)
+      function tS = SymbolTableLH(nameV, symbolV, preamblePath)
+         if nargin < 3
+            preamblePath = [];
+         end
+         
          tS.nameV = cell([100, 1]);
          tS.symbolV = cell([100, 1]);
          tS.n = length(nameV);
          tS.nameV(1 : tS.n) = nameV;
          tS.symbolV(1 : tS.n) = symbolV;
+         
+         tS.preamblePath = preamblePath;
          
          tS.validate;
       end
@@ -106,10 +114,16 @@ classdef SymbolTableLH < handle
       
       %% Write file with newcommands
       function preamble_write(tS, fPath)
+         if nargin < 2
+            fPath = tS.preamblePath;
+         end
+         assert(length(fPath) > 4);
+         
          fp = fopen(fPath, 'w');
          if fp <= 0
-            error(sprintf('Cannot open file %s', fPath));
+            error('Cannot open file %s', fPath);
          end
+         
          for i1 = 1 : tS.n
             % Escape special latex characters
             % symStr = latex_lh.str_escape(tS.symbolV{i1});

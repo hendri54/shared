@@ -5,7 +5,7 @@ On local machine, go to keyboard so error can be investigated
 On remote machine: error
 %}
 
-lhS = const_lh;
+compS = configLH.Computer([]);
 
 if iscell(msgV)
    warning('Error encountered');
@@ -18,7 +18,7 @@ else
    warning(msgV);
 end
 
-if lhS.runLocal
+if compS.runLocal
    keyboard;
 else
    error('Terminating program');

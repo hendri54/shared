@@ -4,12 +4,18 @@ tests = functiontests(localfunctions);
 
 end
 
+function no_change_test(tS)
+   inM = linspace(1, 2, 4)' * linspace(2, 1, 3);
+   outM = matrixLH.scale_cols(inM, min(inM(:)) - 0.01, max(inM(:)) + 0.01, -9191, true);
+   tS.verifyEqual(inM, outM, 'AbsTol', 1e-8);
+end
+
 function oneTest(tS)
    rng('default');
    sizeV = [16, 4];
    inM = rand(sizeV);
    missVal = -9191;
-   dbg = 111;
+   dbg = true;
    
    % Make some values out of bounds
    for i1 = 1 : 9

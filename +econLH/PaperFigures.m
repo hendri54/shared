@@ -33,10 +33,12 @@ methods
       srcPath
          full path of source file  OR
          just file name; then use srcDefaultDir
+         can also be a path relative to `srcDefaultDir`
       tgPath
          full path of target file  OR
          just name; then use tgDefaultDir  OR
          []: then use srcPath name and tgDefaultDir
+         can also be a path relative to `tgDefaultDir`
       tgSubDir
          if tgPath is just a file, this is interpreted as sub dir of tgDefaultDir
    %}
@@ -124,6 +126,7 @@ methods
       for i1 = 1 : pS.n
          srcPath = pS.fileListV{i1}.srcPath;
          tgPath  = pS.fileListV{i1}.tgPath;
+         assert(~isequal(srcPath, tgPath),  'Source and target path are the same');
          
          if ~exist(srcPath, 'file')
             fprintf('Source file does not exist:  %s \n',  srcPath);

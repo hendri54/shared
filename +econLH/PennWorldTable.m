@@ -30,6 +30,8 @@ properties
 
    % Variable names
    vnCountry = 'countrycode';
+   % Names are not always available
+   vnCountryName = 'country';
    vnYear = 'year';
    vnPop = 'pop';
    vnXRate = 'xrat';
@@ -60,6 +62,7 @@ methods
          case 7.1
             pS.year1 = 1950;
             pS.year2 = 2010;
+            pS.vnCountryName = [];
             % pS.vnPop = 'POP';
          case 8.1
             pS.year1 = 1950;
@@ -80,6 +83,10 @@ methods
       validateattributes(pS.verNum, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', '>', 5, ...
          '<=', 9})
       assert(exist(pS.pwtDir, 'dir') > 0,  [pS.pwtDir, '  does not exist']);
+   end
+   
+   function result = has_country_names(this)
+      result = ~isempty(this.vnCountryName);
    end
    
    
@@ -123,9 +130,23 @@ methods
    
    
    %% List all country codes
-   function wbCodeV = country_list(pS)
-      m = pS.load_table;
-      wbCodeV = unique(m.(pS.vnCountry));
+   %{
+   Not all PWT versions store country names
+   %}
+   function [wbCodeV, nameV] = country_list(this)
+      m = this.load_table;
+      countryVar = this.vnCountry;
+      [wbCodeV, idxV] = unique(m.(countryVar));
+      
+      if this.has_country_names
+         nameV = m.(this.vnCountryName)(idxV);
+
+         % Self test
+         idxV = cellLH.find_strings({'BRA', 'CAN'}, wbCodeV);
+         assert(isequal(nameV(idxV),  {'Brazil'; 'Canada'}));
+      else
+         nameV = cell(size(wbCodeV));
+      end
    end
    
    
