@@ -6,15 +6,26 @@ properties
    fileName  char
 end
 
+properties (SetAccess = private)
+   fileDir  char
+end
+
+
 methods
    %% Constructor
    %{
+   Creates directory if necessary
+   
    Optional arguments
       'clear'
          clears existing diary file
    %}
    function dS = DiaryFile(fn, varargin)
       dS.fileName = fn;
+      dS.fileDir = fileparts(fn);
+      if ~isempty(dS.fileDir)
+         filesLH.mkdir(dS.fileDir);
+      end
       
       if ~isempty(varargin)
          if ismember(varargin, 'clear')
@@ -67,6 +78,7 @@ methods
    
    %% Strip formatting from a diary file
    %{
+   Also closes file
    Removes strings such as <strong>
    %}
    function strip_formatting(dS)

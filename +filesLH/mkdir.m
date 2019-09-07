@@ -28,7 +28,7 @@ fs = filesep;
 %% Input check
 
 if nargin < 2
-   dbg = 1;
+   dbg = true;
 end
 
 if ~ischar(dirName)

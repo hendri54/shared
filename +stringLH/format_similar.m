@@ -2,7 +2,7 @@ function outStr = format_similar(inStr, inNumber, dbg)
 % Format a number similarly to another (given as a formatted string)
 %{
 IN
-   inStr
+   inStr  ::  char
       formatted number as string
       may be exponential notation
    inNumber

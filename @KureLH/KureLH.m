@@ -1,7 +1,7 @@
 % KureLH
 %{
 Routines for using remote computational cluster
-Assumes that remote volume is mounted as drive (using FUSE)
+Assumes that remote volume is mounted as drive (using FUSE) or accessible via `ssh`
 Then the remote paths are the same as the local paths, except for the /Volumes/longleaf part
 %}
 classdef KureLH < handle
@@ -137,7 +137,12 @@ methods
    
    
    %% Make remote dir that matches a local dir
-   % This is for uploading with rsync only. Assumes the local base dir is mounted as drive. Or ssh
+   %{
+   Assumes the local base dir is mounted as drive. Or ssh
+   
+   Example:
+      '/Users/lutz' -> 'lhendri@longleaf.unc.edu:/nas/longleaf/home/lhendri/Users/lutz'
+   %}
    function remoteDir = make_remote_dir(kS, localDir)
       if kS.is_mounted
          % E.g. '/Volumes/longleaf/Users/lutz'

@@ -377,6 +377,8 @@ classdef pvectorLH < handle
             calibrated parameter structure
          tbPath  ::  char
             path where table should be saved
+      
+      Add tests for this +++
       %}
       function latex_param_table(p, groupV, paramS, doCalV, tbPath)
          nc = 2;
@@ -409,7 +411,7 @@ classdef pvectorLH < handle
          
          
          tbS = LatexTableLH(nr, nc, 'colHeaderV', {'Description', 'Value'},  ...
-            'rowHeaderV', rowHeaderV(1 : nr),  'topLeftCell',  'Parameter',  ...
+            'rowHeaderV', rowHeaderV(1 : nr),  'topLeftCellV',  "Parameter",  ...
             'filePath', tbPath,  'rowUnderlineV', rowUnderlineV(1 : nr));
          for ir = 1 : nr
             tbS.fill_row(ir, dataM(ir,:));

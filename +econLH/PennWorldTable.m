@@ -2,6 +2,7 @@
 %{
 Given: xlsx file with original data
 Once and for all: make into a table
+Each row is a country / year combination
 
 Variables are made lower case
 %}

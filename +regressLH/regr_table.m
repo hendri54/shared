@@ -11,13 +11,16 @@ Table format
 IN
    mdlV
       vector of LinearModel
-   varNameV
+   varNameV  ::  cell  or  string
       variables to display
-   varLabelV
+   varLabelV  ::  cell  or  string
       headers for these variables
    modelNameV
       col headers
 %}
+
+varLabelV = latexLH.format_for_table(string(varLabelV));
+varNameV = string(varNameV);
 
 nVar = length(varNameV);
 nModels = length(mdlV);
@@ -26,6 +29,7 @@ nModels = length(mdlV);
 nr = 1 + nVar * 2 + 2;
 nc = 1 + nModels;
 tbM = cell(nr, nc);
+tbM{1,1} = '';
 
 % Rows for each variable
 varRowV = 2 : 2 : (2*nVar);
@@ -45,10 +49,11 @@ for iModel = 1 : nModels
    % Loop over variables
    for iVar = 1 : nVar
       ir = varRowV(iVar);
-      tbM{ir, ic} = outS.betaV{iVar};
-      tbM{ir+1, ic} = outS.seBetaV{iVar};
+      tbM{ir, ic} = char(outS.betaV(iVar));
+      tbM{ir+1, ic} = char(outS.seBetaV(iVar));
       if iModel == 1
-         tbM{ir, 1} = varLabelV{iVar};
+         tbM{ir, 1} = char(varLabelV(iVar));
+         tbM{ir+1, 1} = '';
       end
    end
    

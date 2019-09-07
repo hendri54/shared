@@ -3,6 +3,7 @@ classdef ZipFile < handle
    
 properties
    zipFileName  char
+   dbg  logical = true
 end
 
 methods
@@ -33,7 +34,7 @@ methods
    
    %% Add files to zip file; append dates to file names
    %{
-   fnListV  ::  cell array of string
+   fnListV  ::  cell array of string  OR  char
       relative paths of the files to be added
    baseDir  ::  char
       base dir for all files in fnListV
@@ -41,8 +42,13 @@ methods
       full dir for temporary files
    
    Change: store relative paths instead of absolute ones +++
+   Change: remove temp files when done +++
    %}
    function add_files_with_dates(zS, fnListV, baseDir, tempDir)
+      if ischar(fnListV)
+         fnListV = {fnListV};
+      end
+      
       % Add current date to files
       fListS = filesLH.FileNames(fnListV);
       dateListV = fListS.append_date;
@@ -52,7 +58,7 @@ methods
       for i1 = 1 : length(fnListV)
          zipListV{i1} = fullfile(tempDir, dateListV{i1});
          fDir = fileparts(zipListV{i1});
-         filesLH.mkdir(fDir, cS.dbg);
+         filesLH.mkdir(fDir, zS.dbg);
          copyfile(fullfile(baseDir, fnListV{i1}),  zipListV{i1});
       end
 

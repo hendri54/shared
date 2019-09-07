@@ -1,5 +1,5 @@
 function [outS, id1V, id2V] = table_to_2d_array(tbM, id1, id2, varNameV)
-% Given a table with 2 numeric identifiers, x, and y
+% Given a table with 2 numeric or categorical identifiers, x, and y
 % and a list of variable names
 % make a set of 2D matrices, each containing one variable by [x,y]
 %{

@@ -22,6 +22,8 @@ TEST
    by simulation in extreme_value_decision_test
 %}
 
+EulerConst = 0.5772;
+
 [nTypes, nx] = size(value_ixM);
 
 if nx == 1
@@ -29,7 +31,7 @@ if nx == 1
    % Decision prob is 1
    prob_ixM = ones([nTypes, nx]);
    % Value is value of that alternative + mean pref shock
-   eVal_iV = value_ixM + 0.5772;
+   eVal_iV = value_ixM + EulerConst;
    return;
 end
 
@@ -46,7 +48,7 @@ expSum_iV = sum(exp_ixM, 2);
 prob_ixM = exp_ixM ./ repmat(expSum_iV(:), [1, nx]);
 
 % Expected value
-eVal_iV = prefScale * (vMax_iV(:) + log(expSum_iV(:)) + 0.5772);
+eVal_iV = prefScale * (vMax_iV(:) + log(expSum_iV(:)) + EulerConst);
 
 
 %% Test

@@ -2,6 +2,7 @@
 %{
 Based on
    http://undocumentedmatlab.com/blog/formatting-numbers
+Produces output like 123,456.78
 
 Currently does not set groupSeparator, nDecimals
 %}

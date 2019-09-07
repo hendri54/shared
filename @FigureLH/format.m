@@ -11,15 +11,7 @@ hold off;
 
 %% Get figure info
 
-% Get axis handles
-% They are already set during `new`, but they could change with subplot.
-% if isempty(fS.fh)
-%    error('Should never happen. Figure handle is set by constructor');
-%    fS.fh = gcf;
-   axes_handle = gca;
-% else
-%    axes_handle = get(fS.fh, 'CurrentAxes');
-% end
+axes_handle = gca;
 
 % Get line handles. May be []
 lineHandleV = findobj(axes_handle, 'Type', 'Line');

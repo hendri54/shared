@@ -24,8 +24,12 @@ properties
    figType  char
    % Background color (for area surrounding plot)
    backGroundColor = 'w'
+   
+   % Base hue for colormap
+   hue0  double = 0.3
    % Color map; determines color palette for line and bar graphs
-   colorMap  char = 'bone'
+   % Cannot be 'default' (b/c that's not defined as a matrix)
+   colorMap  char = 'bone'   % obsolete
    % Color matrix
    colorM  double
    
@@ -43,6 +47,8 @@ properties
    figFontSize  double
    legendFontSize  double
    titleFontSize  double
+   % Max no of points so that markers are shown
+   maxPtsWithMarkers  uint16 = 16
    
    % Figure file info
    % Extension, such as '.pdf'
@@ -61,12 +67,6 @@ properties
 end
    
 
-% properties (Dependent)
-%    % Line colors
-%    colorM
-% end
-
-   
 methods
    %% Constructor
    % Just populate properties
@@ -93,10 +93,10 @@ methods
    function set_options(fS, argListV)      
       propertyV = {'height', 'width', 'visible', 'lineWidth', 'figFontName', 'figFontSize', ...
          'legendFontSize', 'titleFontSize', 'figType', 'saveFigFile', 'figFileDir', 'figNoteV', 'dbg', ...
-          'screenHeight',  'screenWidth'};
+          'screenHeight',  'screenWidth',  'maxPtsWithMarkers'};
       defaultV  = {3,       3 * 1.61,   true,    2,          'Latex',       10, ...
          10,                12,              'line',       true,       'figData',  [],  111, ...
-         800, 800 * 1.61};
+         800, 800 * 1.61,  16};
 
       % Parse the input args
       p = inputParser;
@@ -163,7 +163,7 @@ methods
       end
       hold on;
 
-      if length(xV) < 16
+      if length(xV) <= fS.maxPtsWithMarkers
          lineStyleStr = fS.line_style(iLine);
       else
          lineStyleStr = fS.line_style_dense(iLine);
@@ -276,7 +276,8 @@ methods
    
    %% Format lines (if any)
    %{
-   Line colors were set during plotting. Here just set markers
+   Set line colors spread across fS.colorM
+   Set markers to line colors
    %}
    function format_lines(fS)
       % Get line handles. May be []
@@ -284,11 +285,16 @@ methods
       lineHandleV = findobj(ax, 'Type', 'Line');
 
       if ~isempty(lineHandleV)
-         for i1 = 1 : length(lineHandleV)
+         nLines = length(lineHandleV);
+         lineColorM = fS.line_colors(nLines);
+         
+         for i1 = 1 : nLines
             mk = get(lineHandleV(i1), 'Marker');
             if ~isempty(mk)
-               lColor = get(lineHandleV(i1), 'Color');
+               %lColor = get(lineHandleV(i1), 'Color');
+               lColor = lineColorM(i1,:);
                set(lineHandleV(i1), 'MarkerFaceColor', lColor);
+               set(lineHandleV(i1), 'Color', lColor);
                lineHandleV(i1).LineWidth = fS.lineWidth;
 
                % Set marker size
@@ -325,17 +331,10 @@ methods
       
       if ~isempty(barV)
          nBars = length(barV);
-         nColors = size(fS.colorM, 1);
-         % Try a fixed interval
-         icV = 10 + (1 : nBars) .* 10;
-         if icV(end) > nColors
-            icV = round(linspace(1, nColors, nBars));
-         end
-
+         barColorM = fS.line_colors(nBars);
          for i1 = 1 : nBars
-            faceColor = fS.colorM(icV(i1), :);
-            barV(i1).FaceColor = faceColor;
-            barV(i1).EdgeColor = faceColor;  % [1, 1, 1];
+            barV(i1).FaceColor = barColorM(i1,:);
+            barV(i1).EdgeColor = barColorM(i1,:);
          end
       end
    end
@@ -377,11 +376,26 @@ methods
 
    
    %% Get info for a line
+   
+   % Line color
    function colorV = line_color(fS, iLine)
       n = size(fS.colorM, 1);
       i1 = integerLH.sequential_bounded(1 + iLine * 8, n);
       colorV = fS.colorM(i1, :);
    end
+   
+   
+   % Line colors for all lines in the plot
+   %{
+   OUT
+      colorM  ::  double
+         each row is a color vector
+   %}
+   function colorM = line_colors(fS, nLines)
+      assert(nLines > 0);
+      colorM = figuresLH.colormap(fS.hue0, nLines);
+   end
+   
    
    % Line styles when many points are used
    function lineStyle = line_style_dense(fS, iLine)
@@ -421,19 +435,7 @@ methods
    %% Set color matrix
    % This works for line graphs, but not well for 3d bar graphs
    function outM = default_colors(fS)
-      % Get the color map without opening a new figure
-      outM = feval(fS.colorMap);
-      % Drop the brightest colors
-      outM = outM(1 : 50, :);
-%       % Set default colors muted
-%       xV = 0.2 : 0.15 : 0.96;
-%       ncol = length(xV);
-%       outM = zeros([2 * ncol, 3]);
-%       for ix = 1 : length(xV)
-%          x = xV(ix);
-%          outM(ix,:) = [1-x, 0.4, x];
-%          outM(ncol + ix, :) = [1-x, x, 0.4];
-%       end
+      outM = figuresLH.colormap(fS.hue0, 30);
    end
    
    

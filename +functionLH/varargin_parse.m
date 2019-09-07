@@ -5,7 +5,7 @@ Call as
    `varargin_parse(objS, varargin(:))`
 IN
    x
-      handle objectthat gets modified
+      handle object that gets modified
    inputV
       cell array of name / value pairs
       can be varargin

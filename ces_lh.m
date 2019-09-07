@@ -1,6 +1,6 @@
 % CES aggregator of the form
 %{
-Y = A * [sum of (alpha X) ^ rho] ^ (1/rho)
+Y = A * [sum of (alpha * X) ^ rho] ^ (1/rho)
 Accommodates matrix inputs (T x N)
 
 If N == 1:  Y = A * alpha * X
@@ -10,20 +10,27 @@ When rho -> 0: Cobb Douglas, alphas must sum to 1
 
 Inputs can be stored in the object or provided each time a method is called.
 %}
-classdef ces_lh
-   properties
+classdef ces_lh < handle
+   properties (SetAccess = private)
       substElast  double
+      % Curvature parameter
       rho  double
+      % Number of inputs
       N  uint16
+   end
+   
+   properties
       % Optional inputs
-      AV          % productivities, Tx1
-      alphaM      % relative weights, TxN
-      xM          % inputs, TxN
+      AV  double          % productivities, Tx1
+      alphaM  double      % relative weights, TxN
+      xM  double          % inputs, TxN
+      
+      dbg  logical = true
    end
    
    
    methods
-      % ********  Constructor
+      %%  Constructor
       % Last 3 args are optional
       function fS = ces_lh(substElast, N,   AV, alphaM, xM)
          fS.substElast = substElast;
@@ -37,9 +44,24 @@ classdef ces_lh
          
          fS.validate;
       end
+      
+      
+      function cesCurv = curvature(this)
+         cesCurv = this.rho;
+      end
+      
+      function set_curvature(this, rho)
+         this.rho = rho;
+         this.substElast = 1 ./ (1 - rho);
+      end
+      
+      function set_elasticity(this, sElast)
+         this.substElast = sElast;
+         this.rho = 1 - 1 / fS.substElast;
+      end
 
       
-      % ******  Validation
+      %% ******  Validation
       function validate(fS)
          validateattributes(fS.substElast, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'scalar', 'positive'})
          validateattributes(fS.N, {'uint16'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1})
@@ -64,7 +86,7 @@ classdef ces_lh
       end
       
       
-      % Returns sum([alpha * x] ^ rho)
+      %% Returns sum([alpha * x] ^ rho)
       function qV = q(fS, alphaM, xM)
          % Column vector
          qV = sum((alphaM .* xM) .^ fS.rho, 2);

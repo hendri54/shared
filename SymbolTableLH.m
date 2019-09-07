@@ -9,9 +9,9 @@ classdef SymbolTableLH < handle
       % No of symbols stored
       n
       % Names. Must be valid latex commands
-      nameV
+      nameV  cell
       % Latex symbols
-      symbolV
+      symbolV  cell
       % Path for latex newcommand file
       preamblePath  char
    end

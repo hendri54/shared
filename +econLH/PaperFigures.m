@@ -16,6 +16,10 @@ properties (SetAccess = private)
    dataExtV = {'csv'};
 end
 
+properties
+   dbg logical = true
+end
+
 
 methods
    %% Constructor
@@ -50,6 +54,7 @@ methods
          tgPath = [];
       end
       
+      fileS = struct;
       fileS.srcPath = pS.make_src_path(srcPath);
       fileS.tgPath  = pS.make_tg_path(srcPath, tgPath, tgSubDir);
       pS.n = pS.n + 1;
@@ -108,15 +113,11 @@ methods
             outPath = fullfile(pS.tgDefaultDir, tgSubDir, [fName, fExt]);
          end
       end
-      
-%       outPath
-%       keyboard
    end
    
 
    %% Copy files
    function copy(pS)
-      dbg = 111;
       if pS.n < 1
          warning('Nothing to copy');
          return;
@@ -134,23 +135,29 @@ methods
          else
             tgDir = fileparts(tgPath);
             if ~exist(tgDir, 'dir')
-               filesLH.mkdir(tgDir, dbg);
+               filesLH.mkdir(tgDir, pS.dbg);
             end
 
             copyfile(srcPath, tgPath);
             
             % Copy the underlying data table, if desired
-            if ~isempty(pS.dataExtV)
-               for ix = 1 : length(pS.dataExtV)
-                  dataExt = pS.dataExtV{ix};
-                  [sDir, sName] = fileparts(srcPath);
-                  srcPath2 = fullfile(sDir, [sName, '.', dataExt]);
-                  if exist(srcPath2, 'file') > 0
-                     [tDir, tName] = fileparts(tgPath);
-                     tgPath2 = fullfile(tDir, [tName, '.', dataExt]);
-                     copyfile(srcPath2, tgPath2);
-                  end
-               end
+            pS.copy_data_table(srcPath, tgPath);
+         end
+      end
+   end
+   
+   
+   %% Copy the underlying data table for a file
+   function copy_data_table(pS, srcPath, tgPath)
+      if ~isempty(pS.dataExtV)
+         for ix = 1 : length(pS.dataExtV)
+            dataExt = pS.dataExtV{ix};
+            [sDir, sName] = fileparts(srcPath);
+            srcPath2 = fullfile(sDir, [sName, '.', dataExt]);
+            if exist(srcPath2, 'file') > 0
+               [tDir, tName] = fileparts(tgPath);
+               tgPath2 = fullfile(tDir, [tName, '.', dataExt]);
+               copyfile(srcPath2, tgPath2);
             end
          end
       end

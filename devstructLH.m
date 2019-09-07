@@ -7,7 +7,8 @@ properties
    name  char     % eg 'fracEnterIq'
    modelV  double   % model values
    dataV  double    % data values
-   wtV  double      % relative weights, sum to 1
+   % relative weights, sum to 1; may be scalar
+   wtV  double      
    scaleFactor  double    % multiply model and data by this when constructing scalarDev
    shortStr  char       % eg 'enter/iq'
    longStr  char        % eg 'fraction entering college by iq quartile'
@@ -15,7 +16,7 @@ properties
 end
 
 methods
-   % Constructor
+   %% Constructor
    function d = devstructLH(nameStr, shortStr, longStr, modelV, dataV, wtV, scaleFactor, fmtStr)
       d.name = nameStr;
       d.shortStr = shortStr;
@@ -31,7 +32,8 @@ methods
       d.fmtStr = fmtStr;
    end
    
-   % Scalar deviation
+   
+   %% Scalar deviation
    % scaleFactor used to be inside the sum of squares
    function [scalarDev, scalarStr] = scalar_dev(d)
       devV = d.wtV(:) .* ((d.modelV(:) - d.dataV(:))) .^ 2;
@@ -39,7 +41,8 @@ methods
       scalarStr = sprintf(d.fmtStr, scalarDev);
    end
    
-   % Formatted short deviation for display
+   
+   %% Formatted short deviation for display
    function shortStr = short_display(d)
       [~, scalarStr] = scalar_dev(d);
       shortStr = [d.shortStr, ': ', scalarStr];

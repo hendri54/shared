@@ -1,5 +1,11 @@
-function write_table(tS)
 % Write table to latex file
+%{
+refactor +++
+Requires booktabs package
+%}
+function write_table(tS)
+
+tS.make_directory;
 
 % Open file
 fid = fopen(tS.filePath, 'w');
@@ -10,35 +16,28 @@ end
 
 %% Alignment of header columns
 
-fprintf(fid, '%s', '\begin{tabular}{');
-
-% Header
-fprintf(fid, '%s', tS.alignHeader);
-
-% Body columns
-for ic = 1 : tS.nc
-   % Left column line
-   if tS.colLineV(ic) == 1
-      fprintf(fid, '|');
-   end
-   if tS.colWidthV(ic) > 0.001
-      fprintf(fid, 'p{%3.2fin}', tS.colWidthV(ic));
-   else
-      fprintf(fid, '%s', tS.alignV{ic});
-   end
-end
-
-% Right end line
-if tS.colLineV(end) == 1
-   fprintf(fid, '|');
-end
-fprintf(fid, '%s\n', '}');
+fprintf(fid,'%s \n', tS.align_block);
 
 
 % Headers for columns
-fprintf(fid, '%s\n', '\hline');
-fprintf(fid, ' & %s \n',  latexLH.table_row(tS.colHeaderV));
-fprintf(fid, '%s\n', '\hline');
+fprintf(fid, '%s\n', '\toprule');
+for i1 = 1 : tS.nHeaderRows
+   if isempty(tS.headerLineV{i1})
+      if isempty(tS.topLeftCellV)
+         topLeftStr = ' ';
+      else
+         topLeftStr = char(tS.topLeftCellV(i1));
+      end
+      fprintf(fid, '%s & %s \n',  topLeftStr,  latexLH.table_row(tS.colHeaderV(i1,:)));
+   else
+      fprintf(fid, '%s \\\\ \n',  tS.headerLineV{i1});
+   end
+   % Mainly for \cline commands
+   if ~isempty(tS.headerSubLineV{i1})
+      fprintf(fid, '%s \n', tS.headerSubLineV{i1});
+   end
+end
+fprintf(fid, '%s\n', '\midrule');
 
 
 
@@ -46,7 +45,7 @@ fprintf(fid, '%s\n', '\hline');
 
 for ir = 1 : tS.nr
    if isempty(tS.lineStrV{ir})
-      fprintf(fid, '%s & %s \n',  tS.rowHeaderV{ir}, latexLH.table_row(tS.tbM(ir,:)));
+      fprintf(fid, '%s & %s \n',  tS.rowHeaderV{ir}, latexLH.table_row(tS.tbM(ir,:), tS.heatM(ir,:)));
    else
       % User provided line
       lineStr = tS.lineStrV{ir};
@@ -61,12 +60,12 @@ for ir = 1 : tS.nr
    
    % Underline this row
    if tS.rowUnderlineV(ir)
-      fprintf(fid, '%s\n', '\hline');
+      fprintf(fid, '%s\n', '\midrule ');
    end
 end
 
 % Closing underline
-fprintf(fid, '%s\n', '\hline');
+fprintf(fid, '%s\n', '\bottomrule');
 fprintf(fid, '%s\n', '\end{tabular}%');
 
 
@@ -89,22 +88,6 @@ fprintf(fid, '%s\n', '\end{tabular}%');
 fclose(fid);
 [~, fName] = fileparts(tS.filePath);
 disp(['Saved table ', fName]);
-
-
-% if tbS.showOnScreen == 1
-%    latex_lh.text_table_lh(dataM, tbS);
-% end
-
-% % Also create text file?
-% if ~isempty(fPath)  &&  tbS.createTextFile
-%    [fDir, fName] = fileparts(fPath);
-%    fid2 = fopen(fullfile(fDir, [fName, '.txt']), 'w');
-%    tbS.fp = fid2;
-%    latex_lh.text_table_lh(dataM, tbS);
-%    fclose(fid2);
-% end
-
-
 
 
 end

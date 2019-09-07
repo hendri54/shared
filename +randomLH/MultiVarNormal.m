@@ -170,6 +170,7 @@ methods
       condStdV  = sqrt(diag(condCovM));
       condStdV  = condStdV(:);
 
+      % This is equivalent to mu1 + sigma12 / sigma22 * (value2 - mu2)
       condMeanM = repmat(mu1V(:)', [nObs,1]) + ((value2M - repmat(mu2V(:)', [nObs,1])) / sigma22) * sigma21;
       
 %       % Testing against the original formula; tests matrix expansion
@@ -191,6 +192,41 @@ methods
       end
    end
    
+   
+   %% Weights of conditioning variables for conditional means
+   %{
+   OUT
+      wtM
+         n1 x n2 matrix of weights
+         each row gives the weights for a "dependent" variable
+   %}
+   function wtM = cond_mean_weights(mS, idx2V, covM, dbg)
+      
+      % ******* Input check
+      nVars = size(covM, 1);
+      nCond = length(idx2V);
+      
+      if dbg
+         validateattributes(idx2V, {'numeric'}, {'finite', 'nonnan', 'nonempty', 'integer', '>=', 1, ...
+            '<=', nVars})
+         validateattributes(covM, {'double'}, {'finite', 'nonnan', 'nonempty', 'real', 'size', [nVars, nVars]})
+         std2V = sqrt(diag(covM));
+         checkLH.approx_equal(std2V(:), mS.stdV, 1e-6, []);
+      end
+      
+      
+      % *******  Main
+      
+      % Indices of unknowns
+      idx1V = 1 : nVars;
+      idx1V(idx2V) = [];
+      
+      sigma12 = covM(idx1V, idx2V);
+      sigma22 = covM(idx2V, idx2V);
+
+      % This is equivalent to mu1 + sigma12 / sigma22 * (value2 - mu2)
+      wtM = sigma12 / sigma22;
+   end
 end
    
 end

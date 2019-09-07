@@ -25,7 +25,7 @@ end
 
 compS = configLH.Computer([]);
    webSiteDir = fullfile(compS.docuDir, 'data/web/hendri54.github.io');
-
+   projectDir = fullfile(compS.docuDir, 'projects');
 
 
 %% List of projects
@@ -37,7 +37,8 @@ switch suffixStr
       cd(baseDir);
       init_bc3;    
    case 'bc4'
-      baseDir = fullfile(compS.dropBoxDir, 'hc', 'borrow_constraints', 'model4', 'github_bc4', 'prog');
+      baseDir = fullfile(compS.docuDir, 'projects', 'p2017', 'borrow_constraints', ...
+         'model4', 'github_bc4', 'prog');
       cd(baseDir);
       init_bc4;          
    case 'cc2006'
@@ -66,14 +67,21 @@ switch suffixStr
       cd(baseDir);
       init_mmp;
    case 'nisimp'
-      % NIS project. Solve model with imperfect substitution
+      % ***** NIS project. Solve model with imperfect substitution
       progDir = fullfile(compS.docuDir, 'projects', 'p2017', 'jones_cc', 'github_jcc', 'nisimp', 'prog');
       standard_startup(suffixStr, progDir);
       % Was previously used for QJE (with the location below)
       %baseDir = fullfile(compS.docuDir, 'econ', 'Migration', 'nis_wage_gains', 'imperfect_substitution', 'nisimp', 'prog');
       %cd(baseDir);
       %init_nisimp;
-      
+   case 'icp2011'
+      % ICP 2011 data for NISIMP
+      progDir = fullfile(projectDir, 'p2017', 'jones_cc', 'github_jcc', 'icp2011');
+      standard_startup(suffixStr, progDir);
+   case 'jcc'
+      % Data code for Jones-CC project
+      progDir = fullfile(projectDir, 'p2017', 'jones_cc', 'github_jcc', 'country_data');
+      standard_startup(suffixStr, progDir);
       
    %% Single authored
    case 'cstrat'
@@ -147,6 +155,13 @@ switch suffixStr
       init_hon;
       %standard_startup(suffixStr, progDir);
       
+      
+   %% Other
+   case 'rail'
+      progDir = fullfile(compS.dropBoxDir, 'shared', 'light_rail', 'ridership');
+      standard_startup(suffixStr, progDir);
+   case 'shared'
+      standard_startup(suffixStr, compS.sharedDirV{1});
       
    %% From github
    % Simply adds the dir to the path (if not on it already)

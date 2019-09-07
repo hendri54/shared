@@ -2,8 +2,9 @@ function text_table(dataM, rowUnderlineV, fp, dbg)
 % Write a cell array of strings to a text table
 %{
 IN
-   dataM
+   dataM  ::  cell
       The data to show. Text array
+      [] is permitted and shown as ' '
    rowUnderlineV
       Underline this row?
    fp
@@ -52,6 +53,12 @@ for ir = 1 : nRows
    strV = ' ';
    for ic = 1 : nCols
       nSpaces = colWidthV(ic) - lengthM(ir,ic) + 2;
+      if isempty(dataM{ir, ic})
+         dataStr = ' ';
+      else
+         dataStr = dataM{ir, ic};
+      end
+      assert(isa(dataStr, 'char'));
       strV = [strV, repmat(' ', [1, nSpaces]), dataM{ir,ic}];
    end
    % Format correctly for fprintf

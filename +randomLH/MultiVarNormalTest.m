@@ -10,7 +10,7 @@ function oneTest(testCase)
 
 %% Settings
 
-dbg = 111;
+dbg = true;
 rng(41);
 n = 4;
 meanV = linspace(-1, 1, n)';
@@ -143,7 +143,7 @@ end
 
 %% Test conditional distribution
 function conditional_distrib_test(testCase)
-   dbg = 111;
+   dbg = true;
    rng(41);
    n = 5;
    meanV = linspace(-1, 1, n)';
@@ -198,6 +198,31 @@ function conditional_distrib_test(testCase)
          error('Wrong conditional std dev');
       end
    end
-   
-
 end
+
+
+%% Conditional mean weights
+function cond_mean_weights_test(testCase)
+   dbg = true;
+   rng(41);
+   n = 7;
+   % With means of 0 and conditioning values of 1, we can compare
+   % conditional means and weights for conditional means
+   meanV = zeros(n, 1);
+   stdV  = rand(n, 1) * 2;
+   
+   mS = randomLH.MultiVarNormal(meanV, stdV);
+   wtM = make_weight_matrix(stdV);
+   covM = mS.cov_from_weights(wtM, dbg);
+
+   % Conditioning indices
+   idx2V = [2, 4, 5];
+   value2V = ones(size(idx2V));
+   condMeanV = mS.conditional_distrib(idx2V, value2V, covM, dbg);
+   % Compare with conditioning weights
+   wtM = cond_mean_weights(mS, idx2V, covM, dbg);
+   
+   testCase.verifyEqual(condMeanV', sum(wtM, 2), 'AbsTol', 1e-4);
+end
+
+% ----------

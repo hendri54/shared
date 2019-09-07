@@ -78,7 +78,7 @@ methods (Static)
 
    %% Target dir
    function tgDir = target_dir(verStr)
-      tgDir = '/Users/lutz/Dropbox/data/software/matlab';
+      tgDir = '/Users/lutz/Documents/data/software/matlab';
       assert(exist(tgDir, 'dir') > 0);
       tgDir = fullfile(tgDir, verStr);
    end
